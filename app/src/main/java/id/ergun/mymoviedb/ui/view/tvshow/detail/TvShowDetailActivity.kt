@@ -7,14 +7,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ShareCompat
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.TvShowDetailActivityBinding
-import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.domain.model.TvShow
-import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
-import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
 import id.ergun.mymoviedb.ui.viewmodel.tvshow.TvShowViewModel
 import id.ergun.mymoviedb.util.loadImage
 import id.ergun.mymoviedb.util.share

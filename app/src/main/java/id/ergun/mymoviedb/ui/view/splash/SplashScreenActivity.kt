@@ -22,7 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             gotoHomeActivity()
-        }, 2000)
+        }, 1000)
     }
 
     private fun gotoHomeActivity() {

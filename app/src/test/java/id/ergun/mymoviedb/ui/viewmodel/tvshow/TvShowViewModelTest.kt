@@ -5,17 +5,9 @@ import id.ergun.mymoviedb.data.repository.tvshow.TvShowRepository
 import id.ergun.mymoviedb.data.repository.tvshow.TvShowRepositoryImpl
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCaseImpl
-import org.junit.Test
-
-import androidx.test.core.app.ApplicationProvider
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.runner.RunWith
-import android.content.Context
-import android.os.Build
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
+import org.junit.Test
 
 class TvShowViewModelTest {
 

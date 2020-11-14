@@ -1,15 +1,10 @@
 package id.ergun.mymoviedb.ui.view.tvshow
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
-import id.ergun.mymoviedb.ui.view.movie.MovieVR
-import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
 import id.ergun.mymoviedb.util.loadImage
 import kotlinx.android.synthetic.main.movie_items.view.*

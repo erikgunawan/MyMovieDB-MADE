@@ -2,7 +2,6 @@ package id.ergun.mymoviedb.ui.viewmodel.movie
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.domain.usecase.movie.MovieUseCase
 

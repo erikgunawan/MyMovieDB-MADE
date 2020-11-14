@@ -1,6 +1,5 @@
 package id.ergun.mymoviedb.domain.usecase.tvshow
 
-import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.domain.model.TvShow
 
 /**

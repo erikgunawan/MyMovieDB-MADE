@@ -3,14 +3,10 @@ package id.ergun.mymoviedb.util
 import android.app.Activity
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
-import java.util.*
 
 /**
  * Created by alfacart on 22/10/20.
@@ -18,20 +14,6 @@ import java.util.*
 
 fun ImageView.loadImage(
     @DrawableRes url: Int?,
-    errorDrawable: Int = R.drawable.ic_image_placeholder_error,
-    progressDrawable: Int? = null
-) {
-    val requestOptions = RequestOptions().build(errorDrawable, progressDrawable)
-
-    val builder = Glide.with(this.context)
-        .load(url)
-        .apply(requestOptions)
-
-    builder.into(this)
-}
-
-fun ImageView.loadImage(
-    url: String?,
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
     progressDrawable: Int? = null
 ) {

@@ -5,19 +5,17 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import org.robolectric.util.FragmentTestUtil.startFragment
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 class TvShowFragmentTest {
 
-    lateinit var fragment: TvShowFragment
+    private lateinit var fragment: TvShowFragment
 
     @Before
-    public fun setup() {
+    fun setup() {
         fragment = TvShowFragment()
     }
 

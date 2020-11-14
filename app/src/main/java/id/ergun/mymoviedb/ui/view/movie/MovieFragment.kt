@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.databinding.MovieFragmentBinding
 import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
 import id.ergun.mymoviedb.util.autoCleared
-import kotlinx.android.synthetic.main.movie_fragment.*
 
 /**
  * Created by alfacart on 21/10/20.

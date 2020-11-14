@@ -1,7 +1,5 @@
 package id.ergun.mymoviedb.data.repository.movie
 
-import android.database.Observable
-import androidx.lifecycle.LiveData
 import id.ergun.mymoviedb.domain.model.Movie
 
 /**

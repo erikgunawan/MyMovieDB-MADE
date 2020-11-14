@@ -3,13 +3,10 @@ package id.ergun.mymoviedb.ui.view.movie.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ShareCompat
-import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.MovieDetailActivityBinding

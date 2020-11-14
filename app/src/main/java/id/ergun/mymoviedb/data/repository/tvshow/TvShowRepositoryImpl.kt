@@ -1,9 +1,6 @@
 package id.ergun.mymoviedb.data.repository.tvshow
 
-import id.ergun.mymoviedb.data.local.MovieDB
 import id.ergun.mymoviedb.data.local.TvShowDB
-import id.ergun.mymoviedb.data.repository.movie.MovieRepository
-import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.domain.model.TvShow
 import javax.inject.Inject
 
