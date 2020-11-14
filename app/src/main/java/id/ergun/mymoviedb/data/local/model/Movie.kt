@@ -18,7 +18,8 @@ data class Movie(
     val releaseDate: String = "",
     val title: String = "",
     val video: Boolean = false,
-    val voteAverage: Int = 0,
+    val voteAverage: Double = 0.0,
     val voteCount: Int = 0,
+    val tagline: String = "",
     @DrawableRes val image: Int
 )

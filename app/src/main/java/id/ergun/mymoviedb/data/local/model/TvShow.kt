@@ -35,5 +35,6 @@ class TvShow(
     val type: String = "",
     val voteAverage: Double = 0.0,
     val voteCount: Int = 0,
+    val tagline: String = "",
     @DrawableRes val image: Int
 )

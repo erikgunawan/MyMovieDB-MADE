@@ -15,7 +15,9 @@ class MovieRepositoryImpl @Inject constructor(private val localData: MovieDB) : 
                 it.id,
                 it.title,
                 it.image,
-                it.overview
+                it.overview,
+                it.voteAverage,
+                it.tagline
             ))
         }
         return list

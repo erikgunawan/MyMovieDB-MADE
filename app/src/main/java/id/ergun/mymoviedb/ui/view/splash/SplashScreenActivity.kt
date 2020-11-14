@@ -1,10 +1,11 @@
 package id.ergun.mymoviedb.ui.view.splash
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import id.ergun.mymoviedb.databinding.HomeActivityBinding
 import id.ergun.mymoviedb.databinding.SplashScreenActivityBinding
-import id.ergun.mymoviedb.ui.view.home.HomePagerAdapter
+import id.ergun.mymoviedb.ui.view.home.HomeActivity
 
 /**
  * Created by alfacart on 21/10/20.
@@ -18,5 +19,15 @@ class SplashScreenActivity : AppCompatActivity() {
         binding = SplashScreenActivityBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            gotoHomeActivity()
+        }, 2000)
     }
+
+    private fun gotoHomeActivity() {
+        startActivity(HomeActivity.newIntent(this))
+        finish()
+    }
+
 }

@@ -7,18 +7,23 @@ import id.ergun.mymoviedb.domain.model.Movie
  * Created by alfacart on 21/10/20.
  */
 data class MovieVR(
-    var id: Int? = null,
-    var title: String = "",
-    @DrawableRes var image: Int? = null,
-    var overview: String = "") {
+    val id: Int?,
+    val title: String,
+    @DrawableRes var image: Int?,
+    var overview: String,
+    val voteAverage: Double,
+    val tagline: String
+) {
 
     companion object {
-        fun fromModel(movie: Movie): MovieVR {
+        private fun fromModel(movie: Movie): MovieVR {
             return MovieVR(
                 movie.id,
                 movie.title,
                 movie.image,
-                movie.overview
+                movie.overview,
+                movie.voteAverage,
+                movie.tagline
             )
         }
 
@@ -27,7 +32,9 @@ data class MovieVR(
                 movieVR.id,
                 movieVR.title,
                 movieVR.image,
-                movieVR.overview
+                movieVR.overview,
+                movieVR.voteAverage,
+                movieVR.tagline
             )
         }
 

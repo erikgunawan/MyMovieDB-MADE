@@ -7,18 +7,34 @@ import id.ergun.mymoviedb.domain.model.TvShow
  * Created by alfacart on 21/10/20.
  */
 data class TvShowVR(
-    var id: Int? = null,
-    var title: String = "",
-    @DrawableRes var image: Int? = null,
-    var overview: String = "") {
+    val id: Int?,
+    val title: String,
+    @DrawableRes val image: Int?,
+    val overview: String,
+    val voteAverage: Double,
+    val tagline: String
+) {
 
     companion object {
-        fun fromModel(tvShow: TvShow): TvShowVR {
+        private fun fromModel(tvShow: TvShow): TvShowVR {
             return TvShowVR(
                 tvShow.id,
                 tvShow.title,
                 tvShow.image,
-                tvShow.overview
+                tvShow.overview,
+                tvShow.voteAverage,
+                tvShow.tagline
+            )
+        }
+
+        fun toModel(tvShowVR: TvShowVR): TvShow {
+            return TvShow(
+                tvShowVR.id,
+                tvShowVR.title,
+                tvShowVR.image,
+                tvShowVR.overview,
+                tvShowVR.voteAverage,
+                tvShowVR.tagline
             )
         }
 

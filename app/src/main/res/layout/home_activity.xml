@@ -4,13 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include
+        android:id="@+id/toolbar_view"
+        layout="@layout/toolbar_content"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         app:tabTextColor="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"

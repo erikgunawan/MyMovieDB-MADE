@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
+import id.ergun.mymoviedb.util.loadImage
 import kotlinx.android.synthetic.main.movie_items.view.*
 
 /**
@@ -29,29 +30,24 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val course = listMovies[position]
-        holder.bind(course)
+        val movie = listMovies[position]
+        holder.bind(movie)
     }
 
     override fun getItemCount(): Int = listMovies.size
 
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(course: MovieVR) {
+        fun bind(movie: MovieVR) {
             with(itemView) {
-                tv_title.text = course.title
-                tv_description.text = course.overview
-                tv_date.text = course.overview
+                tv_title.text = movie.title
+                tv_rating.text = movie.voteAverage.toString()
+                tv_tagline.text = movie.tagline
                 setOnClickListener {
-                    val intent = MovieDetailActivity.newIntent(context, MovieVR.toModel(course))
+                    val intent = MovieDetailActivity.newIntent(context, MovieVR.toModel(movie))
                     context.startActivity(intent)
                 }
-                Glide.with(context)
-                    .load(course.image)
-//                    .apply(
-//                        RequestOptions.placeholderOf(R.drawable.ic_loading)
-//                            .error(R.drawable.ic_error))
-                    .into(iv_poster)
+                iv_poster.loadImage(movie.image)
             }
         }
     }

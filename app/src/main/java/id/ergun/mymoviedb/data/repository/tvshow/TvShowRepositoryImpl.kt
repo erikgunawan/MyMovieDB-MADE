@@ -19,7 +19,9 @@ class TvShowRepositoryImpl @Inject constructor(private val localData: TvShowDB) 
                     it.id,
                     it.name,
                     it.image,
-                    it.overview
+                    it.overview,
+                    it.voteAverage,
+                    it.tagline
                 )
             )
         }

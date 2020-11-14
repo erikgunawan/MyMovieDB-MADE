@@ -1,11 +1,9 @@
 package id.ergun.mymoviedb.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import id.ergun.mymoviedb.data.local.MovieDB
 import id.ergun.mymoviedb.data.local.TvShowDB
 import javax.inject.Singleton
@@ -17,10 +15,11 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object AppModule {
 
-    @Singleton
     @Provides
-    fun getMovieDB(@ApplicationContext appContext: Context): MovieDB = MovieDB(appContext)
+    @Singleton
+    fun getMovieDB(): MovieDB = MovieDB()
 
     @Provides
-    fun getTvShowDB(@ApplicationContext appContext: Context): TvShowDB = TvShowDB(appContext)
+    @Singleton
+    fun getTvShowDB(): TvShowDB = TvShowDB()
 }

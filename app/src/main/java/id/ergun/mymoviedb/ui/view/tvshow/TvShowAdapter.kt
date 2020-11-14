@@ -9,6 +9,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.ui.view.movie.MovieVR
+import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
+import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
+import id.ergun.mymoviedb.util.loadImage
 import kotlinx.android.synthetic.main.movie_items.view.*
 
 /**
@@ -24,36 +27,29 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_items, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.tv_show_items, parent, false)
         return TvShowViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val course = listTvShows[position]
-        holder.bind(course)
+        val tvShow = listTvShows[position]
+        holder.bind(tvShow)
     }
 
     override fun getItemCount(): Int = listTvShows.size
 
 
     class TvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(course: TvShowVR) {
+        fun bind(tvShow: TvShowVR) {
             with(itemView) {
-                tv_title.text = course.title
-                tv_description.text = course.overview
-                tv_date.text = course.overview
+                tv_title.text = tvShow.title
+                tv_rating.text = tvShow.voteAverage.toString()
+                tv_tagline.text = tvShow.tagline
                 setOnClickListener {
-//                    val intent = Intent(context, DetailCourseActivity::class.java).apply {
-//                        putExtra(DetailCourseActivity.EXTRA_COURSE, course.courseId)
-//                    }
-//                    context.startActivity(intent)
+                    val intent = TvShowDetailActivity.newIntent(context, TvShowVR.toModel(tvShow))
+                    context.startActivity(intent)
                 }
-                Glide.with(context)
-                    .load(course.image)
-//                    .apply(
-//                        RequestOptions.placeholderOf(R.drawable.ic_loading)
-//                            .error(R.drawable.ic_error))
-                    .into(iv_poster)
+                iv_poster.loadImage(tvShow.image)
             }
         }
     }
