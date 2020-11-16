@@ -11,10 +11,10 @@ import javax.inject.Inject
 class TvShowDB @Inject constructor()  {
 
     fun getTvShows(): MutableList<TvShow> {
-        return getStaticTvShows()
+        return getDummyTvShows()
     }
 
-    private fun getStaticTvShows(): MutableList<TvShow> {
+    private fun getDummyTvShows(): MutableList<TvShow> {
         val list: MutableList<TvShow> = mutableListOf()
         list.add(
             TvShow(

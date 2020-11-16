@@ -9,17 +9,6 @@ import javax.inject.Inject
  */
 class MovieRepositoryImpl @Inject constructor(private val localData: MovieDB) : MovieRepository {
     override fun getMovies(): ArrayList<Movie> {
-        val list = arrayListOf<Movie>()
-        localData.getDummyMovies().forEach {
-            list.add(Movie(
-                it.id,
-                it.title,
-                it.image,
-                it.overview,
-                it.voteAverage,
-                it.tagline
-            ))
-        }
-        return list
+        return Movie.transform(localData)
     }
 }

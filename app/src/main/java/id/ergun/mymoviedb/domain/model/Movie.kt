@@ -2,6 +2,7 @@ package id.ergun.mymoviedb.domain.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import id.ergun.mymoviedb.data.local.MovieDB
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -15,4 +16,24 @@ class Movie(
     var overview: String = "",
     var voteAverage: Double = 0.0,
     var tagline: String = ""
-): Parcelable
+): Parcelable {
+
+    companion object {
+        fun transform(movieDB: MovieDB): ArrayList<Movie> {
+            val list = arrayListOf<Movie>()
+            movieDB.getMovies().forEach {
+                list.add(
+                    Movie(
+                        it.id,
+                        it.title,
+                        it.image,
+                        it.overview,
+                        it.voteAverage,
+                        it.tagline
+                    )
+                )
+            }
+            return list
+        }
+    }
+}

@@ -9,7 +9,11 @@ import javax.inject.Inject
  */
 class MovieDB @Inject constructor() {
 
-    fun getDummyMovies(): MutableList<Movie> {
+    fun getMovies(): MutableList<Movie> {
+        return getDummyMovies()
+    }
+
+    private fun getDummyMovies(): MutableList<Movie> {
         val list: MutableList<Movie> = mutableListOf()
         list.add(
             Movie(

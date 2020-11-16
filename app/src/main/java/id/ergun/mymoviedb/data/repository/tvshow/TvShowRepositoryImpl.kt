@@ -9,19 +9,6 @@ import javax.inject.Inject
  */
 class TvShowRepositoryImpl @Inject constructor(private val localData: TvShowDB) : TvShowRepository {
     override fun getTvShows(): ArrayList<TvShow> {
-        val list = arrayListOf<TvShow>()
-        localData.getTvShows().forEach {
-            list.add(
-                TvShow(
-                    it.id,
-                    it.name,
-                    it.image,
-                    it.overview,
-                    it.voteAverage,
-                    it.tagline
-                )
-            )
-        }
-        return list
+        return TvShow.transform(localData)
     }
 }

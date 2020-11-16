@@ -54,6 +54,7 @@ class TvShowDetailActivity : AppCompatActivity() {
             tvTitle.text = viewModel.tvShow.title
             tvTagline.text = viewModel.tvShow.tagline
             tvOverview.text = viewModel.tvShow.overview
+            tvRating.text = viewModel.tvShow.voteAverage.toString()
             ivPoster.loadImage(viewModel.tvShow.image)
         }
     }

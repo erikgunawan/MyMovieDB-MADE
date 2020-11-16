@@ -14,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
         <ImageView
             android:id="@+id/iv_poster"
@@ -43,7 +44,7 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:gravity="start"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             android:maxLines="2"
@@ -51,7 +52,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toEndOf="@+id/iv_poster"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="title"/>
 
         <TextView
             android:id="@+id/tv_tagline"
@@ -59,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:gravity="start"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/grey"
             android:textSize="12sp"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="@id/tv_title"
@@ -71,18 +73,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:padding="16dp"
+            android:padding="18dp"
             android:background="@drawable/ic_rating"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_rating"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:src="@drawable/ic_rating"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:adjustViewBounds="true"/>-->
 
             <TextView
                 android:id="@+id/tv_rating"
@@ -90,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="12sp"
-                android:textColor="#ffffff"
+                android:textColor="@color/red"
+                android:textStyle="bold"
                 tools:text="9.8" />
         </FrameLayout>
 
