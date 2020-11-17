@@ -48,7 +48,7 @@ class TvShowViewModelTest {
         assertEquals(dummyTvShow.id, selectedTvShow.id)
         assertEquals(dummyTvShow.image, selectedTvShow.image)
         assertEquals(dummyTvShow.overview, selectedTvShow.overview)
-        assertEquals(dummyTvShow.tagline, selectedTvShow.tagline)
+        assertEquals(dummyTvShow.tagLine, selectedTvShow.tagLine)
         assertEquals(dummyTvShow.name, selectedTvShow.title)
         assertEquals(dummyTvShow.voteAverage.toString(), selectedTvShow.voteAverage.toString())
     }

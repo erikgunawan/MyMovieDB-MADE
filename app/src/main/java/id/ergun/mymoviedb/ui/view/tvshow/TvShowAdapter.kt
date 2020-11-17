@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.movie_items.view.*
 class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
     private var listTvShows = ArrayList<TvShowVR>()
 
-    fun setTvShows(movies: List<TvShowVR>?) {
-        if (movies == null) return
+    fun setTvShows(tvShows: List<TvShowVR>?) {
+        if (tvShows.isNullOrEmpty()) return
         listTvShows.clear()
-        listTvShows.addAll(movies)
+        listTvShows.addAll(tvShows)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
@@ -39,7 +39,7 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
             with(itemView) {
                 tv_title.text = tvShow.title
                 tv_rating.text = tvShow.voteAverage.toString()
-                tv_tagline.text = tvShow.tagline
+                tv_tag_line.text = tvShow.tagLine
                 setOnClickListener {
                     val intent = TvShowDetailActivity.newIntent(context, TvShowVR.toModel(tvShow))
                     context.startActivity(intent)

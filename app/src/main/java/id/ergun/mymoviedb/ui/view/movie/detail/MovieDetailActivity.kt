@@ -52,7 +52,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         with(binding) {
             tvTitle.text = viewModel.movie.title
-            tvTagline.text = viewModel.movie.tagline
+            tvTagLine.text = viewModel.movie.tagLine
             tvOverview.text = viewModel.movie.overview
             tvRating.text = viewModel.movie.voteAverage.toString()
             ivPoster.loadImage(viewModel.movie.image)

@@ -71,7 +71,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
             <TextView
-                android:id="@+id/tv_tagline"
+                android:id="@+id/tv_tag_line"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -91,7 +91,7 @@
                 android:textColor="@color/white"
                 tools:text="Description"
                 app:layout_constraintStart_toStartOf="@id/container_rating"
-                app:layout_constraintTop_toBottomOf="@id/tv_tagline"
+                app:layout_constraintTop_toBottomOf="@id/tv_tag_line"
                 app:layout_constraintEnd_toEndOf="@id/tv_title"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>

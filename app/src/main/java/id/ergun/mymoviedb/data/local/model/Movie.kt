@@ -10,6 +10,6 @@ data class Movie(
     val overview: String = "",
     val title: String = "",
     val voteAverage: Double = 0.0,
-    val tagline: String = "",
+    val tagLine: String = "",
     @DrawableRes val image: Int
 )

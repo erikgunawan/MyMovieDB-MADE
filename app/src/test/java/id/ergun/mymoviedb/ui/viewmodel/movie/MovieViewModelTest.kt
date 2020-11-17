@@ -49,7 +49,7 @@ class MovieViewModelTest {
         assertEquals(dummyMovie.id, selectedMovie.id)
         assertEquals(dummyMovie.image, selectedMovie.image)
         assertEquals(dummyMovie.overview, selectedMovie.overview)
-        assertEquals(dummyMovie.tagline, selectedMovie.tagline)
+        assertEquals(dummyMovie.tagLine, selectedMovie.tagLine)
         assertEquals(dummyMovie.title, selectedMovie.title)
         assertEquals(dummyMovie.voteAverage.toString(), selectedMovie.voteAverage.toString())
     }

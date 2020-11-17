@@ -15,7 +15,7 @@ class TvShow(
     @DrawableRes var image: Int? = null,
     var overview: String = "",
     var voteAverage: Double = 0.0,
-    var tagline: String = ""
+    var tagLine: String = ""
 ): Parcelable {
 
     companion object {
@@ -29,7 +29,7 @@ class TvShow(
                         it.image,
                         it.overview,
                         it.voteAverage,
-                        it.tagline
+                        it.tagLine
                     )
                 )
             }

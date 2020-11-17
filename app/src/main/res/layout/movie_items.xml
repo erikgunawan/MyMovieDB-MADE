@@ -56,7 +56,7 @@
             tools:text="title"/>
 
         <TextView
-            android:id="@+id/tv_tagline"
+            android:id="@+id/tv_tag_line"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"

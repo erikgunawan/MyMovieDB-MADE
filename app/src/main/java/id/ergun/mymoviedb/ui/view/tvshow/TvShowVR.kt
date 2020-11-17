@@ -12,7 +12,7 @@ data class TvShowVR(
     @DrawableRes val image: Int?,
     val overview: String,
     val voteAverage: Double,
-    val tagline: String
+    val tagLine: String
 ) {
 
     companion object {
@@ -23,7 +23,7 @@ data class TvShowVR(
                 tvShow.image,
                 tvShow.overview,
                 tvShow.voteAverage,
-                tvShow.tagline
+                tvShow.tagLine
             )
         }
 
@@ -34,7 +34,7 @@ data class TvShowVR(
                 tvShowVR.image,
                 tvShowVR.overview,
                 tvShowVR.voteAverage,
-                tvShowVR.tagline
+                tvShowVR.tagLine
             )
         }
 

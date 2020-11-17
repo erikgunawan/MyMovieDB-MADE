@@ -39,9 +39,9 @@ fun RequestOptions.build(
 fun share(activity: Activity, type: String, id: String) {
 
     val title = when (type) {
-        "tv" -> "Bagikan TV Show ini"
-        "movie" -> "Bagikan Movie ini"
-        else -> "Bagikan"
+        "tv" -> activity.getString(R.string.share_tv_show_title)
+        "movie" -> activity.getString(R.string.share_movie_title)
+        else -> activity.getString(R.string.share)
     }
 
     val mimeType = "text/plain"

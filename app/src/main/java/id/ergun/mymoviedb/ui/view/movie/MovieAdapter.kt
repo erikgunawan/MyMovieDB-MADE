@@ -16,7 +16,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private var listMovies = ArrayList<MovieVR>()
 
     fun setMovies(movies: List<MovieVR>?) {
-        if (movies == null) return
+        if (movies.isNullOrEmpty()) return
         listMovies.clear()
         listMovies.addAll(movies)
     }
@@ -39,7 +39,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
             with(itemView) {
                 tv_title.text = movie.title
                 tv_rating.text = movie.voteAverage.toString()
-                tv_tagline.text = movie.tagline
+                tv_tag_line.text = movie.tagLine
                 setOnClickListener {
                     val intent = MovieDetailActivity.newIntent(context, MovieVR.toModel(movie))
                     context.startActivity(intent)
