@@ -75,7 +75,7 @@ class TvShowRepositoryTest {
         Mockito.verify(apiService).getTvShows(page = 1)
 
         Assert.assertNull(tvShows.data)
-        Assert.assertEquals(tvShows.status, Resource.Status.ERROR)
+        assertEquals(tvShows.status, Resource.Status.ERROR)
     }
 
     @Test
@@ -86,6 +86,6 @@ class TvShowRepositoryTest {
         Mockito.verify(apiService).getTvShowDetail(selectedTvShow.id.toString())
 
         Assert.assertNull(tvShow.data)
-        Assert.assertEquals(tvShow.status, Resource.Status.ERROR)
+        assertEquals(tvShow.status, Resource.Status.ERROR)
     }
 }

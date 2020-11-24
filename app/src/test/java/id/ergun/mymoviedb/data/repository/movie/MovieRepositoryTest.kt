@@ -46,7 +46,7 @@ class MovieRepositoryTest {
         verify(apiService).getMovies(page = 1)
 
         assertNotNull(movies)
-        assertEquals(movies.status, id.ergun.mymoviedb.util.Resource.Status.SUCCESS)
+        assertEquals(movies.status, Resource.Status.SUCCESS)
         assertEquals(movies.data?.size?.toLong(), response.body()?.results?.size?.toLong())
     }
 
@@ -58,7 +58,7 @@ class MovieRepositoryTest {
         verify(apiService).getMovieDetail(selectedMovie.id.toString())
 
         assertNotNull(movie)
-        assertEquals(movie.status, id.ergun.mymoviedb.util.Resource.Status.SUCCESS)
+        assertEquals(movie.status, Resource.Status.SUCCESS)
         assertEquals(movie.data?.id, response.body()?.id)
         assertEquals(movie.data?.posterPath, response.body()?.posterPath)
         assertEquals(movie.data?.overview, response.body()?.overview)

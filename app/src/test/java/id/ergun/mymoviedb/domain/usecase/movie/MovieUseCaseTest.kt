@@ -45,7 +45,7 @@ class MovieUseCaseTest {
         verify(repository).getMovies()
 
         assertNotNull(movies)
-        assertEquals(movies.status, id.ergun.mymoviedb.util.Resource.Status.SUCCESS)
+        assertEquals(movies.status, Resource.Status.SUCCESS)
         assertEquals(movies.data?.size?.toLong(), repoMovies.data?.size?.toLong())
     }
 
@@ -57,7 +57,7 @@ class MovieUseCaseTest {
         verify(repository).getMovieDetail(selectedMovie.id!!)
 
         assertNotNull(movie)
-        assertEquals(movie.status, id.ergun.mymoviedb.util.Resource.Status.SUCCESS)
+        assertEquals(movie.status, Resource.Status.SUCCESS)
         assertEquals(movie.data?.id, repoMovie.data?.id)
         assertEquals(movie.data?.posterPath, repoMovie.data?.posterPath)
         assertEquals(movie.data?.overview, repoMovie.data?.overview)
