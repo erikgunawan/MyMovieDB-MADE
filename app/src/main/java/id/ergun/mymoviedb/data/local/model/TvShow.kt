@@ -11,5 +11,6 @@ data class TvShow(
     val overview: String = "",
     val voteAverage: Double = 0.0,
     val tagLine: String = "",
-    @DrawableRes val image: Int
+    @DrawableRes val image: Int,
+    val posterPath: String = ""
 )

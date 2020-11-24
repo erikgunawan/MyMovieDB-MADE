@@ -33,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:src="@drawable/movie_poster_dragon_ball_super_broly"
+                tools:src="@drawable/ic_image_placeholder_error"
                 />
 
             <FrameLayout

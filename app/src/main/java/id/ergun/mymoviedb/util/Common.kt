@@ -1,8 +1,8 @@
 package id.ergun.mymoviedb.util
 
 import android.app.Activity
+import android.view.View
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.core.app.ShareCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -13,7 +13,7 @@ import id.ergun.mymoviedb.R
  */
 
 fun ImageView.loadImage(
-    @DrawableRes url: Int?,
+    url: String?,
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
     progressDrawable: Int? = null
 ) {
@@ -51,4 +51,12 @@ fun share(activity: Activity, type: String, id: String) {
         setText("https://www.themoviedb.org/${type}/${id}")
         startChooser()
     }
+}
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
 }

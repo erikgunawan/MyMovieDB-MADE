@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.MovieDetailActivityBinding
 import id.ergun.mymoviedb.domain.model.Movie
@@ -50,12 +51,27 @@ class MovieDetailActivity : AppCompatActivity() {
 
         loadIntents()
 
+        updateData(viewModel.movie)
+
+        getMovieDetail()
+    }
+
+    private fun updateData(movie: Movie) {
         with(binding) {
-            tvTitle.text = viewModel.movie.title
-            tvTagLine.text = viewModel.movie.tagLine
-            tvOverview.text = viewModel.movie.overview
-            tvRating.text = viewModel.movie.voteAverage.toString()
-            ivPoster.loadImage(viewModel.movie.image)
+            tvTitle.text = movie.title
+            tvTagLine.text = movie.tagLine
+            tvOverview.text = movie.overview
+            tvRating.text = movie.voteAverage.toString()
+            ivPoster.loadImage(BuildConfig.IMAGE_URL + movie.posterPath)
+        }
+    }
+
+    private fun getMovieDetail() {
+        viewModel.movie.id?.let {
+            viewModel.getMovieDetail(it).observe(this) { data ->
+                val movie = data.data ?: return@observe
+                updateData(movie)
+            }
         }
     }
 

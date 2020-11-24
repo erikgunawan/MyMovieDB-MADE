@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.TvShowDetailActivityBinding
 import id.ergun.mymoviedb.domain.model.TvShow
@@ -50,12 +51,27 @@ class TvShowDetailActivity : AppCompatActivity() {
 
         loadIntents()
 
+        updateData(viewModel.tvShow)
+
+        getTvShowDetail()
+    }
+
+    private fun updateData(tvShow: TvShow) {
         with(binding) {
-            tvTitle.text = viewModel.tvShow.title
-            tvTagLine.text = viewModel.tvShow.tagLine
-            tvOverview.text = viewModel.tvShow.overview
-            tvRating.text = viewModel.tvShow.voteAverage.toString()
-            ivPoster.loadImage(viewModel.tvShow.image)
+            tvTitle.text = tvShow.title
+            tvTagLine.text = tvShow.tagLine
+            tvOverview.text = tvShow.overview
+            tvRating.text = tvShow.voteAverage.toString()
+            ivPoster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
+        }
+    }
+
+    private fun getTvShowDetail() {
+        viewModel.tvShow.id?.let {
+            viewModel.getTvShowDetail(it).observe(this) { data ->
+                val tvShow = data.data ?: return@observe
+                updateData(tvShow)
+            }
         }
     }
 

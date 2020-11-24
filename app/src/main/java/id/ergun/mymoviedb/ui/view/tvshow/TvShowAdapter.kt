@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
 import id.ergun.mymoviedb.util.loadImage
-import kotlinx.android.synthetic.main.movie_items.view.*
+import kotlinx.android.synthetic.main.tv_show_items.view.*
 
 /**
  * Created by alfacart on 21/10/20.
@@ -33,7 +34,6 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
 
     override fun getItemCount(): Int = listTvShows.size
 
-
     class TvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(tvShow: TvShowVR) {
             with(itemView) {
@@ -44,7 +44,7 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
                     val intent = TvShowDetailActivity.newIntent(context, TvShowVR.toModel(tvShow))
                     context.startActivity(intent)
                 }
-                iv_poster.loadImage(tvShow.image)
+                iv_poster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
             }
         }
     }

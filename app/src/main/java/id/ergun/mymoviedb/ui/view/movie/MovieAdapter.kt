@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import id.ergun.mymoviedb.util.loadImage
@@ -44,7 +45,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                     val intent = MovieDetailActivity.newIntent(context, MovieVR.toModel(movie))
                     context.startActivity(intent)
                 }
-                iv_poster.loadImage(movie.image)
+                iv_poster.loadImage(BuildConfig.IMAGE_URL + movie.posterPath)
             }
         }
     }

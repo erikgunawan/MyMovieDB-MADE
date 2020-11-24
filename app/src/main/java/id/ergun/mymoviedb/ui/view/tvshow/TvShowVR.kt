@@ -1,6 +1,5 @@
 package id.ergun.mymoviedb.ui.view.tvshow
 
-import androidx.annotation.DrawableRes
 import id.ergun.mymoviedb.domain.model.TvShow
 
 /**
@@ -9,10 +8,11 @@ import id.ergun.mymoviedb.domain.model.TvShow
 data class TvShowVR(
     val id: Int?,
     val title: String,
-    @DrawableRes val image: Int?,
+    val image: Int?,
     val overview: String,
     val voteAverage: Double,
-    val tagLine: String
+    val tagLine: String,
+    val posterPath: String
 ) {
 
     companion object {
@@ -23,7 +23,8 @@ data class TvShowVR(
                 tvShow.image,
                 tvShow.overview,
                 tvShow.voteAverage,
-                tvShow.tagLine
+                tvShow.tagLine,
+                tvShow.posterPath
             )
         }
 
@@ -34,7 +35,8 @@ data class TvShowVR(
                 tvShowVR.image,
                 tvShowVR.overview,
                 tvShowVR.voteAverage,
-                tvShowVR.tagLine
+                tvShowVR.tagLine,
+                tvShowVR.posterPath
             )
         }
 

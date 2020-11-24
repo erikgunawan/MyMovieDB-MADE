@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.databinding.TvShowFragmentBinding
 import id.ergun.mymoviedb.ui.viewmodel.tvshow.TvShowViewModel
+import id.ergun.mymoviedb.util.Resource
 import id.ergun.mymoviedb.util.autoCleared
+import id.ergun.mymoviedb.util.gone
+import id.ergun.mymoviedb.util.visible
 
 /**
  * Created by alfacart on 21/10/20.
@@ -21,6 +24,8 @@ class TvShowFragment : Fragment() {
     private var binding: TvShowFragmentBinding by autoCleared()
 
     private val tvShowViewModel by viewModels<TvShowViewModel>()
+
+    private lateinit var tvShowAdapter: TvShowAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,13 +39,58 @@ class TvShowFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         if (activity==null) return
 
-        val tvShowAdapter = TvShowAdapter()
-        tvShowAdapter.setTvShows(TvShowVR.transform(tvShowViewModel.getTvShows()))
+        initView()
+        initAction()
+        getTvShows()
+    }
+
+    private fun initView() {
+        tvShowAdapter = TvShowAdapter()
 
         with(binding.rvTvShow) {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = tvShowAdapter
         }
+    }
+
+    private fun initAction() {
+        binding.viewWarning.btnWarning.setOnClickListener {
+            getTvShows()
+        }
+    }
+
+    private fun getTvShows() {
+        showLoading()
+        tvShowViewModel.getTvShows().observe(requireActivity(), {
+            showData()
+            if (it.status == Resource.Status.SUCCESS) {
+                tvShowAdapter.setTvShows(it.data?.let { it1 -> TvShowVR.transform(it1) })
+                tvShowAdapter.notifyDataSetChanged()
+                return@observe
+            }
+            if(it.status == Resource.Status.ERROR) {
+                binding.viewWarning.tvWarning.text = it.message
+            }
+            showWarning()
+        })
+    }
+
+    private fun showLoading() {
+        binding.wrapperContent.gone()
+        binding.wrapperWarning.gone()
+        binding.progressBar.visible()
+    }
+
+    private fun showData() {
+        binding.wrapperContent.visible()
+        binding.wrapperWarning.gone()
+        binding.progressBar.gone()
+    }
+
+    private fun showWarning() {
+        binding.wrapperContent.gone()
+        binding.wrapperWarning.visible()
+        binding.progressBar.gone()
     }
 }
