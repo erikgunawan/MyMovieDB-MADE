@@ -5,6 +5,7 @@ import id.ergun.mymoviedb.data.remote.getResult
 import id.ergun.mymoviedb.data.remote.model.MovieResponse
 import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.util.Resource
+import id.ergun.mymoviedb.util.testing.EspressoIdlingResource
 import javax.inject.Inject
 
 /**
@@ -12,6 +13,7 @@ import javax.inject.Inject
  */
 class MovieRepositoryImpl @Inject constructor(private val remoteData: ApiService) : MovieRepository {
     override suspend fun getMovies(): Resource<ArrayList<Movie>> {
+        EspressoIdlingResource.increment()
         return try {
             remoteData.getMovies(page = 1).getResult {
                 MovieResponse.mapToDomainModelList(it)
@@ -23,6 +25,7 @@ class MovieRepositoryImpl @Inject constructor(private val remoteData: ApiService
     }
 
     override suspend fun getMovieDetail(id: Int): Resource<Movie> {
+        EspressoIdlingResource.increment()
         return remoteData.getMovieDetail(id = id.toString()).getResult {
             MovieResponse.mapToDomainModel(it)
         }

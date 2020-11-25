@@ -11,13 +11,11 @@ import timber.log.Timber
 
 fun <T, R> Response<T>.getResult(transform: (T) -> (R)): Resource<R> {
     try {
-        EspressoIdlingResource.increment()
         val response = this
         if (response.isSuccessful) {
             val body = transform(response.body()!!)
             if (body != null) {
-                EspressoIdlingResource.decrement()
-                return Resource.success(body)
+                return success(body)
             }
         }
 
@@ -25,6 +23,11 @@ fun <T, R> Response<T>.getResult(transform: (T) -> (R)): Resource<R> {
     } catch (e: Exception) {
         return error(e.message ?: e.toString())
     }
+}
+
+private fun <T> success(body: T): Resource<T> {
+    EspressoIdlingResource.decrement()
+    return Resource.success(body)
 }
 
 private fun <T> error(message: String): Resource<T> {
