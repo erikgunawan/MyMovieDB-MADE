@@ -32,19 +32,11 @@ object FakeTvShowDB {
         localData.getTvShows().forEach {
             data.add(
                 TvShowResponse.Result(
-                    backdropPath = null,
-                    firstAirDate = null,
-                    genreIds = null,
                     id = it.id,
-                    originCountry = null,
-                    originalLanguage = null,
-                    originalName = null,
                     overview = it.overview,
-                    popularity = null,
                     posterPath = it.posterPath,
                     name = it.name,
                     voteAverage = it.voteAverage,
-                    voteCount = null,
                     tagLine = it.tagLine
                 ))
         }
@@ -58,19 +50,11 @@ object FakeTvShowDB {
 
     fun getTvShowDetailRemote(tvShow: TvShow): TvShowResponse.Result {
         return TvShowResponse.Result(
-            backdropPath = null,
-            firstAirDate = null,
-            genreIds = null,
             id = tvShow.id,
-            originCountry = null,
-            originalLanguage = null,
-            originalName = null,
             overview = tvShow.overview,
-            popularity = null,
             posterPath = tvShow.posterPath,
             name = tvShow.title,
             voteAverage = tvShow.voteAverage,
-            voteCount = null,
             tagLine = tvShow.tagLine
         )
     }

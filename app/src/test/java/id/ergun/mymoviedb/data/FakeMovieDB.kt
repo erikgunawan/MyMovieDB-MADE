@@ -31,20 +31,11 @@ object FakeMovieDB {
 
         localData.getMovies().forEach {
             data.add(MovieResponse.Result(
-                adult = false,
-                backdropPath = null,
-                genreIds = null,
                 id = it.id,
-                originalLanguage = null,
-                originalTitle = null,
                 overview = it.overview,
-                popularity = null,
                 posterPath = it.posterPath,
-                releaseDate = null,
                 title = it.title,
                 voteAverage = it.voteAverage,
-                video = null,
-                voteCount = null,
                 tagLine = it.tagLine
             ))
         }
@@ -58,20 +49,11 @@ object FakeMovieDB {
 
     fun getMovieDetailRemote(movie: Movie): MovieResponse.Result {
         return MovieResponse.Result(
-            adult = false,
-            backdropPath = null,
-            genreIds = null,
             id = movie.id,
-            originalLanguage = null,
-            originalTitle = null,
             overview = movie.overview,
-            popularity = null,
             posterPath = movie.posterPath,
-            releaseDate = null,
             title = movie.title,
             voteAverage = movie.voteAverage,
-            video = null,
-            voteCount = null,
             tagLine = movie.tagLine
         )
     }

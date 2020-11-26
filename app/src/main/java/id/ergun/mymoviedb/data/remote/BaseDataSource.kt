@@ -12,7 +12,7 @@ import timber.log.Timber
 fun <T, R> Response<T>.getResult(transform: (T) -> (R)): Resource<R> {
     try {
         val response = this
-        if (response.isSuccessful) {
+        if (response.isSuccessful && response.body() != null) {
             val body = transform(response.body()!!)
             if (body != null) {
                 return success(body)
