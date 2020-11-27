@@ -1,14 +1,12 @@
 package id.ergun.mymoviedb.ui.view.tvshow
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.ergun.mymoviedb.BuildConfig
-import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.databinding.TvShowItemsBinding
 import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
 import id.ergun.mymoviedb.util.loadImage
-import kotlinx.android.synthetic.main.tv_show_items.view.*
 
 /**
  * Created by alfacart on 21/10/20.
@@ -23,8 +21,8 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.tv_show_items, parent, false)
-        return TvShowViewHolder(view)
+        val binding = TvShowItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TvShowViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
@@ -34,17 +32,17 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
 
     override fun getItemCount(): Int = listTvShows.size
 
-    class TvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TvShowViewHolder(private val binding: TvShowItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(tvShow: TvShowVR) {
             with(itemView) {
-                tv_title.text = tvShow.title
-                tv_rating.text = tvShow.voteAverage.toString()
-                tv_tag_line.text = tvShow.tagLine
+                binding.tvTitle.text = tvShow.title
+                binding.tvRating.text = tvShow.voteAverage.toString()
+                binding.tvTagLine.text = tvShow.tagLine
                 setOnClickListener {
                     val intent = TvShowDetailActivity.newIntent(context, TvShowVR.toModel(tvShow))
                     context.startActivity(intent)
                 }
-                iv_poster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
+                binding.ivPoster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
             }
         }
     }

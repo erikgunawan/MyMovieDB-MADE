@@ -1,14 +1,12 @@
 package id.ergun.mymoviedb.ui.view.movie
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.ergun.mymoviedb.BuildConfig
-import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.databinding.MovieItemsBinding
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import id.ergun.mymoviedb.util.loadImage
-import kotlinx.android.synthetic.main.movie_items.view.*
 
 /**
  * Created by alfacart on 21/10/20.
@@ -23,8 +21,8 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_items, parent, false)
-        return MovieViewHolder(view)
+        val binding = MovieItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -35,17 +33,17 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     override fun getItemCount(): Int = listMovies.size
 
 
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MovieViewHolder(private val binding: MovieItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieVR) {
             with(itemView) {
-                tv_title.text = movie.title
-                tv_rating.text = movie.voteAverage.toString()
-                tv_tag_line.text = movie.tagLine
+                binding.tvTitle.text = movie.title
+                binding.tvRating.text = movie.voteAverage.toString()
+                binding.tvTagLine.text = movie.tagLine
                 setOnClickListener {
                     val intent = MovieDetailActivity.newIntent(context, MovieVR.toModel(movie))
                     context.startActivity(intent)
                 }
-                iv_poster.loadImage(BuildConfig.IMAGE_URL + movie.posterPath)
+                binding.ivPoster.loadImage(BuildConfig.IMAGE_URL + movie.posterPath)
             }
         }
     }

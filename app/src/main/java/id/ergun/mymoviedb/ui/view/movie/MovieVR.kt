@@ -8,7 +8,6 @@ import id.ergun.mymoviedb.domain.model.Movie
 data class MovieVR(
     val id: Int?,
     val title: String,
-    val image: Int?,
     var overview: String,
     val voteAverage: Double,
     val tagLine: String,
@@ -20,7 +19,6 @@ data class MovieVR(
             return MovieVR(
                 movie.id,
                 movie.title,
-                movie.image,
                 movie.overview,
                 movie.voteAverage,
                 movie.tagLine,
@@ -32,7 +30,6 @@ data class MovieVR(
             return Movie(
                 movieVR.id,
                 movieVR.title,
-                movieVR.image,
                 movieVR.overview,
                 movieVR.voteAverage,
                 movieVR.tagLine,

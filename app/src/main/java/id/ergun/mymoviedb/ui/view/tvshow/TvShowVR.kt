@@ -8,7 +8,6 @@ import id.ergun.mymoviedb.domain.model.TvShow
 data class TvShowVR(
     val id: Int?,
     val title: String,
-    val image: Int?,
     val overview: String,
     val voteAverage: Double,
     val tagLine: String,
@@ -20,7 +19,6 @@ data class TvShowVR(
             return TvShowVR(
                 tvShow.id,
                 tvShow.title,
-                tvShow.image,
                 tvShow.overview,
                 tvShow.voteAverage,
                 tvShow.tagLine,
@@ -32,7 +30,6 @@ data class TvShowVR(
             return TvShow(
                 tvShowVR.id,
                 tvShowVR.title,
-                tvShowVR.image,
                 tvShowVR.overview,
                 tvShowVR.voteAverage,
                 tvShowVR.tagLine,
