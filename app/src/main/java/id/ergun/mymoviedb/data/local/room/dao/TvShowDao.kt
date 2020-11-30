@@ -2,7 +2,7 @@ package id.ergun.mymoviedb.data.local.room.dao
 
 import android.database.Cursor
 import androidx.room.*
-import id.ergun.mymoviedb.data.local.model.TvShow
+import id.ergun.mymoviedb.data.local.model.TvShowLocal
 
 /**
  * Created by alfacart on 26/11/20.
@@ -11,26 +11,26 @@ import id.ergun.mymoviedb.data.local.model.TvShow
 @Dao
 interface TvShowDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTvShow(tvShow: TvShow): Long
+    suspend fun insertTvShow(tvShow: TvShowLocal): Long
 
     @Update
-    fun updateTvShow(tvShow: TvShow)
+    suspend fun updateTvShow(tvShow: TvShowLocal)
 
     @Delete
-    fun deleteTvShow(tvShow: TvShow)
+    suspend fun deleteTvShow(tvShow: TvShowLocal)
 
     @Query("SELECT * FROM TvShow")
-    fun getTvShows(): MutableList<TvShow>
+    suspend fun getTvShows(): MutableList<TvShowLocal>
 
     @Query("SELECT * FROM TvShow WHERE id==:id")
-    fun getTvShow(id: String): TvShow
+    suspend fun getTvShow(id: Int): TvShowLocal?
 
     @Query("SELECT * FROM TvShow")
     fun getCursorTvShows(): Cursor
 
     @Query("SELECT * FROM TvShow WHERE id==:id")
-    fun getCursorTvShow(id: String): Cursor
+    fun getCursorTvShow(id: Int): Cursor
 
     @Query("DELETE FROM TvShow WHERE id==:id")
-    fun deleteById(id: Long): Int
+    suspend fun deleteById(id: Int): Int
 }

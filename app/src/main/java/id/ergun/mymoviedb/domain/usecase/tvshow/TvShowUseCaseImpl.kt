@@ -17,4 +17,20 @@ class TvShowUseCaseImpl @Inject constructor(private val repository: TvShowReposi
     override suspend fun getTvShowDetail(id: Int): Resource<TvShow> {
         return repository.getTvShowDetail(id)
     }
+
+    override suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>> {
+        return repository.getFavoriteTvShows()
+    }
+
+    override suspend fun getFavoriteTvShow(id: Int): Resource<TvShow> {
+        return repository.getFavoriteTvShow(id)
+    }
+
+    override suspend fun addToFavorite(tvShow: TvShow): Long {
+        return repository.addToFavorite(tvShow)
+    }
+
+    override suspend fun removeFromFavorite(id: Int) {
+        return repository.removeFromFavorite(id)
+    }
 }

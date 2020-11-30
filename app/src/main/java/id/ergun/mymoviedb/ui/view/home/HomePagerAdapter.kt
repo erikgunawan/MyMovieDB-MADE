@@ -21,8 +21,8 @@ class HomePagerAdapter(private val mContext: Context, fm: FragmentManager) : Fra
 
     override fun getItem(position: Int): Fragment =
         when (position) {
-            0 -> MovieFragment()
-            1 -> TvShowFragment()
+            0 -> MovieFragment.newInstance(true)
+            1 -> TvShowFragment.newInstance(true)
             else -> Fragment()
         }
 

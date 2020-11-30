@@ -9,4 +9,8 @@ import id.ergun.mymoviedb.util.Resource
 interface TvShowRepository {
     suspend fun getTvShows(): Resource<ArrayList<TvShow>>
     suspend fun getTvShowDetail(id: Int): Resource<TvShow>
+    suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>>
+    suspend fun getFavoriteTvShow(id: Int): Resource<TvShow>
+    suspend fun addToFavorite(tvShow: TvShow): Long
+    suspend fun removeFromFavorite(id: Int)
 }

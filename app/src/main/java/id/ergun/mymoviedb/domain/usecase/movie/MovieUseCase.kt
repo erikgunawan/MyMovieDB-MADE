@@ -9,4 +9,8 @@ import id.ergun.mymoviedb.util.Resource
 interface MovieUseCase {
     suspend fun getMovies(): Resource<ArrayList<Movie>>
     suspend fun getMovieDetail(id: Int): Resource<Movie>
+    suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>>
+    suspend fun getFavoriteMovie(id: Int): Resource<Movie>
+    suspend fun addToFavorite(movie: Movie): Long
+    suspend fun removeFromFavorite(id: Int)
 }

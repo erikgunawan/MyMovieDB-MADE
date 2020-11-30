@@ -5,16 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.MovieDetailActivityBinding
 import id.ergun.mymoviedb.domain.model.Movie
+import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
 import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
+import id.ergun.mymoviedb.util.Const
+import id.ergun.mymoviedb.util.eventbus.FavoriteEvent
 import id.ergun.mymoviedb.util.loadImage
 import id.ergun.mymoviedb.util.share
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by alfacart on 21/10/20.
@@ -50,10 +56,12 @@ class MovieDetailActivity : AppCompatActivity() {
         }
 
         loadIntents()
+        initActions()
 
         updateData(viewModel.movie)
 
         getMovieDetail()
+        checkFavorite()
     }
 
     private fun updateData(movie: Movie) {
@@ -75,9 +83,58 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkFavorite() {
+        viewModel.getFavoriteMovieById().observe(this) { data ->
+            viewModel.favorite.value = data.data != null
+        }
+
+        viewModel.favorite.observe(this) {
+            if (it == null) return@observe
+            binding.fabFavorite.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    if (it) R.drawable.ic_favorite else R.drawable.ic_favorite_unchecked
+                )
+            )
+        }
+
+        viewModel.favoriteState.observe(this) {
+            Toast.makeText(
+                this,
+                if (it == FavoriteModel.Type.ADD_TO_FAVORITE) getString(R.string.message_add_to_favorite)
+                else getString(R.string.message_remove_from_favorite),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun addToFavorite() {
+        viewModel.addToFavorite(viewModel.movie).observe(this) {
+            EventBus.getDefault().post(FavoriteEvent(Const.MOVIE_TYPE, true))
+            viewModel.favorite.value = true
+            viewModel.favoriteState.value = FavoriteModel.Type.ADD_TO_FAVORITE
+        }
+    }
+
+    private fun removeFromFavorite() {
+        if (viewModel.movie.id == null) return
+        viewModel.removeFromFavorite(viewModel.movie.id!!).observe(this) {
+            EventBus.getDefault().post(FavoriteEvent(Const.MOVIE_TYPE, true))
+            viewModel.favorite.value = false
+            viewModel.favoriteState.value = FavoriteModel.Type.REMOVE_FROM_FAVORITE
+        }
+    }
+
     private fun loadIntents() {
         if (intent.hasExtra(EXTRA_MOVIE)) {
             viewModel.setSelectedMovie(intent.getParcelableExtra(EXTRA_MOVIE)!!)
+        }
+    }
+
+    private fun initActions() {
+        binding.fabFavorite.setOnClickListener {
+            if (viewModel.favorite.value == true) removeFromFavorite()
+            else addToFavorite()
         }
     }
 

@@ -2,7 +2,7 @@ package id.ergun.mymoviedb.data.local.room.dao
 
 import android.database.Cursor
 import androidx.room.*
-import id.ergun.mymoviedb.data.local.model.Movie
+import id.ergun.mymoviedb.data.local.model.MovieLocal
 
 /**
  * Created by alfacart on 26/11/20.
@@ -12,28 +12,27 @@ import id.ergun.mymoviedb.data.local.model.Movie
 interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovie(movie: Movie): Long
+    suspend fun insertMovie(movie: MovieLocal): Long
 
     @Update
-    fun updateMovie(movie: Movie)
+    suspend fun updateMovie(movie: MovieLocal)
 
     @Delete
-    fun deleteMovie(movie: Movie)
+    suspend fun deleteMovie(movie: MovieLocal)
 
     @Query("SELECT * FROM Movie")
-    fun getMovies(): MutableList<Movie>
+    suspend fun getMovies(): MutableList<MovieLocal>
 
     @Query("SELECT * FROM Movie WHERE id==:id")
-    fun getMovie(id: String): Movie
+    suspend fun getMovie(id: Int): MovieLocal?
 
     @Query("SELECT * FROM Movie")
     fun getCursorMovies(): Cursor
 
     @Query("SELECT * FROM Movie WHERE id==:id")
-    fun getCursorMovie(id: String): Cursor
+    fun getCursorMovie(id: Int): Cursor
 
     @Query("DELETE FROM Movie WHERE id==:id")
-    fun deleteById(id: Long): Int
-
+    suspend fun deleteById(id: Int): Int
 
 }

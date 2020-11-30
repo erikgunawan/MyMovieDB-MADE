@@ -60,10 +60,13 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragment: Fragment? = null
+
+        if  (binding.bnvMain.selectedItemId == item.itemId) return false
+
         when (item.itemId) {
-            R.id.action_movies -> fragment = MovieFragment()
-            R.id.action_tv_shows -> fragment = TvShowFragment()
-            R.id.action_favorite -> fragment = FavoriteFragment()
+            R.id.action_movies -> fragment = MovieFragment.newInstance()
+            R.id.action_tv_shows -> fragment = TvShowFragment.newInstance()
+            R.id.action_favorites -> fragment = FavoriteFragment.newInstance()
         }
         return loadFragment(fragment)
     }

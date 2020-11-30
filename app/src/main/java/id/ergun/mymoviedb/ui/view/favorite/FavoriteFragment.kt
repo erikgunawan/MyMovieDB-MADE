@@ -15,6 +15,13 @@ import id.ergun.mymoviedb.util.autoCleared
  */
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
+
+    companion object {
+        fun newInstance(): FavoriteFragment {
+            return FavoriteFragment()
+        }
+    }
+
     private var binding: FavoriteFragmentBinding by autoCleared()
 
     override fun onCreateView(

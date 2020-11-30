@@ -16,4 +16,21 @@ class MovieUseCaseImpl @Inject constructor(private val repository: MovieReposito
     override suspend fun getMovieDetail(id: Int): Resource<Movie> {
         return repository.getMovieDetail(id)
     }
+
+    override suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>> {
+        return repository.getFavoriteMovies()
+    }
+
+    override suspend fun getFavoriteMovie(id: Int): Resource<Movie> {
+        return repository.getFavoriteMovie(id)
+    }
+
+    override suspend fun addToFavorite(movie: Movie): Long {
+        return repository.addToFavorite(movie)
+    }
+
+    override suspend fun removeFromFavorite(id: Int) {
+        return repository.removeFromFavorite(id)
+    }
+
 }
