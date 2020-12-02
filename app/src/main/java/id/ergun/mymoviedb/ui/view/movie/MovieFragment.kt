@@ -88,7 +88,7 @@ class MovieFragment : Fragment() {
     }
 
     private fun getMovies() {
-        movieViewModel.movieList.observe(requireActivity()) {
+        movieViewModel.getMovies().observe(requireActivity()) {
             movieAdapter.submitList(it)
             movieAdapter.notifyDataSetChanged()
         }
@@ -137,6 +137,7 @@ class MovieFragment : Fragment() {
     fun onReceiveEventBus(event: FavoriteEvent) {
         if (event.type != Const.MOVIE_TYPE) return
         if (!event.changes) return
+        if (!movieViewModel.favoritePage) return
 
         movieViewModel.refresh()
     }

@@ -16,7 +16,7 @@ class HomePagerAdapter(private val mContext: Context, fm: FragmentManager) : Fra
 
     companion object {
         @StringRes
-        private val TAB_TITLES = intArrayOf(R.string.movies, R.string.tv_shows)
+        private val TAB_TITLES = intArrayOf(R.string.movie, R.string.tv_show)
     }
 
     override fun getItem(position: Int): Fragment =

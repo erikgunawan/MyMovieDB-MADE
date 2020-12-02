@@ -1,6 +1,7 @@
 package id.ergun.mymoviedb.data
 
 import id.ergun.mymoviedb.data.local.MovieDB
+import id.ergun.mymoviedb.data.local.model.MovieLocal
 import id.ergun.mymoviedb.data.remote.model.MovieResponse
 import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.util.Resource
@@ -50,6 +51,34 @@ object FakeMovieDB {
     fun getMovieDetailRemote(movie: Movie): MovieResponse.Result {
         return MovieResponse.Result(
             id = movie.id,
+            overview = movie.overview,
+            posterPath = movie.posterPath,
+            title = movie.title,
+            voteAverage = movie.voteAverage,
+            tagLine = movie.tagLine
+        )
+    }
+
+    fun getMoviesLocal(localData: MovieDB): MutableList<MovieLocal> {
+        val data = mutableListOf<MovieLocal>()
+        localData.getMovies().forEach {
+            data.add(
+                MovieLocal(
+                    id = it.id,
+                    overview = it.overview,
+                    posterPath = it.posterPath,
+                    title = it.title,
+                    voteAverage = it.voteAverage,
+                    tagLine = it.tagLine
+                )
+            )
+        }
+        return data
+    }
+
+    fun getMovieDetailLocal(movie: Movie): MovieLocal {
+        return MovieLocal(
+            id = movie.id ?: 0,
             overview = movie.overview,
             posterPath = movie.posterPath,
             title = movie.title,

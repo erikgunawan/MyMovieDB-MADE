@@ -2,7 +2,6 @@ package id.ergun.mymoviedb.ui.viewmodel.movie
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.domain.usecase.movie.MovieUseCase
@@ -22,11 +21,14 @@ class MovieViewModel @ViewModelInject constructor(
 
     var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
+    var favoritePage: Boolean = false
+
     var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
 
     lateinit var movie: Movie
 
     fun setFavorite(favoritePage: Boolean) {
+        this.favoritePage = favoritePage
         dataSourceFactory.favoritePage = favoritePage
     }
 
@@ -34,7 +36,7 @@ class MovieViewModel @ViewModelInject constructor(
         this.movie = movie
     }
 
-    val movieList: LiveData<PagedList<MovieVR>> = LivePagedListBuilder(dataSourceFactory, MovieDataSourceFactory.pagedListConfig()).build()
+    fun getMovies(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getMovies()
 
     val movieState: LiveData<Resource<*>> =
         Transformations.switchMap(

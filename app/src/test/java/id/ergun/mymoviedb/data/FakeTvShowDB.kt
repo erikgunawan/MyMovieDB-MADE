@@ -1,6 +1,7 @@
 package id.ergun.mymoviedb.data
 
 import id.ergun.mymoviedb.data.local.TvShowDB
+import id.ergun.mymoviedb.data.local.model.TvShowLocal
 import id.ergun.mymoviedb.data.remote.model.TvShowResponse
 import id.ergun.mymoviedb.domain.model.TvShow
 import id.ergun.mymoviedb.util.Resource
@@ -51,6 +52,34 @@ object FakeTvShowDB {
     fun getTvShowDetailRemote(tvShow: TvShow): TvShowResponse.Result {
         return TvShowResponse.Result(
             id = tvShow.id,
+            overview = tvShow.overview,
+            posterPath = tvShow.posterPath,
+            name = tvShow.title,
+            voteAverage = tvShow.voteAverage,
+            tagLine = tvShow.tagLine
+        )
+    }
+
+    fun getTvShowsLocal(localData: TvShowDB): MutableList<TvShowLocal> {
+        val data = mutableListOf<TvShowLocal>()
+        localData.getTvShows().forEach {
+            data.add(
+                TvShowLocal(
+                    id = it.id,
+                    overview = it.overview,
+                    posterPath = it.posterPath,
+                    name = it.name,
+                    voteAverage = it.voteAverage,
+                    tagLine = it.tagLine
+                )
+            )
+        }
+        return data
+    }
+
+    fun getTvShowDetailLocal(tvShow: TvShow): TvShowLocal {
+        return TvShowLocal(
+            id = tvShow.id ?: 0,
             overview = tvShow.overview,
             posterPath = tvShow.posterPath,
             name = tvShow.title,

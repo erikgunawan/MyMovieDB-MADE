@@ -5,12 +5,10 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.databinding.MovieItemsBinding
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import id.ergun.mymoviedb.util.loadImage
-import timber.log.Timber
 
 /**
  * Created by alfacart on 21/10/20.
@@ -45,7 +43,6 @@ class MovieAdapter : PagedListAdapter<MovieVR, MovieAdapter.MovieViewHolder>(DIF
 
     inner class MovieViewHolder(val binding: MovieItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieVR) {
-            Timber.e( Gson().toJson(movie))
             with(itemView) {
                 binding.tvTitle.text = movie.title
                 binding.tvRating.text = movie.voteAverage.toString()

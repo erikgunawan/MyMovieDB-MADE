@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
@@ -21,6 +21,7 @@ import id.ergun.mymoviedb.util.eventbus.FavoriteEvent
 import id.ergun.mymoviedb.util.loadImage
 import id.ergun.mymoviedb.util.share
 import org.greenrobot.eventbus.EventBus
+
 
 /**
  * Created by alfacart on 21/10/20.
@@ -102,12 +103,12 @@ class TvShowDetailActivity : AppCompatActivity() {
         }
 
         viewModel.favoriteState.observe(this) {
-            Toast.makeText(
-                this,
-                if (it == FavoriteModel.Type.ADD_TO_FAVORITE) getString(R.string.message_add_to_favorite)
-                else getString(R.string.message_remove_from_favorite),
-                Toast.LENGTH_SHORT
-            ).show()
+            val message = if (it == FavoriteModel.Type.ADD_TO_FAVORITE)
+                getString(R.string.message_add_to_favorite)
+            else getString(R.string.message_remove_from_favorite)
+
+            val snackBar = Snackbar.make(binding.container, message, Snackbar.LENGTH_LONG)
+            snackBar.show()
         }
     }
 

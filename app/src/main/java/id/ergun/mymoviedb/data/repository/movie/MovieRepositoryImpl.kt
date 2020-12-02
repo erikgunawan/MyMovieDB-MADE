@@ -61,7 +61,7 @@ class MovieRepositoryImpl @Inject constructor(private val remoteData: ApiService
         return localData.insertMovie(MovieLocal.mapFromDomainModel(movie))
     }
 
-    override suspend fun removeFromFavorite(id: Int) {
-        localData.deleteById(id)
+    override suspend fun removeFromFavorite(id: Int): Int {
+        return localData.deleteById(id)
     }
 }

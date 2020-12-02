@@ -2,14 +2,11 @@ package id.ergun.mymoviedb.ui.viewmodel.tvshow
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import id.ergun.mymoviedb.domain.model.TvShow
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
 import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
-import id.ergun.mymoviedb.ui.view.tvshow.TvShowVR
 import id.ergun.mymoviedb.util.Resource
 
 /**
@@ -17,9 +14,12 @@ import id.ergun.mymoviedb.util.Resource
  */
 class TvShowViewModel @ViewModelInject constructor(
     private val useCase: TvShowUseCase,
-    private val dataSourceFactory: TvShowDataSourceFactory) : ViewModel() {
+    private val dataSourceFactory: TvShowDataSourceFactory
+) : ViewModel() {
 
     var favorite: MutableLiveData<Boolean> = MutableLiveData()
+
+    var favoritePage: Boolean = false
 
     var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
 
@@ -30,16 +30,21 @@ class TvShowViewModel @ViewModelInject constructor(
     }
 
     fun setFavorite(favoritePage: Boolean) {
+        this.favoritePage = favoritePage
         dataSourceFactory.favoritePage = favoritePage
     }
 
-    val tvShowList: LiveData<PagedList<TvShowVR>> = LivePagedListBuilder(dataSourceFactory, TvShowDataSourceFactory.pagedListConfig()).build()
+    fun getTvShows() = dataSourceFactory.getTvShows()
 
     val tvShowState: LiveData<Resource<*>> =
         Transformations.switchMap(
             dataSourceFactory.liveData,
             TvShowKeyedDataSource::state
         )
+
+    fun refresh() {
+        dataSourceFactory.liveData.value?.invalidate()
+    }
 
     fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
         return liveData { emit(useCase.getTvShowDetail(id)) }

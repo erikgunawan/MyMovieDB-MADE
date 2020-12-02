@@ -12,5 +12,5 @@ interface MovieUseCase {
     suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>>
     suspend fun getFavoriteMovie(id: Int): Resource<Movie>
     suspend fun addToFavorite(movie: Movie): Long
-    suspend fun removeFromFavorite(id: Int)
+    suspend fun removeFromFavorite(id: Int): Int
 }

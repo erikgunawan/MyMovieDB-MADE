@@ -1,7 +1,9 @@
 package id.ergun.mymoviedb.ui.datasource.tvshow
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.ui.view.tvshow.TvShowVR
@@ -24,6 +26,8 @@ class TvShowDataSourceFactory @Inject constructor(
         liveData.postValue(source)
         return source
     }
+
+    fun getTvShows(): LiveData<PagedList<TvShowVR>> = LivePagedListBuilder(this, pagedListConfig()).build()
 
     companion object {
         private const val PAGE_SIZE = 10

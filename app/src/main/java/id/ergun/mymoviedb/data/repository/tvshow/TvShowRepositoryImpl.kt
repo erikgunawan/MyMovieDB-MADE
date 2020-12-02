@@ -59,7 +59,7 @@ class TvShowRepositoryImpl @Inject constructor(private val remoteData: ApiServic
         return localData.insertTvShow(TvShowLocal.mapFromDomainModel(tvShow))
     }
 
-    override suspend fun removeFromFavorite(id: Int) {
-        localData.deleteById(id)
+    override suspend fun removeFromFavorite(id: Int): Int {
+        return localData.deleteById(id)
     }
 }

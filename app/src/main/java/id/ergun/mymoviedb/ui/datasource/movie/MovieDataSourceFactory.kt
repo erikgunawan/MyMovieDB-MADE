@@ -1,7 +1,9 @@
 package id.ergun.mymoviedb.ui.datasource.movie
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import id.ergun.mymoviedb.domain.usecase.movie.MovieUseCase
 import id.ergun.mymoviedb.ui.view.movie.MovieVR
@@ -24,6 +26,8 @@ class MovieDataSourceFactory @Inject constructor(
         liveData.postValue(source)
         return source
     }
+
+    fun getMovies(): LiveData<PagedList<MovieVR>> = LivePagedListBuilder(this, pagedListConfig()).build()
 
     companion object {
         private const val PAGE_SIZE = 10

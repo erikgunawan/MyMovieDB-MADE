@@ -30,7 +30,7 @@ class TvShowUseCaseImpl @Inject constructor(private val repository: TvShowReposi
         return repository.addToFavorite(tvShow)
     }
 
-    override suspend fun removeFromFavorite(id: Int) {
+    override suspend fun removeFromFavorite(id: Int): Int {
         return repository.removeFromFavorite(id)
     }
 }

@@ -24,5 +24,4 @@ interface MovieDao {
 
     @Query("DELETE FROM Movie WHERE id==:id")
     suspend fun deleteById(id: Int): Int
-
 }

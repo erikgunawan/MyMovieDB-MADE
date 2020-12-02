@@ -83,12 +83,12 @@ class TvShowFragment : Fragment() {
 
     private fun initAction() {
         binding.viewWarning.btnWarning.setOnClickListener {
-            getTvShows()
+            tvShowViewModel.refresh()
         }
     }
 
     private fun getTvShows() {
-        tvShowViewModel.tvShowList.observe(requireActivity()) {
+        tvShowViewModel.getTvShows().observe(requireActivity()) {
             tvShowAdapter.submitList(it)
             tvShowAdapter.notifyDataSetChanged()
         }
@@ -137,8 +137,9 @@ class TvShowFragment : Fragment() {
     fun onReceiveEventBus(event: FavoriteEvent) {
         if (event.type != Const.TV_SHOW_TYPE) return
         if (!event.changes) return
+        if (!tvShowViewModel.favoritePage) return
 
-        getTvShows()
+        tvShowViewModel.refresh()
     }
 
     override fun onDestroy() {

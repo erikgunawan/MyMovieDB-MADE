@@ -12,5 +12,5 @@ interface TvShowUseCase {
     suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>>
     suspend fun getFavoriteTvShow(id: Int): Resource<TvShow>
     suspend fun addToFavorite(tvShow: TvShow): Long
-    suspend fun removeFromFavorite(id: Int)
+    suspend fun removeFromFavorite(id: Int): Int
 }

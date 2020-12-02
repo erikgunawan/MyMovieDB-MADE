@@ -29,7 +29,7 @@ class MovieUseCaseImpl @Inject constructor(private val repository: MovieReposito
         return repository.addToFavorite(movie)
     }
 
-    override suspend fun removeFromFavorite(id: Int) {
+    override suspend fun removeFromFavorite(id: Int): Int {
         return repository.removeFromFavorite(id)
     }
 

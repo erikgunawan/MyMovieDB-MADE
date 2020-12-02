@@ -1,13 +1,18 @@
 package id.ergun.mymoviedb.ui.viewmodel.tvshow
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import id.ergun.mymoviedb.data.FakeErrorResponse
 import id.ergun.mymoviedb.data.FakeTvShowDB
 import id.ergun.mymoviedb.data.local.TvShowDB
 import id.ergun.mymoviedb.domain.model.TvShow
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCaseImpl
+import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
+import id.ergun.mymoviedb.ui.view.tvshow.TvShowVR
 import id.ergun.mymoviedb.util.LiveDataTestUtil
+import id.ergun.mymoviedb.util.PagedListUtil
 import id.ergun.mymoviedb.util.Resource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
@@ -18,13 +23,15 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(MockitoJUnitRunner.Silent::class)
 class TvShowViewModelTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private var useCase: TvShowUseCase = mock(TvShowUseCaseImpl::class.java)
+
+    private var dataSourceFactory = mock(TvShowDataSourceFactory::class.java)
 
     private lateinit var viewModel: TvShowViewModel
 
@@ -34,7 +41,7 @@ class TvShowViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = TvShowViewModel(useCase)
+        viewModel = TvShowViewModel(useCase, dataSourceFactory)
 
         localData = TvShowDB()
 
@@ -44,13 +51,16 @@ class TvShowViewModelTest {
     @Test
     fun getTvShows() = runBlocking {
         val useCaseTvShows = FakeTvShowDB.getTvShows(localData)
-        `when`(useCase.getTvShows()).thenReturn(useCaseTvShows)
-        val tvShows = LiveDataTestUtil.getValue(viewModel.getTvShows())
-        verify(useCase).getTvShows()
 
-        assertNotNull(tvShows.data)
-        assertEquals(tvShows.status, Resource.Status.SUCCESS)
-        assertEquals(tvShows.data?.size?.toLong(), useCaseTvShows.data?.size?.toLong())
+        val pagedList = MutableLiveData<PagedList<TvShowVR>>()
+        pagedList.value = PagedListUtil.mockPagedList(TvShowVR.transform(useCaseTvShows.data!!))
+
+        `when`(dataSourceFactory.getTvShows()).thenReturn(pagedList)
+        val tvShows = LiveDataTestUtil.getValue(viewModel.getTvShows())
+        verify(dataSourceFactory).getTvShows()
+
+        assertNotNull(tvShows)
+        assertEquals(tvShows.size.toLong(), useCaseTvShows.data?.size?.toLong())
     }
 
     @Test
@@ -74,14 +84,35 @@ class TvShowViewModelTest {
     }
 
     @Test
-    fun getErrorTvShows() = runBlocking {
-        val useCaseTvShows = FakeErrorResponse.getError<ArrayList<TvShow>>()
-        `when`(useCase.getTvShows()).thenReturn(useCaseTvShows)
-        val tvShows = LiveDataTestUtil.getValue(viewModel.getTvShows())
-        verify(useCase).getTvShows()
+    fun getFavoriteTvShow() = runBlocking {
+        val useCaseTvShow = FakeTvShowDB.getTvShowDetail(selectedTvShow)
+        `when`(useCase.getFavoriteTvShow(selectedTvShow.id!!)).thenReturn(useCaseTvShow)
+        viewModel.setSelectedTvShow(selectedTvShow)
+        val tvShow = LiveDataTestUtil.getValue(viewModel.getFavoriteTvShowById())
+        verify(useCase).getFavoriteTvShow(selectedTvShow.id!!)
 
-        assertNull(tvShows.data)
-        assertEquals(tvShows.status, Resource.Status.ERROR)
+        assertNotNull(tvShow.data)
+        assertEquals(tvShow.status, Resource.Status.SUCCESS)
+        assertEquals(tvShow.data?.id, useCaseTvShow.data?.id)
+        assertEquals(tvShow.data?.posterPath, useCaseTvShow.data?.posterPath)
+        assertEquals(tvShow.data?.overview, useCaseTvShow.data?.overview)
+        assertEquals(tvShow.data?.tagLine, useCaseTvShow.data?.tagLine)
+        assertEquals(tvShow.data?.title, useCaseTvShow.data?.title)
+        assertEquals(
+            tvShow.data?.voteAverage.toString(),
+            useCaseTvShow.data?.voteAverage.toString()
+        )
+    }
+
+    @Test
+    fun getErrorTvShows() = runBlocking {
+        val pagedList = MutableLiveData<PagedList<TvShowVR>>()
+
+        `when`(dataSourceFactory.getTvShows()).thenReturn(pagedList)
+        val tvShows = LiveDataTestUtil.getValue(viewModel.getTvShows())
+        verify(dataSourceFactory).getTvShows()
+
+        assertNull(tvShows)
     }
 
     @Test
