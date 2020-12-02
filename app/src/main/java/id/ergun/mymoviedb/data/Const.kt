@@ -5,4 +5,5 @@ package id.ergun.mymoviedb.data
  */
 object Const {
     const val API_KEY = "api_key"
+    const val INITIAL_PAGE = 1
 }

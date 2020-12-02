@@ -10,8 +10,8 @@ import javax.inject.Inject
  */
 class TvShowUseCaseImpl @Inject constructor(private val repository: TvShowRepository) : TvShowUseCase {
 
-    override suspend fun getTvShows(): Resource<ArrayList<TvShow>> {
-        return repository.getTvShows()
+    override suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>> {
+        return repository.getTvShows(page)
     }
 
     override suspend fun getTvShowDetail(id: Int): Resource<TvShow> {

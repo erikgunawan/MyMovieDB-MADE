@@ -1,21 +1,23 @@
 package id.ergun.mymoviedb.ui.viewmodel.tvshow
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import id.ergun.mymoviedb.domain.model.TvShow
 import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
+import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
+import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
 import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
+import id.ergun.mymoviedb.ui.view.tvshow.TvShowVR
 import id.ergun.mymoviedb.util.Resource
 
 /**
  * Created by alfacart on 21/10/20.
  */
-class TvShowViewModel @ViewModelInject constructor(private val useCase: TvShowUseCase) : ViewModel() {
-
-    var favoritePage: Boolean = false
+class TvShowViewModel @ViewModelInject constructor(
+    private val useCase: TvShowUseCase,
+    private val dataSourceFactory: TvShowDataSourceFactory) : ViewModel() {
 
     var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -27,15 +29,21 @@ class TvShowViewModel @ViewModelInject constructor(private val useCase: TvShowUs
         this.tvShow = tvShow
     }
 
-    fun getTvShows() = liveData {
-        if (favoritePage) emit(useCase.getFavoriteTvShows())
-        else emit(useCase.getTvShows())
+    fun setFavorite(favoritePage: Boolean) {
+        dataSourceFactory.favoritePage = favoritePage
     }
+
+    val tvShowList: LiveData<PagedList<TvShowVR>> = LivePagedListBuilder(dataSourceFactory, TvShowDataSourceFactory.pagedListConfig()).build()
+
+    val tvShowState: LiveData<Resource<*>> =
+        Transformations.switchMap(
+            dataSourceFactory.liveData,
+            TvShowKeyedDataSource::state
+        )
 
     fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
         return liveData { emit(useCase.getTvShowDetail(id)) }
     }
-
 
     private fun getFavoriteTvShow(id: Int) = liveData { emit(useCase.getFavoriteTvShow(id)) }
 

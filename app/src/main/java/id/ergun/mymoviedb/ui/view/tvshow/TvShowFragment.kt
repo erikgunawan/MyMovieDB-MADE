@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.TvShowFragmentBinding
 import id.ergun.mymoviedb.ui.viewmodel.tvshow.TvShowViewModel
 import id.ergun.mymoviedb.util.Const
@@ -37,6 +36,7 @@ class TvShowFragment : Fragment() {
             return fragment
         }
     }
+
     private lateinit var binding: TvShowFragmentBinding
 
     private val tvShowViewModel by viewModels<TvShowViewModel>()
@@ -68,7 +68,7 @@ class TvShowFragment : Fragment() {
     private fun loadArgument() {
         if (arguments == null) return
 
-        tvShowViewModel.favoritePage = arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false
+        tvShowViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
     }
 
     private fun initView() {
@@ -88,25 +88,19 @@ class TvShowFragment : Fragment() {
     }
 
     private fun getTvShows() {
-        showLoading()
-        tvShowViewModel.getTvShows().observe(requireActivity(), {
-            if (it.data.isNullOrEmpty()) {
-                binding.viewWarning.tvWarning.text = getString(R.string.message_data_not_found)
-                showWarning()
-                return@observe
-            }
+        tvShowViewModel.tvShowList.observe(requireActivity()) {
+            tvShowAdapter.submitList(it)
+            tvShowAdapter.notifyDataSetChanged()
+        }
 
-            showData()
-            if (it.status == Resource.Status.SUCCESS) {
-                tvShowAdapter.setTvShows(it.data.let { it1 -> TvShowVR.transform(it1) })
-                tvShowAdapter.notifyDataSetChanged()
-                return@observe
+        tvShowViewModel.tvShowState.observe(requireActivity()) {
+            when (it.status) {
+                Resource.Status.LOADING -> showLoading()
+                Resource.Status.SUCCESS -> showData()
+                Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
+                Resource.Status.ERROR -> showWarning(it.message.toString())
             }
-            if(it.status == Resource.Status.ERROR) {
-                binding.viewWarning.tvWarning.text = it.message
-            }
-            showWarning()
-        })
+        }
     }
 
     private fun showLoading() {
@@ -121,10 +115,22 @@ class TvShowFragment : Fragment() {
         binding.progressBar.gone()
     }
 
-    private fun showWarning() {
+    private fun showEmptyData(message: String) {
         binding.wrapperContent.gone()
+        binding.viewWarning.btnWarning.gone()
         binding.wrapperWarning.visible()
         binding.progressBar.gone()
+
+        binding.viewWarning.tvWarning.text = message
+    }
+
+    private fun showWarning(message: String) {
+        binding.wrapperContent.gone()
+        binding.viewWarning.btnWarning.visible()
+        binding.wrapperWarning.visible()
+        binding.progressBar.gone()
+
+        binding.viewWarning.tvWarning.text = message
     }
 
     @Subscribe

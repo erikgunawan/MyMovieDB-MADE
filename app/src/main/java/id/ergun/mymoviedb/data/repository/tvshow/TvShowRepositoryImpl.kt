@@ -16,10 +16,10 @@ import javax.inject.Inject
  * Created by alfacart on 21/10/20.
  */
 class TvShowRepositoryImpl @Inject constructor(private val remoteData: ApiService, private val localData: TvShowDao) : TvShowRepository {
-    override suspend fun getTvShows(): Resource<ArrayList<TvShow>> {
+    override suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>> {
         EspressoIdlingResource.increment()
         return try {
-            remoteData.getTvShows(page = 1).getResult {
+            remoteData.getTvShows(page = page).getResult {
                 TvShowResponse.mapToDomainModelList(it)
             }
         }

@@ -6,7 +6,6 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import id.ergun.mymoviedb.databinding.SplashScreenActivityBinding
 import id.ergun.mymoviedb.ui.view.home.HomeActivity
-import id.ergun.mymoviedb.ui.view.main.MainActivity
 import id.ergun.mymoviedb.util.testing.EspressoIdlingResource
 
 /**
@@ -28,11 +27,6 @@ class SplashScreenActivity : AppCompatActivity() {
             if (!EspressoIdlingResource.getIdlingResource().isIdleNow)
                 EspressoIdlingResource.decrement()
         }, 1000)
-    }
-
-    private fun gotoMainActivity() {
-        startActivity(MainActivity.newIntent(this))
-        finish()
     }
 
     private fun gotoHomeActivity() {

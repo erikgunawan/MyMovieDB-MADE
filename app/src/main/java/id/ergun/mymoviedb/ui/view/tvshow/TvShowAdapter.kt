@@ -2,6 +2,8 @@ package id.ergun.mymoviedb.ui.view.tvshow
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.databinding.TvShowItemsBinding
@@ -11,28 +13,34 @@ import id.ergun.mymoviedb.util.loadImage
 /**
  * Created by alfacart on 21/10/20.
  */
-class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
-    private var listTvShows = ArrayList<TvShowVR>()
+class TvShowAdapter : PagedListAdapter<TvShowVR, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
-    fun setTvShows(tvShows: List<TvShowVR>?) {
-        if (tvShows.isNullOrEmpty()) return
-        listTvShows.clear()
-        listTvShows.addAll(tvShows)
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowVR>() {
+            override fun areItemsTheSame(oldItem: TvShowVR, newItem: TvShowVR): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TvShowVR, newItem: TvShowVR): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
-        val binding = TvShowItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TvShowViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder =
+        TvShowViewHolder(
+            TvShowItemsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val tvShow = listTvShows[position]
-        holder.bind(tvShow)
+        getItem(position)?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int = listTvShows.size
-
-    class TvShowViewHolder(private val binding: TvShowItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TvShowViewHolder(private val binding: TvShowItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(tvShow: TvShowVR) {
             with(itemView) {
                 binding.tvTitle.text = tvShow.title

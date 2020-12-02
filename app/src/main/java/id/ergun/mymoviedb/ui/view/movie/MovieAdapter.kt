@@ -2,39 +2,50 @@ package id.ergun.mymoviedb.ui.view.movie
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.databinding.MovieItemsBinding
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import id.ergun.mymoviedb.util.loadImage
+import timber.log.Timber
 
 /**
  * Created by alfacart on 21/10/20.
  */
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
-    private var listMovies = ArrayList<MovieVR>()
+class MovieAdapter : PagedListAdapter<MovieVR, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
-    fun setMovies(movies: List<MovieVR>?) {
-        if (movies.isNullOrEmpty()) return
-        listMovies.clear()
-        listMovies.addAll(movies)
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieVR>() {
+            override fun areItemsTheSame(oldItem: MovieVR, newItem: MovieVR): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieVR, newItem: MovieVR): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = MovieItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
+        MovieViewHolder(
+            MovieItemsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie = listMovies[position]
-        holder.bind(movie)
+        getItem(position)?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int = listMovies.size
-
-
-    class MovieViewHolder(private val binding: MovieItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MovieViewHolder(val binding: MovieItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieVR) {
+            Timber.e( Gson().toJson(movie))
             with(itemView) {
                 binding.tvTitle.text = movie.title
                 binding.tvRating.text = movie.voteAverage.toString()

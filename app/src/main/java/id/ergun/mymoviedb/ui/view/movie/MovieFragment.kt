@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.MovieFragmentBinding
 import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
 import id.ergun.mymoviedb.util.Const
@@ -69,7 +68,7 @@ class MovieFragment : Fragment() {
     private fun loadArgument() {
         if (arguments == null) return
 
-        movieViewModel.favoritePage = arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false
+        movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
     }
 
     private fun initView() {
@@ -84,33 +83,24 @@ class MovieFragment : Fragment() {
 
     private fun initAction() {
         binding.viewWarning.btnWarning.setOnClickListener {
-            getMovies()
+            movieViewModel.refresh()
         }
     }
 
     private fun getMovies() {
-        showLoading()
-        movieViewModel.getMovies().observe(requireActivity(), {
-            if (it.status == Resource.Status.SUCCESS) {
+        movieViewModel.movieList.observe(requireActivity()) {
+            movieAdapter.submitList(it)
+            movieAdapter.notifyDataSetChanged()
+        }
 
-                if (it.data.isNullOrEmpty()) {
-                    binding.viewWarning.tvWarning.text = getString(R.string.message_data_not_found)
-                    showWarning()
-                    return@observe
-                }
-
-                showData()
-                movieAdapter.setMovies(it.data.let { it1 -> MovieVR.transform(it1) })
-                movieAdapter.notifyDataSetChanged()
-                return@observe
+        movieViewModel.movieState.observe(requireActivity()) {
+            when (it.status) {
+                Resource.Status.LOADING -> showLoading()
+                Resource.Status.SUCCESS -> showData()
+                Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
+                Resource.Status.ERROR -> showWarning(it.message.toString())
             }
-
-            if(it.status == Resource.Status.ERROR) {
-                binding.viewWarning.tvWarning.text = it.message
-            }
-            showWarning()
-        })
-
+        }
     }
 
     private fun showLoading() {
@@ -125,10 +115,22 @@ class MovieFragment : Fragment() {
         binding.progressBar.gone()
     }
 
-    private fun showWarning() {
+    private fun showEmptyData(message: String) {
         binding.wrapperContent.gone()
+        binding.viewWarning.btnWarning.gone()
         binding.wrapperWarning.visible()
         binding.progressBar.gone()
+
+        binding.viewWarning.tvWarning.text = message
+    }
+
+    private fun showWarning(message: String) {
+        binding.wrapperContent.gone()
+        binding.viewWarning.btnWarning.visible()
+        binding.wrapperWarning.visible()
+        binding.progressBar.gone()
+
+        binding.viewWarning.tvWarning.text = message
     }
 
     @Subscribe
@@ -136,7 +138,7 @@ class MovieFragment : Fragment() {
         if (event.type != Const.MOVIE_TYPE) return
         if (!event.changes) return
 
-        getMovies()
+        movieViewModel.refresh()
     }
 
     override fun onDestroy() {

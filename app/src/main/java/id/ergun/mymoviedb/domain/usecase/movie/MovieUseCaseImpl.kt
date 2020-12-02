@@ -9,8 +9,8 @@ import javax.inject.Inject
  * Created by alfacart on 21/10/20.
  */
 class MovieUseCaseImpl @Inject constructor(private val repository: MovieRepository) : MovieUseCase {
-    override suspend fun getMovies(): Resource<ArrayList<Movie>> {
-        return repository.getMovies()
+    override suspend fun getMovies(page: Int): Resource<ArrayList<Movie>> {
+        return repository.getMovies(page)
     }
 
     override suspend fun getMovieDetail(id: Int): Resource<Movie> {

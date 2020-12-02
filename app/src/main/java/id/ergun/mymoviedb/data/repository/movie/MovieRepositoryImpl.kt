@@ -17,10 +17,10 @@ import javax.inject.Inject
  * Created by alfacart on 21/10/20.
  */
 class MovieRepositoryImpl @Inject constructor(private val remoteData: ApiService, private val localData: MovieDao) : MovieRepository {
-    override suspend fun getMovies(): Resource<ArrayList<Movie>> {
+    override suspend fun getMovies(page: Int): Resource<ArrayList<Movie>> {
         EspressoIdlingResource.increment()
         return try {
-            remoteData.getMovies(page = 1).getResult {
+            remoteData.getMovies(page = page).getResult {
                 MovieResponse.mapToDomainModelList(it)
             }
         }

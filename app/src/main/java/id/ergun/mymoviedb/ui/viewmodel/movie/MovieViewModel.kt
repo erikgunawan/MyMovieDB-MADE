@@ -1,21 +1,24 @@
 package id.ergun.mymoviedb.ui.viewmodel.movie
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import id.ergun.mymoviedb.domain.model.Movie
 import id.ergun.mymoviedb.domain.usecase.movie.MovieUseCase
+import id.ergun.mymoviedb.ui.datasource.movie.MovieDataSourceFactory
+import id.ergun.mymoviedb.ui.datasource.movie.MovieKeyedDataSource
 import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
+import id.ergun.mymoviedb.ui.view.movie.MovieVR
 import id.ergun.mymoviedb.util.Resource
 
 /**
  * Created by alfacart on 21/10/20.
  */
-class MovieViewModel @ViewModelInject constructor(private val useCase: MovieUseCase) : ViewModel() {
-
-    var favoritePage: Boolean = false
+class MovieViewModel @ViewModelInject constructor(
+    private val useCase: MovieUseCase,
+    private val dataSourceFactory: MovieDataSourceFactory
+) : ViewModel() {
 
     var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -23,13 +26,25 @@ class MovieViewModel @ViewModelInject constructor(private val useCase: MovieUseC
 
     lateinit var movie: Movie
 
+    fun setFavorite(favoritePage: Boolean) {
+        dataSourceFactory.favoritePage = favoritePage
+    }
+
     fun setSelectedMovie(movie: Movie) {
         this.movie = movie
     }
 
-    fun getMovies() = liveData {
-        if (favoritePage) emit(useCase.getFavoriteMovies())
-        else emit(useCase.getMovies()) }
+    val movieList: LiveData<PagedList<MovieVR>> = LivePagedListBuilder(dataSourceFactory, MovieDataSourceFactory.pagedListConfig()).build()
+
+    val movieState: LiveData<Resource<*>> =
+        Transformations.switchMap(
+            dataSourceFactory.liveData,
+            MovieKeyedDataSource::state
+        )
+
+    fun refresh() {
+        dataSourceFactory.liveData.value?.invalidate()
+    }
 
     fun getMovieDetail(id: Int): LiveData<Resource<Movie>> {
         return liveData { emit(useCase.getMovieDetail(id)) }

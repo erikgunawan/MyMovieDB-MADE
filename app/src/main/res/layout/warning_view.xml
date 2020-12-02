@@ -28,7 +28,7 @@
         android:gravity="center_horizontal"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/iv_warning"
-        tools:text="Terjadi kesalahan"/>
+        tools:text="@string/message_data_not_found"/>
 
     <Button
         android:id="@+id/btn_warning"

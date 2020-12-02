@@ -7,7 +7,7 @@ import id.ergun.mymoviedb.util.Resource
  * Created by alfacart on 21/10/20.
  */
 interface TvShowUseCase {
-    suspend fun getTvShows(): Resource<ArrayList<TvShow>>
+    suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>>
     suspend fun getTvShowDetail(id: Int): Resource<TvShow>
     suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>>
     suspend fun getFavoriteTvShow(id: Int): Resource<TvShow>
