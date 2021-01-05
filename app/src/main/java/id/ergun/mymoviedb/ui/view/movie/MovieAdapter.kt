@@ -45,7 +45,7 @@ class MovieAdapter : PagedListAdapter<MovieVR, MovieAdapter.MovieViewHolder>(DIF
         fun bind(movie: MovieVR) {
             with(itemView) {
                 binding.tvTitle.text = movie.title
-                binding.tvRating.text = movie.voteAverage.toString()
+                binding.viewRating.tvRating.text = movie.voteAverage.toString()
                 binding.tvTagLine.text = movie.tagLine
                 setOnClickListener {
                     val intent = MovieDetailActivity.newIntent(context, MovieVR.toModel(movie))

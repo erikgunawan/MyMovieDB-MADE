@@ -44,7 +44,7 @@ class TvShowAdapter : PagedListAdapter<TvShowVR, TvShowAdapter.TvShowViewHolder>
         fun bind(tvShow: TvShowVR) {
             with(itemView) {
                 binding.tvTitle.text = tvShow.title
-                binding.tvRating.text = tvShow.voteAverage.toString()
+                binding.viewRating.tvRating.text = tvShow.voteAverage.toString()
                 binding.tvTagLine.text = tvShow.tagLine
                 setOnClickListener {
                     val intent = TvShowDetailActivity.newIntent(context, TvShowVR.toModel(tvShow))

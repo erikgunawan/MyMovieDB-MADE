@@ -69,7 +69,7 @@ class MovieDetailActivity : AppCompatActivity() {
             tvTitle.text = movie.title
             tvTagLine.text = movie.tagLine
             tvOverview.text = movie.overview
-            tvRating.text = movie.voteAverage.toString()
+            viewRating.tvRating.text = movie.voteAverage.toString()
             ivPoster.loadImage(BuildConfig.IMAGE_URL + movie.posterPath)
         }
     }

@@ -36,26 +36,14 @@
                 tools:src="@drawable/ic_image_placeholder_error"
                 />
 
-            <FrameLayout
-                android:id="@+id/container_rating"
+            <include
+                android:id="@+id/view_rating"
+                layout="@layout/rating_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:padding="18dp"
-                android:background="@drawable/ic_rating"
                 app:layout_constraintTop_toBottomOf="@id/iv_poster"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/tv_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="12sp"
-                    android:textColor="@color/red"
-                    android:textStyle="bold"
-                    tools:text="9.8" />
-            </FrameLayout>
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_title"
@@ -67,7 +55,7 @@
                 android:textColor="@color/white"
                 tools:text="Title"
                 app:layout_constraintTop_toBottomOf="@id/iv_poster"
-                app:layout_constraintStart_toEndOf="@id/container_rating"
+                app:layout_constraintStart_toEndOf="@id/view_rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
             <TextView
@@ -90,7 +78,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/white"
                 tools:text="Description"
-                app:layout_constraintStart_toStartOf="@id/container_rating"
+                app:layout_constraintStart_toStartOf="@id/view_rating"
                 app:layout_constraintTop_toBottomOf="@id/tv_tag_line"
                 app:layout_constraintEnd_toEndOf="@id/tv_title"
                 />
