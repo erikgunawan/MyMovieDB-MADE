@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+}
+apply from: '../shared_dependencies.gradle'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String" , "BASE_URL" , '"https://api.themoviedb.org"')
+        buildConfigField("String" , "IMAGE_URL" , '"https://image.tmdb.org/t/p/w185"')
+        buildConfigField("String" , "TMDB_API_KEY" , '"ba278fb52b53db0c5229d58941e31b0a"')
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation "androidx.lifecycle:lifecycle-common-java8:$arch_lifecycle_version"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$arch_lifecycle_version"
+
+    // Chucker
+    debugImplementation 'com.github.chuckerteam.chucker:library:3.4.0'
+    releaseImplementation 'com.github.chuckerteam.chucker:library-no-op:3.4.0'
+
+}

@@ -8,13 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.core.util.Const
+import id.ergun.mymoviedb.core.util.Resource
+import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
+import id.ergun.mymoviedb.core.util.gone
+import id.ergun.mymoviedb.core.util.visible
+import id.ergun.mymoviedb.core.view.tvshow.TvShowAdapter
 import id.ergun.mymoviedb.databinding.TvShowFragmentBinding
+import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
 import id.ergun.mymoviedb.ui.viewmodel.tvshow.TvShowViewModel
-import id.ergun.mymoviedb.util.Const
-import id.ergun.mymoviedb.util.Resource
-import id.ergun.mymoviedb.util.eventbus.FavoriteEvent
-import id.ergun.mymoviedb.util.gone
-import id.ergun.mymoviedb.util.visible
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -82,6 +84,10 @@ class TvShowFragment : Fragment() {
     }
 
     private fun initAction() {
+        tvShowAdapter.itemClickListener = { tvShow ->
+            startActivity(TvShowDetailActivity.newIntent(requireContext(), tvShow))
+        }
+
         binding.viewWarning.btnWarning.setOnClickListener {
             tvShowViewModel.refresh()
         }

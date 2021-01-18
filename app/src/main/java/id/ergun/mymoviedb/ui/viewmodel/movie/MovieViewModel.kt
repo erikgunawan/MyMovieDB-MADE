@@ -3,13 +3,13 @@ package id.ergun.mymoviedb.ui.viewmodel.movie
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagedList
-import id.ergun.mymoviedb.domain.model.Movie
-import id.ergun.mymoviedb.domain.usecase.movie.MovieUseCase
+import id.ergun.mymoviedb.core.domain.model.Movie
+import id.ergun.mymoviedb.core.domain.usecase.movie.MovieUseCase
+import id.ergun.mymoviedb.core.util.FavoriteModel
+import id.ergun.mymoviedb.core.util.Resource
+import id.ergun.mymoviedb.core.view.movie.MovieVR
 import id.ergun.mymoviedb.ui.datasource.movie.MovieDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.movie.MovieKeyedDataSource
-import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
-import id.ergun.mymoviedb.ui.view.movie.MovieVR
-import id.ergun.mymoviedb.util.Resource
 
 /**
  * Created by alfacart on 21/10/20.

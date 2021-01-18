@@ -19,12 +19,16 @@
 
     <ImageView
         android:id="@+id/iv_app_logo"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/img_my_moviedb"
+        android:adjustViewBounds="true"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/space_end"
+        app:layout_constraintStart_toEndOf="@id/space_start"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 

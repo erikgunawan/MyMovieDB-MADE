@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.core.util.autoCleared
 import id.ergun.mymoviedb.databinding.HomeFragmentBinding
-import id.ergun.mymoviedb.util.autoCleared
 
 /**
  * Created by alfacart on 26/11/20.

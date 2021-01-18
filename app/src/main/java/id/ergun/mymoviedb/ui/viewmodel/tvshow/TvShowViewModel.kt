@@ -2,12 +2,11 @@ package id.ergun.mymoviedb.ui.viewmodel.tvshow
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import id.ergun.mymoviedb.domain.model.TvShow
-import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
+import id.ergun.mymoviedb.core.domain.model.TvShow
+import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
+import id.ergun.mymoviedb.core.util.FavoriteModel
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
-import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
-import id.ergun.mymoviedb.util.Resource
 
 /**
  * Created by alfacart on 21/10/20.
@@ -36,7 +35,7 @@ class TvShowViewModel @ViewModelInject constructor(
 
     fun getTvShows() = dataSourceFactory.getTvShows()
 
-    val tvShowState: LiveData<Resource<*>> =
+    val tvShowState: LiveData<id.ergun.mymoviedb.core.util.Resource<*>> =
         Transformations.switchMap(
             dataSourceFactory.liveData,
             TvShowKeyedDataSource::state
@@ -46,7 +45,7 @@ class TvShowViewModel @ViewModelInject constructor(
         dataSourceFactory.liveData.value?.invalidate()
     }
 
-    fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
+    fun getTvShowDetail(id: Int): LiveData<id.ergun.mymoviedb.core.util.Resource<TvShow>> {
         return liveData { emit(useCase.getTvShowDetail(id)) }
     }
 

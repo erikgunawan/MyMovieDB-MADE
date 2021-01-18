@@ -12,14 +12,14 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.core.domain.model.Movie
+import id.ergun.mymoviedb.core.util.Const
+import id.ergun.mymoviedb.core.util.FavoriteModel
+import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
+import id.ergun.mymoviedb.core.util.loadImage
+import id.ergun.mymoviedb.core.util.share
 import id.ergun.mymoviedb.databinding.MovieDetailActivityBinding
-import id.ergun.mymoviedb.domain.model.Movie
-import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
 import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
-import id.ergun.mymoviedb.util.Const
-import id.ergun.mymoviedb.util.eventbus.FavoriteEvent
-import id.ergun.mymoviedb.util.loadImage
-import id.ergun.mymoviedb.util.share
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -53,6 +53,7 @@ class MovieDetailActivity : AppCompatActivity() {
         supportActionBar?.run {
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
+            title = ""
         }
 
         loadIntents()
@@ -110,7 +111,12 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun addToFavorite() {
         viewModel.addToFavorite(viewModel.movie).observe(this) {
-            EventBus.getDefault().post(FavoriteEvent(Const.MOVIE_TYPE, true))
+            EventBus.getDefault().post(
+                FavoriteEvent(
+                    Const.MOVIE_TYPE,
+                    true
+                )
+            )
             viewModel.favorite.value = true
             viewModel.favoriteState.value = FavoriteModel.Type.ADD_TO_FAVORITE
         }
@@ -119,7 +125,12 @@ class MovieDetailActivity : AppCompatActivity() {
     private fun removeFromFavorite() {
         if (viewModel.movie.id == null) return
         viewModel.removeFromFavorite(viewModel.movie.id!!).observe(this) {
-            EventBus.getDefault().post(FavoriteEvent(Const.MOVIE_TYPE, true))
+            EventBus.getDefault().post(
+                FavoriteEvent(
+                    Const.MOVIE_TYPE,
+                    true
+                )
+            )
             viewModel.favorite.value = false
             viewModel.favoriteState.value = FavoriteModel.Type.REMOVE_FROM_FAVORITE
         }

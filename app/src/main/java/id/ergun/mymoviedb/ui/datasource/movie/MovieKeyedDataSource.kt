@@ -2,10 +2,10 @@ package id.ergun.mymoviedb.ui.datasource.movie
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import id.ergun.mymoviedb.data.Const.INITIAL_PAGE
-import id.ergun.mymoviedb.domain.usecase.movie.MovieUseCase
-import id.ergun.mymoviedb.ui.view.movie.MovieVR
-import id.ergun.mymoviedb.util.Resource
+import id.ergun.mymoviedb.core.data.Const.INITIAL_PAGE
+import id.ergun.mymoviedb.core.domain.usecase.movie.MovieUseCase
+import id.ergun.mymoviedb.core.util.Resource
+import id.ergun.mymoviedb.core.view.movie.MovieVR
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,7 +36,7 @@ class MovieKeyedDataSource(
                     val response = useCase.getFavoriteMovies()
                     if (response.status == Resource.Status.SUCCESS && !response.data.isNullOrEmpty()) {
                         state.postValue(response)
-                        val items = MovieVR.transform(response.data).toMutableList()
+                        val items = MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
                         callback.onResult(items, null, 2)
                         return@launch
                     }

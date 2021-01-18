@@ -8,13 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.core.util.Const
+import id.ergun.mymoviedb.core.util.Resource
+import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
+import id.ergun.mymoviedb.core.util.gone
+import id.ergun.mymoviedb.core.util.visible
+import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.databinding.MovieFragmentBinding
+import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
-import id.ergun.mymoviedb.util.Const
-import id.ergun.mymoviedb.util.Resource
-import id.ergun.mymoviedb.util.eventbus.FavoriteEvent
-import id.ergun.mymoviedb.util.gone
-import id.ergun.mymoviedb.util.visible
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -82,6 +84,10 @@ class MovieFragment : Fragment() {
     }
 
     private fun initAction() {
+        movieAdapter.itemClickListener = { movie ->
+            startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
+        }
+
         binding.viewWarning.btnWarning.setOnClickListener {
             movieViewModel.refresh()
         }

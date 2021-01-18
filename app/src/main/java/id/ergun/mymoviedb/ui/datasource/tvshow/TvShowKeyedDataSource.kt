@@ -2,10 +2,10 @@ package id.ergun.mymoviedb.ui.datasource.tvshow
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import id.ergun.mymoviedb.data.Const
-import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
-import id.ergun.mymoviedb.ui.view.tvshow.TvShowVR
-import id.ergun.mymoviedb.util.Resource
+import id.ergun.mymoviedb.core.data.Const
+import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
+import id.ergun.mymoviedb.core.util.Resource
+import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -37,7 +37,7 @@ class TvShowKeyedDataSource(
                     val response = useCase.getFavoriteTvShows()
                     if (response.status == Resource.Status.SUCCESS && !response.data.isNullOrEmpty()) {
                         state.postValue(response)
-                        val items = TvShowVR.transform(response.data).toMutableList()
+                        val items = TvShowVR.transform(response.data ?: arrayListOf()).toMutableList()
                         callback.onResult(items, null, 2)
                         return@launch
                     }

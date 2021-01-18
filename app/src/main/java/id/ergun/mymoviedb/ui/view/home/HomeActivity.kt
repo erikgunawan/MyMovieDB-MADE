@@ -2,6 +2,7 @@ package id.ergun.mymoviedb.ui.view.home
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.HomeActivityBinding
-import id.ergun.mymoviedb.ui.view.favorite.FavoriteFragment
 import id.ergun.mymoviedb.ui.view.movie.MovieFragment
 import id.ergun.mymoviedb.ui.view.tvshow.TvShowFragment
 
@@ -38,8 +38,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         setSupportActionBar(binding.toolbarView.toolbar)
         supportActionBar?.run {
-            title = getString(R.string.app_name)
-            elevation = 0F
+            title = ""
         }
 
         loadFragment(MovieFragment())
@@ -66,7 +65,11 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when (item.itemId) {
             R.id.action_movies -> fragment = MovieFragment.newInstance()
             R.id.action_tv_shows -> fragment = TvShowFragment.newInstance()
-            R.id.action_favorites -> fragment = FavoriteFragment.newInstance()
+            R.id.action_favorites -> {
+                val uri = Uri.parse("mymoviedb://favorites")
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
+                fragment = null
+            }
         }
         return loadFragment(fragment)
     }

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import id.ergun.mymoviedb.domain.usecase.tvshow.TvShowUseCase
-import id.ergun.mymoviedb.ui.view.tvshow.TvShowVR
+import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
+import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
 import javax.inject.Inject
 
 /**

@@ -6,7 +6,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import id.ergun.mymoviedb.databinding.SplashScreenActivityBinding
 import id.ergun.mymoviedb.ui.view.home.HomeActivity
-import id.ergun.mymoviedb.util.testing.EspressoIdlingResource
+import id.ergun.mymoviedb.core.util.testing.EspressoIdlingResource
 
 /**
  * Created by alfacart on 21/10/20.

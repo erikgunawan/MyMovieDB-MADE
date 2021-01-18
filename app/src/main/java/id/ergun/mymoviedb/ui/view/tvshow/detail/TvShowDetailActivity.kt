@@ -12,14 +12,14 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.core.domain.model.TvShow
+import id.ergun.mymoviedb.core.util.Const
+import id.ergun.mymoviedb.core.util.FavoriteModel
+import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
+import id.ergun.mymoviedb.core.util.loadImage
+import id.ergun.mymoviedb.core.util.share
 import id.ergun.mymoviedb.databinding.TvShowDetailActivityBinding
-import id.ergun.mymoviedb.domain.model.TvShow
-import id.ergun.mymoviedb.ui.view.favorite.FavoriteModel
 import id.ergun.mymoviedb.ui.viewmodel.tvshow.TvShowViewModel
-import id.ergun.mymoviedb.util.Const
-import id.ergun.mymoviedb.util.eventbus.FavoriteEvent
-import id.ergun.mymoviedb.util.loadImage
-import id.ergun.mymoviedb.util.share
 import org.greenrobot.eventbus.EventBus
 
 
@@ -54,6 +54,7 @@ class TvShowDetailActivity : AppCompatActivity() {
         supportActionBar?.run {
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
+            title = ""
         }
 
         loadIntents()
@@ -114,7 +115,12 @@ class TvShowDetailActivity : AppCompatActivity() {
 
     private fun addToFavorite() {
         viewModel.addToFavorite(viewModel.tvShow).observe(this) {
-            EventBus.getDefault().post(FavoriteEvent(Const.TV_SHOW_TYPE, true))
+            EventBus.getDefault().post(
+                FavoriteEvent(
+                    Const.TV_SHOW_TYPE,
+                    true
+                )
+            )
             viewModel.favorite.value = true
             viewModel.favoriteState.value = FavoriteModel.Type.ADD_TO_FAVORITE
         }
@@ -123,7 +129,12 @@ class TvShowDetailActivity : AppCompatActivity() {
     private fun removeFromFavorite() {
         if (viewModel.tvShow.id == null) return
         viewModel.removeFromFavorite(viewModel.tvShow.id!!).observe(this) {
-            EventBus.getDefault().post(FavoriteEvent(Const.TV_SHOW_TYPE, true))
+            EventBus.getDefault().post(
+                FavoriteEvent(
+                    Const.TV_SHOW_TYPE,
+                    true
+                )
+            )
             viewModel.favorite.value = false
             viewModel.favoriteState.value = FavoriteModel.Type.REMOVE_FROM_FAVORITE
         }
