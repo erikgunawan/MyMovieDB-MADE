@@ -124,7 +124,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun removeFromFavorite() {
         if (viewModel.movie.id == null) return
-        viewModel.removeFromFavorite(viewModel.movie.id!!).observe(this) {
+        viewModel.removeFromFavorite(viewModel.movie.id ?: 0).observe(this) {
             EventBus.getDefault().post(
                 FavoriteEvent(
                     Const.MOVIE_TYPE,

@@ -128,7 +128,7 @@ class TvShowDetailActivity : AppCompatActivity() {
 
     private fun removeFromFavorite() {
         if (viewModel.tvShow.id == null) return
-        viewModel.removeFromFavorite(viewModel.tvShow.id!!).observe(this) {
+        viewModel.removeFromFavorite(viewModel.tvShow.id ?: 0).observe(this) {
             EventBus.getDefault().post(
                 FavoriteEvent(
                     Const.TV_SHOW_TYPE,
