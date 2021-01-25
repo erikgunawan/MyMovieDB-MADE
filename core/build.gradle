@@ -9,7 +9,7 @@ apply from: '../shared_dependencies.gradle'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
@@ -23,6 +23,13 @@ android {
         buildConfigField("String" , "BASE_URL" , '"https://api.themoviedb.org"')
         buildConfigField("String" , "IMAGE_URL" , '"https://image.tmdb.org/t/p/w185"')
         buildConfigField("String" , "TMDB_API_KEY" , '"ba278fb52b53db0c5229d58941e31b0a"')
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
