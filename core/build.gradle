@@ -30,6 +30,10 @@ android {
                                      "$projectDir/schemas".toString()]
             }
         }
+
+        lintOptions {
+            disable 'TypographyFractions','TypographyQuotes'
+        }
     }
 
     buildTypes {

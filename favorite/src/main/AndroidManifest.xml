@@ -14,7 +14,8 @@
     </dist:module>
 
     <application android:allowBackup="true"
-        tools:ignore="AllowBackup">
+        android:icon="@mipmap/ic_launcher"
+        tools:ignore="AllowBackup, icon">
         <activity android:name=".view.FavoriteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
