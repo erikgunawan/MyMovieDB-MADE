@@ -142,7 +142,7 @@ class TvShowDetailActivity : AppCompatActivity() {
 
     private fun loadIntents() {
         if (intent.hasExtra(EXTRA_TV_SHOW)) {
-            viewModel.setSelectedTvShow(intent.getParcelableExtra(EXTRA_TV_SHOW)!!)
+            viewModel.setSelectedTvShow(intent.getParcelableExtra(EXTRA_TV_SHOW) ?: return)
         }
     }
 

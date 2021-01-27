@@ -81,7 +81,7 @@ class MovieKeyedDataSource(
                 val response = useCase.getMovies(page = params.key)
                 if (response.status == Resource.Status.SUCCESS) {
                     state.postValue(response)
-                    val items = MovieVR.transform(response.data!!).toMutableList()
+                    val items = MovieVR.transform(response.data ?: return@launch).toMutableList()
                     callback.onResult(items, params.key + 1)
                 }
             }

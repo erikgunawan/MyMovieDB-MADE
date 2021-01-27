@@ -82,7 +82,7 @@ class TvShowKeyedDataSource(
                 val response = useCase.getTvShows(page = params.key)
                 if (response.status == Resource.Status.SUCCESS) {
                     state.postValue(response)
-                    val items = TvShowVR.transform(response.data!!).toMutableList()
+                    val items = TvShowVR.transform(response.data ?: return@launch).toMutableList()
                     callback.onResult(items, params.key + 1)
                 }
             }

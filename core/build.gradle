@@ -61,6 +61,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$arch_lifecycle_version"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$arch_lifecycle_version"
 
+    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
+    implementation "androidx.sqlite:sqlite-ktx:2.1.0"
+    
     // Chucker
     debugImplementation 'com.github.chuckerteam.chucker:library:3.4.0'
     releaseImplementation 'com.github.chuckerteam.chucker:library-no-op:3.4.0'

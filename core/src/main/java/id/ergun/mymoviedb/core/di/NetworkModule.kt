@@ -12,6 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import id.ergun.mymoviedb.core.BuildConfig.BASE_URL
 import id.ergun.mymoviedb.core.data.remote.ApiService
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,6 +37,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttp(@ApplicationContext context: Context): OkHttpClient {
         val okBuilder = OkHttpClient.Builder()
+        val certificatePinner = CertificatePinner.Builder()
+            .add(BASE_URL, "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+            .build()
         okBuilder.addInterceptor(
             ChuckerInterceptor.Builder(context)
                 .collector(ChuckerCollector(context))
@@ -43,7 +47,7 @@ object NetworkModule {
                 .redactHeaders(emptySet())
                 .alwaysReadResponseBody(false)
                 .build()
-        )
+        ).certificatePinner(certificatePinner)
         return okBuilder.build()
     }
 

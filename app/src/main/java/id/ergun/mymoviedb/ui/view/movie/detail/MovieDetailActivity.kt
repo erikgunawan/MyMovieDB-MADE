@@ -138,7 +138,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun loadIntents() {
         if (intent.hasExtra(EXTRA_MOVIE)) {
-            viewModel.setSelectedMovie(intent.getParcelableExtra(EXTRA_MOVIE)!!)
+            viewModel.setSelectedMovie(intent.getParcelableExtra(EXTRA_MOVIE) ?: return)
         }
     }
 
