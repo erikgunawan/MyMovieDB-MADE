@@ -39,6 +39,7 @@ data class MovieResponse(
             }
             return list
         }
+
         fun mapToDomainModel(item: Result): Movie {
             return Movie(
                 id = item.id,

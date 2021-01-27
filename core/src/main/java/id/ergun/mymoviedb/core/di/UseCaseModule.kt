@@ -17,6 +17,7 @@ import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCaseImpl
 abstract class UseCaseModule {
     @Binds
     abstract fun bindMovieUseCase(impl: MovieUseCaseImpl): MovieUseCase
+
     @Binds
     abstract fun bindTvShowUseCase(impl: TvShowUseCaseImpl): TvShowUseCase
 }

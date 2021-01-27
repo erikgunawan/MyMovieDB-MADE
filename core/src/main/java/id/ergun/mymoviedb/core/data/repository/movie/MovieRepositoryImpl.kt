@@ -16,15 +16,17 @@ import javax.inject.Inject
 /**
  * Created by alfacart on 21/10/20.
  */
-class MovieRepositoryImpl @Inject constructor(private val remoteData: ApiService, private val localData: MovieDao) : MovieRepository {
+class MovieRepositoryImpl @Inject constructor(
+    private val remoteData: ApiService,
+    private val localData: MovieDao
+) : MovieRepository {
     override suspend fun getMovies(page: Int): Resource<ArrayList<Movie>> {
         EspressoIdlingResource.increment()
         return try {
             remoteData.getMovies(page = page).getResult {
                 MovieResponse.mapToDomainModelList(it)
             }
-        }
-        catch (exception: Exception) {
+        } catch (exception: Exception) {
             Resource.error("Terjadi kesalahan")
         }
     }
@@ -39,9 +41,9 @@ class MovieRepositoryImpl @Inject constructor(private val remoteData: ApiService
     override suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>> {
         return try {
             return Resource.success(
-                MovieLocal.mapToDomainModelList(localData.getMovies()))
-        }
-        catch (exception: Exception) {
+                MovieLocal.mapToDomainModelList(localData.getMovies())
+            )
+        } catch (exception: Exception) {
             Timber.e(exception.toString())
             Resource.error("Terjadi kesalahan")
         }

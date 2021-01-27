@@ -54,10 +54,13 @@ class MovieViewModel @ViewModelInject constructor(
 
     private fun getFavoriteMovie(id: Int) = liveData { emit(useCase.getFavoriteMovie(id)) }
 
-    fun getFavoriteMovieById() = if (movie.id != null) getFavoriteMovie(movie.id!!)
-    else liveData {  }
+    fun getFavoriteMovieById(): LiveData<Resource<Movie>> =
+        if (movie.id != null) getFavoriteMovie(movie.id!!)
+        else liveData { }
 
-    fun addToFavorite(movie: Movie) = liveData {  emit(useCase.addToFavorite(movie)) }
+    fun addToFavorite(movie: Movie): LiveData<Long> =
+        liveData { emit(useCase.addToFavorite(movie)) }
 
-    fun removeFromFavorite(id: Int) = liveData { emit(useCase.removeFromFavorite(id)) }
+    fun removeFromFavorite(id: Int): LiveData<Int> =
+        liveData { emit(useCase.removeFromFavorite(id)) }
 }

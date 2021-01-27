@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
+import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
 
@@ -23,7 +25,7 @@ class TvShowViewModel(
         dataSourceFactory.favoritePage = favoritePage
     }
 
-    fun getTvShows() = dataSourceFactory.getTvShows()
+    fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
 
     val tvShowState: LiveData<id.ergun.mymoviedb.core.util.Resource<*>> =
         Transformations.switchMap(

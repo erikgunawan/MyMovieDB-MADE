@@ -33,7 +33,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private val viewModel by viewModels<MovieViewModel>()
 
     companion object {
-        const val EXTRA_MOVIE = "EXTRA_MOVIE"
+        const val EXTRA_MOVIE: String = "EXTRA_MOVIE"
         fun newIntent(
             context: Context, movie: Movie
         ): Intent {

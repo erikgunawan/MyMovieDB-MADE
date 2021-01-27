@@ -7,7 +7,7 @@ import javax.inject.Inject
  * Created by alfacart on 21/10/20.
  */
 
-class TvShowDB @Inject constructor()  {
+class TvShowDB @Inject constructor() {
 
     fun getTvShows(): MutableList<TvShowLocal> {
         return getDummyTvShows()

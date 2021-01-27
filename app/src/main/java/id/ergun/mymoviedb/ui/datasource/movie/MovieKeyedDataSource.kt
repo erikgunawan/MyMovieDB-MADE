@@ -36,14 +36,14 @@ class MovieKeyedDataSource(
                     val response = useCase.getFavoriteMovies()
                     if (response.status == Resource.Status.SUCCESS && !response.data.isNullOrEmpty()) {
                         state.postValue(response)
-                        val items = MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
+                        val items =
+                            MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
                         callback.onResult(items, null, 2)
                         return@launch
                     }
 
                     state.postValue(Resource.emptyData("Data tidak ditemukan", null))
-                }
-                catch (exception: Exception) {
+                } catch (exception: Exception) {
                     Timber.e(exception)
                     state.postValue(Resource.error("Terjadi kesalahan", data = null))
                 }
@@ -60,8 +60,7 @@ class MovieKeyedDataSource(
                     val items = MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
                     callback.onResult(items, null, 2)
                 }
-            }
-            catch (exception: Exception) {
+            } catch (exception: Exception) {
                 Timber.e(exception)
                 state.postValue(Resource.error("Terjadi kesalahan", data = null))
             }
@@ -84,8 +83,7 @@ class MovieKeyedDataSource(
                     val items = MovieVR.transform(response.data ?: return@launch).toMutableList()
                     callback.onResult(items, params.key + 1)
                 }
-            }
-            catch (exception: Exception) {
+            } catch (exception: Exception) {
                 Timber.e(exception)
             }
         }

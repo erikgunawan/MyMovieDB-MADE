@@ -50,7 +50,7 @@ class TvShowFragment : Fragment() {
     private val tvShowViewModel: TvShowViewModel by viewModels {
         factory
     }
-    
+
     private lateinit var tvShowAdapter: TvShowAdapter
 
     override fun onCreateView(
@@ -80,7 +80,7 @@ class TvShowFragment : Fragment() {
         getTvShows()
     }
 
-    private fun initEventBus(){
+    private fun initEventBus() {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this)
     }

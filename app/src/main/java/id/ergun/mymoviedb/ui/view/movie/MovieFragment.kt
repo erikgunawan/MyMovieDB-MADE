@@ -62,7 +62,7 @@ class MovieFragment : Fragment() {
         getMovies()
     }
 
-    private fun initEventBus(){
+    private fun initEventBus() {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this)
     }

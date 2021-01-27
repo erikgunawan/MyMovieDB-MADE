@@ -14,4 +14,4 @@ class TvShow(
     var voteAverage: Double = 0.0,
     var tagLine: String = "",
     var posterPath: String = ""
-): Parcelable
+) : Parcelable

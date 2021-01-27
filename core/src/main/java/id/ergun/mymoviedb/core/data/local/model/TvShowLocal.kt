@@ -25,6 +25,7 @@ data class TvShowLocal(
             }
             return list
         }
+
         fun mapToDomainModel(item: TvShowLocal): TvShow {
             return TvShow(
                 id = item.id,
@@ -35,6 +36,7 @@ data class TvShowLocal(
                 tagLine = item.tagLine
             )
         }
+
         fun mapFromDomainModel(item: TvShow): TvShowLocal {
             return TvShowLocal(
                 id = item.id ?: 0,

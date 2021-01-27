@@ -15,18 +15,21 @@ import javax.inject.Inject
 /**
  * Created by alfacart on 21/10/20.
  */
-class TvShowRepositoryImpl @Inject constructor(private val remoteData: ApiService, private val localData: TvShowDao) : TvShowRepository {
+class TvShowRepositoryImpl @Inject constructor(
+    private val remoteData: ApiService,
+    private val localData: TvShowDao
+) : TvShowRepository {
     override suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>> {
         EspressoIdlingResource.increment()
         return try {
             remoteData.getTvShows(page = page).getResult {
                 TvShowResponse.mapToDomainModelList(it)
             }
-        }
-        catch (exception: Exception) {
+        } catch (exception: Exception) {
             Resource.error("Terjadi kesalahan")
         }
     }
+
     override suspend fun getTvShowDetail(id: Int): Resource<TvShow> {
         EspressoIdlingResource.increment()
         return remoteData.getTvShowDetail(id = id.toString()).getResult {
@@ -37,9 +40,9 @@ class TvShowRepositoryImpl @Inject constructor(private val remoteData: ApiServic
     override suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>> {
         return try {
             return Resource.success(
-                TvShowLocal.mapToDomainModelList(localData.getTvShows()))
-        }
-        catch (exception: Exception) {
+                TvShowLocal.mapToDomainModelList(localData.getTvShows())
+            )
+        } catch (exception: Exception) {
             Timber.e(exception.toString())
             Resource.error("Terjadi kesalahan")
         }

@@ -42,7 +42,8 @@ class TvShowAdapter : PagedListAdapter<TvShowVR, TvShowAdapter.TvShowViewHolder>
         getItem(position)?.let { holder.bind(it) }
     }
 
-    inner class TvShowViewHolder(private val binding: TvShowItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TvShowViewHolder(private val binding: TvShowItemsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(tvShow: TvShowVR) {
             binding.tvTitle.text = tvShow.title
             binding.viewRating.tvRating.text = tvShow.voteAverage.toString()

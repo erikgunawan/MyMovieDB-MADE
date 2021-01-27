@@ -43,7 +43,8 @@ class MovieAdapter : PagedListAdapter<MovieVR, MovieAdapter.MovieViewHolder>(DIF
         getItem(position)?.let { holder.bind(it) }
     }
 
-    inner class MovieViewHolder(val binding: MovieItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MovieViewHolder(val binding: MovieItemsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieVR) {
             binding.tvTitle.text = movie.title
             binding.viewRating.tvRating.text = movie.voteAverage.toString()

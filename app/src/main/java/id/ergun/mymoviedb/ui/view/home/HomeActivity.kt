@@ -60,7 +60,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragment: Fragment? = null
 
-        if  (binding.bnvMain.selectedItemId == item.itemId) return false
+        if (binding.bnvMain.selectedItemId == item.itemId) return false
 
         when (item.itemId) {
             R.id.action_movies -> fragment = MovieFragment.newInstance()

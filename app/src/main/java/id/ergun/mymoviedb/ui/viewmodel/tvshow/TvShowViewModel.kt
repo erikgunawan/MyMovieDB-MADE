@@ -2,9 +2,12 @@ package id.ergun.mymoviedb.ui.viewmodel.tvshow
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import androidx.paging.PagedList
 import id.ergun.mymoviedb.core.domain.model.TvShow
 import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.core.util.FavoriteModel
+import id.ergun.mymoviedb.core.util.Resource
+import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
 
@@ -33,9 +36,9 @@ class TvShowViewModel @ViewModelInject constructor(
         dataSourceFactory.favoritePage = favoritePage
     }
 
-    fun getTvShows() = dataSourceFactory.getTvShows()
+    fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
 
-    val tvShowState: LiveData<id.ergun.mymoviedb.core.util.Resource<*>> =
+    val tvShowState: LiveData<Resource<*>> =
         Transformations.switchMap(
             dataSourceFactory.liveData,
             TvShowKeyedDataSource::state
@@ -45,16 +48,19 @@ class TvShowViewModel @ViewModelInject constructor(
         dataSourceFactory.liveData.value?.invalidate()
     }
 
-    fun getTvShowDetail(id: Int): LiveData<id.ergun.mymoviedb.core.util.Resource<TvShow>> {
+    fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
         return liveData { emit(useCase.getTvShowDetail(id)) }
     }
 
     private fun getFavoriteTvShow(id: Int) = liveData { emit(useCase.getFavoriteTvShow(id)) }
 
-    fun getFavoriteTvShowById() = if (tvShow.id != null) getFavoriteTvShow(tvShow.id!!)
-    else liveData {  }
+    fun getFavoriteTvShowById(): LiveData<Resource<TvShow>> =
+        if (tvShow.id != null) getFavoriteTvShow(tvShow.id!!)
+        else liveData { }
 
-    fun addToFavorite(tvShow: TvShow) = liveData {  emit(useCase.addToFavorite(tvShow)) }
+    fun addToFavorite(tvShow: TvShow): LiveData<Long> =
+        liveData { emit(useCase.addToFavorite(tvShow)) }
 
-    fun removeFromFavorite(id: Int) = liveData { emit(useCase.removeFromFavorite(id)) }
+    fun removeFromFavorite(id: Int): LiveData<Int> =
+        liveData { emit(useCase.removeFromFavorite(id)) }
 }

@@ -24,6 +24,7 @@ data class MovieLocal(
             }
             return list
         }
+
         fun mapToDomainModel(item: MovieLocal): Movie {
             return Movie(
                 id = item.id,

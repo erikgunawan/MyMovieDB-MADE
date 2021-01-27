@@ -8,7 +8,7 @@ import timber.log.Timber
  * Created by alfacart on 21/10/20.
  */
 @HiltAndroidApp
-class App: Application() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()

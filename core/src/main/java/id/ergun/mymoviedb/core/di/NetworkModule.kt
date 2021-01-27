@@ -27,7 +27,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(gson: Gson, client: OkHttpClient) : Retrofit = Retrofit.Builder()
+    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(client)

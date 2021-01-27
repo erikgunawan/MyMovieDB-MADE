@@ -40,6 +40,7 @@ data class TvShowResponse(
             }
             return list
         }
+
         fun mapToDomainModel(item: Result): TvShow {
             return TvShow(
                 id = item.id,

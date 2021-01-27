@@ -28,7 +28,8 @@ fun ImageView.loadImage(
 
 fun RequestOptions.build(
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
-    progressDrawable: Int? = null): RequestOptions {
+    progressDrawable: Int? = null
+): RequestOptions {
     with(this) {
         error(errorDrawable)
         if (progressDrawable != null) this.placeholder(progressDrawable)

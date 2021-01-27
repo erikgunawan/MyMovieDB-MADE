@@ -16,7 +16,7 @@ class TvShowDataSourceFactory @Inject constructor(
     private val useCase: TvShowUseCase
 ) : DataSource.Factory<Int, TvShowVR>() {
 
-    val liveData = MutableLiveData<TvShowKeyedDataSource>()
+    val liveData: MutableLiveData<TvShowKeyedDataSource> = MutableLiveData<TvShowKeyedDataSource>()
 
     var favoritePage: Boolean = false
 
@@ -27,12 +27,13 @@ class TvShowDataSourceFactory @Inject constructor(
         return source
     }
 
-    fun getTvShows(): LiveData<PagedList<TvShowVR>> = LivePagedListBuilder(this, pagedListConfig()).build()
+    fun getTvShows(): LiveData<PagedList<TvShowVR>> =
+        LivePagedListBuilder(this, pagedListConfig()).build()
 
     companion object {
         private const val PAGE_SIZE = 10
 
-        fun pagedListConfig() = PagedList.Config.Builder()
+        fun pagedListConfig(): PagedList.Config = PagedList.Config.Builder()
             .setInitialLoadSizeHint(PAGE_SIZE)
             .setPageSize(PAGE_SIZE)
             .setEnablePlaceholders(true)

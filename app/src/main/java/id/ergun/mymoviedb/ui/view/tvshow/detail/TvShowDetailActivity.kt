@@ -34,7 +34,7 @@ class TvShowDetailActivity : AppCompatActivity() {
     private val viewModel by viewModels<TvShowViewModel>()
 
     companion object {
-        const val EXTRA_TV_SHOW = "EXTRA_TV_SHOW"
+        const val EXTRA_TV_SHOW: String = "EXTRA_TV_SHOW"
         fun newIntent(
             context: Context, tvShow: TvShow
         ): Intent {
@@ -74,7 +74,7 @@ class TvShowDetailActivity : AppCompatActivity() {
             tvTitle.text = tvShow.title
             tvTagLine.text = tvShow.tagLine
             tvOverview.text = tvShow.overview
-            viewRating.tvRating.text =  tvShow.voteAverage.toString()
+            viewRating.tvRating.text = tvShow.voteAverage.toString()
             ivPoster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
         }
     }
