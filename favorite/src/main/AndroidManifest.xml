@@ -16,7 +16,8 @@
     <application android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         tools:ignore="AllowBackup, icon">
-        <activity android:name=".view.FavoriteActivity">
+        <activity android:name=".view.FavoriteActivity"
+            android:theme="@style/AppTheme.PrimaryLight">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
