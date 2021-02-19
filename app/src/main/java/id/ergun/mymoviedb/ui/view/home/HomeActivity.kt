@@ -24,80 +24,80 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var binding: HomeActivityBinding
+  private lateinit var binding: HomeActivityBinding
 
-    @Inject
-    lateinit var model: HomeModel
+  @Inject
+  lateinit var model: HomeModel
 
-    companion object {
-        fun newIntent(
-            context: Context
-        ): Intent {
-            return Intent(context, HomeActivity::class.java)
-        }
+  companion object {
+    fun newIntent(
+        context: Context
+    ): Intent {
+      return Intent(context, HomeActivity::class.java)
+    }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = HomeActivityBinding.inflate(layoutInflater)
+    val view = binding.root
+    setContentView(view)
+
+    setSupportActionBar(binding.toolbarView.toolbar)
+    supportActionBar?.run {
+      title = ""
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = HomeActivityBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    loadFragment(MovieFragment())
 
-        setSupportActionBar(binding.toolbarView.toolbar)
-        supportActionBar?.run {
-            title = ""
-        }
+    binding.bnvMain.setOnNavigationItemSelectedListener(this)
+  }
 
-        loadFragment(MovieFragment())
 
-        binding.bnvMain.setOnNavigationItemSelectedListener(this)
+  private fun loadFragment(fragment: Fragment?): Boolean {
+    if (fragment != null) {
+      supportFragmentManager.beginTransaction()
+          .replace(R.id.container_view, fragment)
+          .commit()
+      return true
     }
+    return false
+  }
 
+  override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    var fragment: Fragment? = null
 
-    private fun loadFragment(fragment: Fragment?): Boolean {
-        if (fragment != null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container_view, fragment)
-                .commit()
-            return true
-        }
-        return false
+    if (binding.bnvMain.selectedItemId == item.itemId) return false
+
+    when (item.itemId) {
+      R.id.action_movies -> {
+        model.activePage = Const.MOVIE_TYPE
+        fragment = MovieFragment.newInstance()
+      }
+      R.id.action_tv_shows -> {
+        model.activePage = Const.TV_SHOW_TYPE
+        fragment = TvShowFragment.newInstance()
+      }
+      R.id.action_favorites -> {
+        val uri = Uri.parse("mymoviedb://favorites")
+        startActivity(Intent(Intent.ACTION_VIEW, uri))
+        fragment = null
+      }
     }
+    return loadFragment(fragment)
+  }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var fragment: Fragment? = null
-
-        if (binding.bnvMain.selectedItemId == item.itemId) return false
-
-        when (item.itemId) {
-            R.id.action_movies -> {
-                model.activePage = Const.MOVIE_TYPE
-                fragment = MovieFragment.newInstance()
-            }
-            R.id.action_tv_shows -> {
-                model.activePage = Const.TV_SHOW_TYPE
-                fragment = TvShowFragment.newInstance()
-            }
-            R.id.action_favorites -> {
-                val uri = Uri.parse("mymoviedb://favorites")
-                startActivity(Intent(Intent.ACTION_VIEW, uri))
-                fragment = null
-            }
-        }
-        return loadFragment(fragment)
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.action_search -> {
+        startActivity(SearchActivity.newIntent(this, model.activePage))
+      }
     }
+    return super.onOptionsItemSelected(item)
+  }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_search -> {
-                startActivity(SearchActivity.newIntent(this, model.activePage))
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_search, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.menu_search, menu)
+    return super.onCreateOptionsMenu(menu)
+  }
 }

@@ -5,8 +5,8 @@ package id.ergun.mymoviedb.core.util
  */
 class FavoriteModel {
 
-    enum class Type {
-        ADD_TO_FAVORITE,
-        REMOVE_FROM_FAVORITE
-    }
+  enum class Type {
+    ADD_TO_FAVORITE,
+    REMOVE_FROM_FAVORITE
+  }
 }

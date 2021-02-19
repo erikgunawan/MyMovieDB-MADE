@@ -15,15 +15,15 @@ import id.ergun.mymoviedb.favorite.view.tvshow.TvShowFragment
 @Component(dependencies = [FavoriteModuleDependencies::class])
 interface FavoriteFragmentComponent {
 
-    fun inject(fragment: FavoriteFragment)
-    fun inject(fragment: MovieFragment)
-    fun inject(fragment: TvShowFragment)
+  fun inject(fragment: FavoriteFragment)
+  fun inject(fragment: MovieFragment)
+  fun inject(fragment: TvShowFragment)
 
-    @Component.Builder
-    interface Builder {
-        fun context(@BindsInstance context: Context): Builder
-        fun appDependencies(mapsModuleDependencies: FavoriteModuleDependencies): Builder
-        fun build(): FavoriteFragmentComponent
-    }
+  @Component.Builder
+  interface Builder {
+    fun context(@BindsInstance context: Context): Builder
+    fun appDependencies(mapsModuleDependencies: FavoriteModuleDependencies): Builder
+    fun build(): FavoriteFragmentComponent
+  }
 
 }

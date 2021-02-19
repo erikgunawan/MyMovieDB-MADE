@@ -19,48 +19,48 @@ class MovieViewModel @ViewModelInject constructor(
     private val dataSourceFactory: MovieDataSourceFactory
 ) : ViewModel() {
 
-    var favorite: MutableLiveData<Boolean> = MutableLiveData()
+  var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
-    var favoritePage: Boolean = false
+  var favoritePage: Boolean = false
 
-    var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
+  var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
 
-    lateinit var movie: Movie
+  lateinit var movie: Movie
 
-    fun setFavorite(favoritePage: Boolean) {
-        this.favoritePage = favoritePage
-        dataSourceFactory.favoritePage = favoritePage
-    }
+  fun setFavorite(favoritePage: Boolean) {
+    this.favoritePage = favoritePage
+    dataSourceFactory.favoritePage = favoritePage
+  }
 
-    fun setSelectedMovie(movie: Movie) {
-        this.movie = movie
-    }
+  fun setSelectedMovie(movie: Movie) {
+    this.movie = movie
+  }
 
-    fun getMovies(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getMovies()
+  fun getMovies(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getMovies()
 
-    val movieState: LiveData<Resource<*>> =
-        Transformations.switchMap(
-            dataSourceFactory.liveData,
-            MovieKeyedDataSource::state
-        )
+  val movieState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          dataSourceFactory.liveData,
+          MovieKeyedDataSource::state
+      )
 
-    fun refresh() {
-        dataSourceFactory.liveData.value?.invalidate()
-    }
+  fun refresh() {
+    dataSourceFactory.liveData.value?.invalidate()
+  }
 
-    fun getMovieDetail(id: Int): LiveData<Resource<Movie>> {
-        return liveData { emit(useCase.getMovieDetail(id)) }
-    }
+  fun getMovieDetail(id: Int): LiveData<Resource<Movie>> {
+    return liveData { emit(useCase.getMovieDetail(id)) }
+  }
 
-    private fun getFavoriteMovie(id: Int) = liveData { emit(useCase.getFavoriteMovie(id)) }
+  private fun getFavoriteMovie(id: Int) = liveData { emit(useCase.getFavoriteMovie(id)) }
 
-    fun getFavoriteMovieById(): LiveData<Resource<Movie>> =
-        if (movie.id != null) getFavoriteMovie(movie.id!!)
-        else liveData { }
+  fun getFavoriteMovieById(): LiveData<Resource<Movie>> =
+      if (movie.id != null) getFavoriteMovie(movie.id!!)
+      else liveData { }
 
-    fun addToFavorite(movie: Movie): LiveData<Long> =
-        liveData { emit(useCase.addToFavorite(movie)) }
+  fun addToFavorite(movie: Movie): LiveData<Long> =
+      liveData { emit(useCase.addToFavorite(movie)) }
 
-    fun removeFromFavorite(id: Int): LiveData<Int> =
-        liveData { emit(useCase.removeFromFavorite(id)) }
+  fun removeFromFavorite(id: Int): LiveData<Int> =
+      liveData { emit(useCase.removeFromFavorite(id)) }
 }

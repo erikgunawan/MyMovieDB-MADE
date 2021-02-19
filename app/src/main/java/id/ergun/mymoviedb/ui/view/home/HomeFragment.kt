@@ -14,24 +14,24 @@ import id.ergun.mymoviedb.databinding.HomeFragmentBinding
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private var binding: HomeFragmentBinding by autoCleared()
+  private var binding: HomeFragmentBinding by autoCleared()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+  override fun onCreateView(
+      inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    binding = HomeFragmentBinding.inflate(inflater, container, false)
+    return binding.root
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
-    }
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initView()
+  }
 
-    private fun initView() {
-        val sectionsPagerAdapter = HomePagerAdapter(requireContext(), childFragmentManager)
-        binding.viewPager.adapter = sectionsPagerAdapter
-        binding.tabs.setupWithViewPager(binding.viewPager)
-    }
+  private fun initView() {
+    val sectionsPagerAdapter = HomePagerAdapter(requireContext(), childFragmentManager)
+    binding.viewPager.adapter = sectionsPagerAdapter
+    binding.tabs.setupWithViewPager(binding.viewPager)
+  }
 }

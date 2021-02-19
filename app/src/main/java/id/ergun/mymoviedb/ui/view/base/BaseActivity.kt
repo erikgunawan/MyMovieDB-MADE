@@ -10,30 +10,30 @@ import androidx.viewbinding.ViewBinding
  * Created by alfacart on 15/12/20.
  */
 abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
-    protected open var binding: V? = null
+  protected open var binding: V? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(getInflatedLayout(layoutInflater))
-        setup()
-    }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(getInflatedLayout(layoutInflater))
+    setup()
+  }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        this.binding = null
-    }
+  override fun onDestroy() {
+    super.onDestroy()
+    this.binding = null
+  }
 
-    //internal functions
-    private fun getInflatedLayout(inflater: LayoutInflater): View {
-        this.binding = setBinding(inflater)
+  //internal functions
+  private fun getInflatedLayout(inflater: LayoutInflater): View {
+    this.binding = setBinding(inflater)
 
 
-        return binding?.root
-            ?: error("Please add your inflated binding class instance")
-    }
+    return binding?.root
+        ?: error("Please add your inflated binding class instance")
+  }
 
-    //abstract functions
-    abstract fun setBinding(layoutInflater: LayoutInflater): V
+  //abstract functions
+  abstract fun setBinding(layoutInflater: LayoutInflater): V
 
-    abstract fun setup()
+  abstract fun setup()
 }

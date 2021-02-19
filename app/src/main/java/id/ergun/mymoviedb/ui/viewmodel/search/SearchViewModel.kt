@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import id.ergun.mymoviedb.core.domain.usecase.movie.MovieUseCase
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.view.movie.MovieVR
 import id.ergun.mymoviedb.ui.datasource.search.MovieSearchDataSourceFactory
@@ -15,11 +14,11 @@ import id.ergun.mymoviedb.ui.datasource.search.MovieSearchKeyedDataSource
  * Created by root on 20/02/21.
  */
 class SearchViewModel @ViewModelInject constructor(
-    private val useCase: MovieUseCase,
     private val dataSourceFactory: MovieSearchDataSourceFactory
 ) : ViewModel() {
 
-  fun searchMovie(query: String): LiveData<PagedList<MovieVR>> = dataSourceFactory.searchMovie(query)
+  fun searchMovie(query: String): LiveData<PagedList<MovieVR>> = dataSourceFactory.searchMovie(
+      query)
 
   val movieState: LiveData<Resource<*>> =
       Transformations.switchMap(

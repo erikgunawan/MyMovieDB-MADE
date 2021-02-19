@@ -7,5 +7,5 @@ import javax.inject.Inject
  * Created by root on 20/02/21.
  */
 class SearchModel @Inject constructor() {
-  var pageType = Const.MOVIE_TYPE
+  var pageType: Int = Const.MOVIE_TYPE
 }

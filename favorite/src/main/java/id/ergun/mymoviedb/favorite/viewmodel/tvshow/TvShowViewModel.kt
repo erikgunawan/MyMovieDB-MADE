@@ -16,24 +16,24 @@ class TvShowViewModel(
     private val dataSourceFactory: TvShowDataSourceFactory
 ) : ViewModel() {
 
-    var favorite: MutableLiveData<Boolean> = MutableLiveData()
+  var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
-    var favoritePage: Boolean = false
+  var favoritePage: Boolean = false
 
-    fun setFavorite(favoritePage: Boolean) {
-        this.favoritePage = favoritePage
-        dataSourceFactory.favoritePage = favoritePage
-    }
+  fun setFavorite(favoritePage: Boolean) {
+    this.favoritePage = favoritePage
+    dataSourceFactory.favoritePage = favoritePage
+  }
 
-    fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
+  fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
 
-    val tvShowState: LiveData<id.ergun.mymoviedb.core.util.Resource<*>> =
-        Transformations.switchMap(
-            dataSourceFactory.liveData,
-            TvShowKeyedDataSource::state
-        )
+  val tvShowState: LiveData<id.ergun.mymoviedb.core.util.Resource<*>> =
+      Transformations.switchMap(
+          dataSourceFactory.liveData,
+          TvShowKeyedDataSource::state
+      )
 
-    fun refresh() {
-        dataSourceFactory.liveData.value?.invalidate()
-    }
+  fun refresh() {
+    dataSourceFactory.liveData.value?.invalidate()
+  }
 }

@@ -17,21 +17,21 @@ import id.ergun.mymoviedb.ui.view.tvshow.TvShowFragment
 class HomePagerAdapter(private val mContext: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(R.string.movie, R.string.tv_show)
-    }
+  companion object {
+    @StringRes
+    private val TAB_TITLES = intArrayOf(R.string.movie, R.string.tv_show)
+  }
 
-    override fun getItem(position: Int): Fragment =
-        when (position) {
-            0 -> MovieFragment.newInstance(true)
-            1 -> TvShowFragment.newInstance(true)
-            else -> Fragment()
-        }
+  override fun getItem(position: Int): Fragment =
+      when (position) {
+        0 -> MovieFragment.newInstance(true)
+        1 -> TvShowFragment.newInstance(true)
+        else -> Fragment()
+      }
 
-    override fun getPageTitle(position: Int): CharSequence =
-        mContext.resources.getString(TAB_TITLES[position])
+  override fun getPageTitle(position: Int): CharSequence =
+      mContext.resources.getString(TAB_TITLES[position])
 
-    override fun getCount(): Int = TAB_TITLES.size
+  override fun getCount(): Int = TAB_TITLES.size
 
 }

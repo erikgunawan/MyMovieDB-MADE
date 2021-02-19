@@ -18,59 +18,59 @@ class MovieRepositoryImpl @Inject constructor(
     private val remoteData: ApiService,
     private val localData: MovieDao
 ) : MovieRepository {
-    override suspend fun getMovies(page: Int): Resource<ArrayList<Movie>> {
-        return try {
-            remoteData.getMovies(page = page).getResult {
-                MovieResponse.mapToDomainModelList(it)
-            }
-        } catch (exception: Exception) {
-            Resource.error("Terjadi kesalahan")
-        }
+  override suspend fun getMovies(page: Int): Resource<ArrayList<Movie>> {
+    return try {
+      remoteData.getMovies(page = page).getResult {
+        MovieResponse.mapToDomainModelList(it)
+      }
+    } catch (exception: Exception) {
+      Resource.error("Terjadi kesalahan")
     }
+  }
 
-    override suspend fun getMovieDetail(id: Int): Resource<Movie> {
-        return remoteData.getMovieDetail(id = id.toString()).getResult {
-            MovieResponse.mapToDomainModel(it)
-        }
+  override suspend fun getMovieDetail(id: Int): Resource<Movie> {
+    return remoteData.getMovieDetail(id = id.toString()).getResult {
+      MovieResponse.mapToDomainModel(it)
     }
+  }
 
-    override suspend fun searchMovie(query: String, page: Int): Resource<ArrayList<Movie>> {
-        return try {
-            remoteData.searchMovie(query = query, page = page).getResult {
-                MovieResponse.mapToDomainModelList(it)
-            }
-        } catch (exception: Exception) {
-            Timber.e(exception)
-            Resource.error("Terjadi kesalahan1")
-        }
+  override suspend fun searchMovie(query: String, page: Int): Resource<ArrayList<Movie>> {
+    return try {
+      remoteData.searchMovie(query = query, page = page).getResult {
+        MovieResponse.mapToDomainModelList(it)
+      }
+    } catch (exception: Exception) {
+      Timber.e(exception)
+      Resource.error("Terjadi kesalahan1")
     }
+  }
 
-    override suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>> {
-        return try {
-            return Resource.success(
-                MovieLocal.mapToDomainModelList(localData.getMovies())
-            )
-        } catch (exception: Exception) {
-            Timber.e(exception.toString())
-            Resource.error("Terjadi kesalahan")
-        }
+  override suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>> {
+    return try {
+      return Resource.success(
+          MovieLocal.mapToDomainModelList(localData.getMovies())
+      )
+    } catch (exception: Exception) {
+      Timber.e(exception.toString())
+      Resource.error("Terjadi kesalahan")
     }
+  }
 
-    override suspend fun getFavoriteMovie(id: Int): Resource<Movie> {
-        val movie = localData.getMovie(id)
-        Timber.e(Gson().toJson(movie))
-        return if (movie != null) {
-            Resource.success(MovieLocal.mapToDomainModel(movie))
-        } else {
-            Resource.error("Data tidak ditemukan")
-        }
+  override suspend fun getFavoriteMovie(id: Int): Resource<Movie> {
+    val movie = localData.getMovie(id)
+    Timber.e(Gson().toJson(movie))
+    return if (movie != null) {
+      Resource.success(MovieLocal.mapToDomainModel(movie))
+    } else {
+      Resource.error("Data tidak ditemukan")
     }
+  }
 
-    override suspend fun addToFavorite(movie: Movie): Long {
-        return localData.insertMovie(MovieLocal.mapFromDomainModel(movie))
-    }
+  override suspend fun addToFavorite(movie: Movie): Long {
+    return localData.insertMovie(MovieLocal.mapFromDomainModel(movie))
+  }
 
-    override suspend fun removeFromFavorite(id: Int): Int {
-        return localData.deleteById(id)
-    }
+  override suspend fun removeFromFavorite(id: Int): Int {
+    return localData.deleteById(id)
+  }
 }

@@ -15,9 +15,9 @@ import id.ergun.mymoviedb.core.data.repository.tvshow.TvShowRepositoryImpl
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-    @Binds
-    abstract fun bindMovieRepository(impl: MovieRepositoryImpl): MovieRepository
+  @Binds
+  abstract fun bindMovieRepository(impl: MovieRepositoryImpl): MovieRepository
 
-    @Binds
-    abstract fun bindTvShowRepository(impl: TvShowRepositoryImpl): TvShowRepository
+  @Binds
+  abstract fun bindTvShowRepository(impl: TvShowRepositoryImpl): TvShowRepository
 }

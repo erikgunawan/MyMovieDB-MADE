@@ -12,22 +12,22 @@ import id.ergun.mymoviedb.ui.view.home.HomeActivity
  */
 class SplashScreenActivity : AppCompatActivity() {
 
-    private lateinit var binding: SplashScreenActivityBinding
+  private lateinit var binding: SplashScreenActivityBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = SplashScreenActivityBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = SplashScreenActivityBinding.inflate(layoutInflater)
+    val view = binding.root
+    setContentView(view)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            gotoHomeActivity()
-        }, 1000)
-    }
+    Handler(Looper.getMainLooper()).postDelayed({
+      gotoHomeActivity()
+    }, 1000)
+  }
 
-    private fun gotoHomeActivity() {
-        startActivity(HomeActivity.newIntent(this))
-        finish()
-    }
+  private fun gotoHomeActivity() {
+    startActivity(HomeActivity.newIntent(this))
+    finish()
+  }
 
 }

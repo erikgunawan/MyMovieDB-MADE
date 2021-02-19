@@ -25,21 +25,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .client(client)
-        .build()
+  @Provides
+  @Singleton
+  fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
+      .baseUrl(BASE_URL)
+      .addConverterFactory(GsonConverterFactory.create(gson))
+      .client(client)
+      .build()
 
-    @Provides
-    @Singleton
-    fun provideOkHttp(@ApplicationContext context: Context): OkHttpClient {
-        val okBuilder = OkHttpClient.Builder()
+  @Provides
+  @Singleton
+  fun provideOkHttp(@ApplicationContext context: Context): OkHttpClient {
+    val okBuilder = OkHttpClient.Builder()
 
-        val httpLogging = HttpLoggingInterceptor()
-        httpLogging.level = HttpLoggingInterceptor.Level.BODY
+    val httpLogging = HttpLoggingInterceptor()
+    httpLogging.level = HttpLoggingInterceptor.Level.BODY
 
 //        val certificatePinner = CertificatePinner.Builder()
 //            .add(BASE_URL, "sha256/mRjXIIcEJSE3kJl4YNqqfOS+COj4KG3VJPSJo6ymApk=")
@@ -47,26 +47,26 @@ object NetworkModule {
 //            .add(BASE_URL, "sha256/Y9mvm0exBk1JoQ57f9Vm28jKo5lFm/woKcVxrYxu80o=")
 //            .build()
 
-        okBuilder
-            .addInterceptor(httpLogging)
-            .addInterceptor(ChuckerInterceptor.Builder(context)
-                .collector(ChuckerCollector(context))
-                .maxContentLength(250000L)
-                .redactHeaders(emptySet())
-                .alwaysReadResponseBody(false)
-                .build()
-            )
+    okBuilder
+        .addInterceptor(httpLogging)
+        .addInterceptor(ChuckerInterceptor.Builder(context)
+            .collector(ChuckerCollector(context))
+            .maxContentLength(250000L)
+            .redactHeaders(emptySet())
+            .alwaysReadResponseBody(false)
+            .build()
+        )
 //            .certificatePinner(certificatePinner)
-        return okBuilder.build()
-    }
+    return okBuilder.build()
+  }
 
-    @Provides
-    @Singleton
-    fun provideGson(): Gson = GsonBuilder().create()
+  @Provides
+  @Singleton
+  fun provideGson(): Gson = GsonBuilder().create()
 
-    @Provides
-    @Singleton
-    fun getService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
+  @Provides
+  @Singleton
+  fun getService(retrofit: Retrofit): ApiService {
+    return retrofit.create(ApiService::class.java)
+  }
 }

@@ -19,48 +19,48 @@ class TvShowViewModel @ViewModelInject constructor(
     private val dataSourceFactory: TvShowDataSourceFactory
 ) : ViewModel() {
 
-    var favorite: MutableLiveData<Boolean> = MutableLiveData()
+  var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
-    var favoritePage: Boolean = false
+  var favoritePage: Boolean = false
 
-    var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
+  var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
 
-    lateinit var tvShow: TvShow
+  lateinit var tvShow: TvShow
 
-    fun setSelectedTvShow(tvShow: TvShow) {
-        this.tvShow = tvShow
-    }
+  fun setSelectedTvShow(tvShow: TvShow) {
+    this.tvShow = tvShow
+  }
 
-    fun setFavorite(favoritePage: Boolean) {
-        this.favoritePage = favoritePage
-        dataSourceFactory.favoritePage = favoritePage
-    }
+  fun setFavorite(favoritePage: Boolean) {
+    this.favoritePage = favoritePage
+    dataSourceFactory.favoritePage = favoritePage
+  }
 
-    fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
+  fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
 
-    val tvShowState: LiveData<Resource<*>> =
-        Transformations.switchMap(
-            dataSourceFactory.liveData,
-            TvShowKeyedDataSource::state
-        )
+  val tvShowState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          dataSourceFactory.liveData,
+          TvShowKeyedDataSource::state
+      )
 
-    fun refresh() {
-        dataSourceFactory.liveData.value?.invalidate()
-    }
+  fun refresh() {
+    dataSourceFactory.liveData.value?.invalidate()
+  }
 
-    fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
-        return liveData { emit(useCase.getTvShowDetail(id)) }
-    }
+  fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
+    return liveData { emit(useCase.getTvShowDetail(id)) }
+  }
 
-    private fun getFavoriteTvShow(id: Int) = liveData { emit(useCase.getFavoriteTvShow(id)) }
+  private fun getFavoriteTvShow(id: Int) = liveData { emit(useCase.getFavoriteTvShow(id)) }
 
-    fun getFavoriteTvShowById(): LiveData<Resource<TvShow>> =
-        if (tvShow.id != null) getFavoriteTvShow(tvShow.id!!)
-        else liveData { }
+  fun getFavoriteTvShowById(): LiveData<Resource<TvShow>> =
+      if (tvShow.id != null) getFavoriteTvShow(tvShow.id!!)
+      else liveData { }
 
-    fun addToFavorite(tvShow: TvShow): LiveData<Long> =
-        liveData { emit(useCase.addToFavorite(tvShow)) }
+  fun addToFavorite(tvShow: TvShow): LiveData<Long> =
+      liveData { emit(useCase.addToFavorite(tvShow)) }
 
-    fun removeFromFavorite(id: Int): LiveData<Int> =
-        liveData { emit(useCase.removeFromFavorite(id)) }
+  fun removeFromFavorite(id: Int): LiveData<Int> =
+      liveData { emit(useCase.removeFromFavorite(id)) }
 }

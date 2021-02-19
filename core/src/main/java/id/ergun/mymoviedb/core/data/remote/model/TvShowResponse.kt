@@ -17,39 +17,39 @@ data class TvShowResponse(
     val totalResults: Int?
 ) {
 
-    data class Result(
-        @SerializedName("id")
-        val id: Int?,
-        @SerializedName("name")
-        val name: String?,
-        @SerializedName("overview")
-        val overview: String?,
-        @SerializedName("poster_path")
-        val posterPath: String?,
-        @SerializedName("vote_average")
-        val voteAverage: Double?,
-        @SerializedName("tagline")
-        val tagLine: String?
-    )
+  data class Result(
+      @SerializedName("id")
+      val id: Int?,
+      @SerializedName("name")
+      val name: String?,
+      @SerializedName("overview")
+      val overview: String?,
+      @SerializedName("poster_path")
+      val posterPath: String?,
+      @SerializedName("vote_average")
+      val voteAverage: Double?,
+      @SerializedName("tagline")
+      val tagLine: String?
+  )
 
-    companion object {
-        fun mapToDomainModelList(item: TvShowResponse): ArrayList<TvShow> {
-            val list = arrayListOf<TvShow>()
-            item.results?.forEach {
-                list.add(mapToDomainModel(it))
-            }
-            return list
-        }
-
-        fun mapToDomainModel(item: Result): TvShow {
-            return TvShow(
-                id = item.id,
-                title = item.name ?: "",
-                posterPath = item.posterPath ?: "",
-                overview = item.overview ?: "",
-                voteAverage = item.voteAverage ?: 0.0,
-                tagLine = item.tagLine ?: ""
-            )
-        }
+  companion object {
+    fun mapToDomainModelList(item: TvShowResponse): ArrayList<TvShow> {
+      val list = arrayListOf<TvShow>()
+      item.results?.forEach {
+        list.add(mapToDomainModel(it))
+      }
+      return list
     }
+
+    fun mapToDomainModel(item: Result): TvShow {
+      return TvShow(
+          id = item.id,
+          title = item.name ?: "",
+          posterPath = item.posterPath ?: "",
+          overview = item.overview ?: "",
+          voteAverage = item.voteAverage ?: 0.0,
+          tagLine = item.tagLine ?: ""
+      )
+    }
+  }
 }

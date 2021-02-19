@@ -15,43 +15,43 @@ import id.ergun.mymoviedb.core.util.loadImage
  */
 class TvShowAdapter : PagedListAdapter<TvShowVR, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
-    var itemClickListener: ((tvShow: TvShow) -> Unit)? = null
+  var itemClickListener: ((tvShow: TvShow) -> Unit)? = null
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowVR>() {
-            override fun areItemsTheSame(oldItem: TvShowVR, newItem: TvShowVR): Boolean {
-                return oldItem.id == newItem.id
-            }
+  companion object {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowVR>() {
+      override fun areItemsTheSame(oldItem: TvShowVR, newItem: TvShowVR): Boolean {
+        return oldItem.id == newItem.id
+      }
 
-            override fun areContentsTheSame(oldItem: TvShowVR, newItem: TvShowVR): Boolean {
-                return oldItem == newItem
-            }
-        }
+      override fun areContentsTheSame(oldItem: TvShowVR, newItem: TvShowVR): Boolean {
+        return oldItem == newItem
+      }
     }
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder =
-        TvShowViewHolder(
-            TvShowItemsBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder =
+      TvShowViewHolder(
+          TvShowItemsBinding.inflate(
+              LayoutInflater.from(parent.context),
+              parent,
+              false
+          )
+      )
 
-    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+  override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
+    getItem(position)?.let { holder.bind(it) }
+  }
+
+  inner class TvShowViewHolder(private val binding: TvShowItemsBinding) :
+      RecyclerView.ViewHolder(binding.root) {
+    fun bind(tvShow: TvShowVR) {
+      binding.tvTitle.text = tvShow.title
+      binding.viewRating.tvRating.text = tvShow.voteAverage.toString()
+      binding.tvOverview.text = tvShow.overview
+      binding.ivPoster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
+      itemView.setOnClickListener {
+        itemClickListener?.invoke(TvShowVR.toModel(tvShow))
+      }
     }
-
-    inner class TvShowViewHolder(private val binding: TvShowItemsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShow: TvShowVR) {
-            binding.tvTitle.text = tvShow.title
-            binding.viewRating.tvRating.text = tvShow.voteAverage.toString()
-            binding.tvOverview.text = tvShow.overview
-            binding.ivPoster.loadImage(BuildConfig.IMAGE_URL + tvShow.posterPath)
-            itemView.setOnClickListener {
-                itemClickListener?.invoke(TvShowVR.toModel(tvShow))
-            }
-        }
-    }
+  }
 }

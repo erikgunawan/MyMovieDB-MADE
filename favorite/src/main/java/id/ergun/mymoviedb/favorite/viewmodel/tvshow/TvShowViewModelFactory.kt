@@ -13,12 +13,12 @@ class TvShowViewModelFactory @Inject constructor(
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        when {
-            modelClass.isAssignableFrom(TvShowViewModel::class.java) -> {
-                TvShowViewModel(dataSourceFactory) as T
-            }
-            else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
+  @Suppress("UNCHECKED_CAST")
+  override fun <T : ViewModel> create(modelClass: Class<T>): T =
+      when {
+        modelClass.isAssignableFrom(TvShowViewModel::class.java) -> {
+          TvShowViewModel(dataSourceFactory) as T
         }
+        else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
+      }
 }

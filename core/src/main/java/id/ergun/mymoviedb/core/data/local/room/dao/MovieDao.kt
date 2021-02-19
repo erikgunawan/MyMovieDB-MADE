@@ -10,18 +10,18 @@ import id.ergun.mymoviedb.core.data.local.model.MovieLocal
 @Dao
 interface MovieDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movie: MovieLocal): Long
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertMovie(movie: MovieLocal): Long
 
-    @Update
-    suspend fun updateMovie(movie: MovieLocal)
+  @Update
+  suspend fun updateMovie(movie: MovieLocal)
 
-    @Query("SELECT * FROM Movie")
-    suspend fun getMovies(): MutableList<MovieLocal>
+  @Query("SELECT * FROM Movie")
+  suspend fun getMovies(): MutableList<MovieLocal>
 
-    @Query("SELECT * FROM Movie WHERE id==:id")
-    suspend fun getMovie(id: Int): MovieLocal?
+  @Query("SELECT * FROM Movie WHERE id==:id")
+  suspend fun getMovie(id: Int): MovieLocal?
 
-    @Query("DELETE FROM Movie WHERE id==:id")
-    suspend fun deleteById(id: Int): Int
+  @Query("DELETE FROM Movie WHERE id==:id")
+  suspend fun deleteById(id: Int): Int
 }

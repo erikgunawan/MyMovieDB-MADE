@@ -12,6 +12,6 @@ import id.ergun.mymoviedb.core.data.local.room.dao.TvShowDao
  */
 @Database(entities = [MovieLocal::class, TvShowLocal::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun movieDao(): MovieDao
-    abstract fun tvShowDao(): TvShowDao
+  abstract fun movieDao(): MovieDao
+  abstract fun tvShowDao(): TvShowDao
 }

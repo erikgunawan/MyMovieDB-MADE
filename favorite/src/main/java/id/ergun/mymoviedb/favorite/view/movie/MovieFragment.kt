@@ -29,146 +29,146 @@ import javax.inject.Inject
  */
 class MovieFragment : Fragment() {
 
-    companion object {
-        private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
-        fun newInstance(
-            favorite: Boolean = false
-        ): MovieFragment {
-            val fragment = MovieFragment()
-            val argument = Bundle()
-            argument.putBoolean(ARGUMENT_FAVORITE, favorite)
-            fragment.arguments = argument
-            return fragment
-        }
+  companion object {
+    private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+    fun newInstance(
+        favorite: Boolean = false
+    ): MovieFragment {
+      val fragment = MovieFragment()
+      val argument = Bundle()
+      argument.putBoolean(ARGUMENT_FAVORITE, favorite)
+      fragment.arguments = argument
+      return fragment
     }
+  }
 
-    private lateinit var binding: MovieFragmentBinding
+  private lateinit var binding: MovieFragmentBinding
 
-    @Inject
-    lateinit var factory: MovieViewModelFactory
+  @Inject
+  lateinit var factory: MovieViewModelFactory
 
-    private val movieViewModel: MovieViewModel by viewModels {
-        factory
-    }
+  private val movieViewModel: MovieViewModel by viewModels {
+    factory
+  }
 
-    private lateinit var movieAdapter: MovieAdapter
+  private lateinit var movieAdapter: MovieAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        DaggerFavoriteFragmentComponent.builder()
-            .context(requireContext())
-            .appDependencies(
-                EntryPointAccessors.fromApplication(
-                    requireContext().applicationContext,
-                    FavoriteModuleDependencies::class.java
-                )
+  override fun onCreateView(
+      inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    DaggerFavoriteFragmentComponent.builder()
+        .context(requireContext())
+        .appDependencies(
+            EntryPointAccessors.fromApplication(
+                requireContext().applicationContext,
+                FavoriteModuleDependencies::class.java
             )
-            .build()
-            .inject(this)
-        binding = MovieFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+        )
+        .build()
+        .inject(this)
+    binding = MovieFragmentBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initEventBus()
+    loadArgument()
+    initView()
+    initAction()
+    getMovies()
+  }
+
+  private fun initEventBus() {
+    if (!EventBus.getDefault().isRegistered(this))
+      EventBus.getDefault().register(this)
+  }
+
+  private fun loadArgument() {
+    if (arguments == null) return
+
+    movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
+  }
+
+  private fun initView() {
+    movieAdapter = MovieAdapter()
+
+    with(binding.rvMovie) {
+      layoutManager = LinearLayoutManager(context)
+      setHasFixedSize(true)
+      adapter = movieAdapter
+    }
+  }
+
+  private fun initAction() {
+    movieAdapter.itemClickListener = { movie ->
+      startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initEventBus()
-        loadArgument()
-        initView()
-        initAction()
-        getMovies()
+    binding.viewWarning.btnWarning.setOnClickListener {
+      movieViewModel.refresh()
+    }
+  }
+
+  private fun getMovies() {
+    movieViewModel.getMovies().observe(requireActivity()) {
+      movieAdapter.submitList(it)
+      movieAdapter.notifyDataSetChanged()
     }
 
-    private fun initEventBus() {
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this)
+    movieViewModel.movieState.observe(requireActivity()) {
+      when (it.status) {
+        Resource.Status.LOADING -> showLoading()
+        Resource.Status.SUCCESS -> showData()
+        Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
+        Resource.Status.ERROR -> showWarning(it.message.toString())
+      }
     }
+  }
 
-    private fun loadArgument() {
-        if (arguments == null) return
+  private fun showLoading() {
+    binding.wrapperContent.gone()
+    binding.wrapperWarning.gone()
+    binding.progressBar.visible()
+  }
 
-        movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
-    }
+  private fun showData() {
+    binding.wrapperContent.visible()
+    binding.wrapperWarning.gone()
+    binding.progressBar.gone()
+  }
 
-    private fun initView() {
-        movieAdapter = MovieAdapter()
+  private fun showEmptyData(message: String) {
+    binding.wrapperContent.gone()
+    binding.viewWarning.btnWarning.gone()
+    binding.wrapperWarning.visible()
+    binding.progressBar.gone()
 
-        with(binding.rvMovie) {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = movieAdapter
-        }
-    }
+    binding.viewWarning.tvWarning.text = message
+  }
 
-    private fun initAction() {
-        movieAdapter.itemClickListener = { movie ->
-            startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
-        }
+  private fun showWarning(message: String) {
+    binding.wrapperContent.gone()
+    binding.viewWarning.btnWarning.visible()
+    binding.wrapperWarning.visible()
+    binding.progressBar.gone()
 
-        binding.viewWarning.btnWarning.setOnClickListener {
-            movieViewModel.refresh()
-        }
-    }
+    binding.viewWarning.tvWarning.text = message
+  }
 
-    private fun getMovies() {
-        movieViewModel.getMovies().observe(requireActivity()) {
-            movieAdapter.submitList(it)
-            movieAdapter.notifyDataSetChanged()
-        }
+  @Subscribe
+  fun onReceiveEventBus(event: FavoriteEvent) {
+    if (event.type != Const.MOVIE_TYPE) return
+    if (!event.changes) return
+    if (!movieViewModel.favoritePage) return
 
-        movieViewModel.movieState.observe(requireActivity()) {
-            when (it.status) {
-                Resource.Status.LOADING -> showLoading()
-                Resource.Status.SUCCESS -> showData()
-                Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
-                Resource.Status.ERROR -> showWarning(it.message.toString())
-            }
-        }
-    }
+    movieViewModel.refresh()
+  }
 
-    private fun showLoading() {
-        binding.wrapperContent.gone()
-        binding.wrapperWarning.gone()
-        binding.progressBar.visible()
-    }
-
-    private fun showData() {
-        binding.wrapperContent.visible()
-        binding.wrapperWarning.gone()
-        binding.progressBar.gone()
-    }
-
-    private fun showEmptyData(message: String) {
-        binding.wrapperContent.gone()
-        binding.viewWarning.btnWarning.gone()
-        binding.wrapperWarning.visible()
-        binding.progressBar.gone()
-
-        binding.viewWarning.tvWarning.text = message
-    }
-
-    private fun showWarning(message: String) {
-        binding.wrapperContent.gone()
-        binding.viewWarning.btnWarning.visible()
-        binding.wrapperWarning.visible()
-        binding.progressBar.gone()
-
-        binding.viewWarning.tvWarning.text = message
-    }
-
-    @Subscribe
-    fun onReceiveEventBus(event: FavoriteEvent) {
-        if (event.type != Const.MOVIE_TYPE) return
-        if (!event.changes) return
-        if (!movieViewModel.favoritePage) return
-
-        movieViewModel.refresh()
-    }
-
-    override fun onDestroy() {
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this)
-        super.onDestroy()
-    }
+  override fun onDestroy() {
+    if (EventBus.getDefault().isRegistered(this))
+      EventBus.getDefault().unregister(this)
+    super.onDestroy()
+  }
 }

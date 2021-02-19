@@ -15,9 +15,9 @@ import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCaseImpl
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UseCaseModule {
-    @Binds
-    abstract fun bindMovieUseCase(impl: MovieUseCaseImpl): MovieUseCase
+  @Binds
+  abstract fun bindMovieUseCase(impl: MovieUseCaseImpl): MovieUseCase
 
-    @Binds
-    abstract fun bindTvShowUseCase(impl: TvShowUseCaseImpl): TvShowUseCase
+  @Binds
+  abstract fun bindTvShowUseCase(impl: TvShowUseCaseImpl): TvShowUseCase
 }

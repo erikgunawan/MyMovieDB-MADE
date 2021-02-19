@@ -13,6 +13,6 @@ import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
 @InstallIn(SingletonComponent::class)
 interface FavoriteModuleDependencies {
 
-    fun movieUseCase(): MovieUseCase
-    fun tvShowUseCase(): TvShowUseCase
+  fun movieUseCase(): MovieUseCase
+  fun tvShowUseCase(): TvShowUseCase
 }

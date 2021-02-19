@@ -26,135 +26,132 @@ import org.greenrobot.eventbus.Subscribe
 @AndroidEntryPoint
 class MovieFragment : Fragment() {
 
-    companion object {
-        private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
-        fun newInstance(
-            favorite: Boolean = false
-        ): MovieFragment {
-            val fragment = MovieFragment()
-            val argument = Bundle()
-            argument.putBoolean(ARGUMENT_FAVORITE, favorite)
-            fragment.arguments = argument
-            return fragment
-        }
+  companion object {
+    private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+    fun newInstance(
+        favorite: Boolean = false
+    ): MovieFragment {
+      val fragment = MovieFragment()
+      val argument = Bundle()
+      argument.putBoolean(ARGUMENT_FAVORITE, favorite)
+      fragment.arguments = argument
+      return fragment
+    }
+  }
+
+  private lateinit var binding: MovieFragmentBinding
+
+  private val movieViewModel by viewModels<MovieViewModel>()
+
+  private lateinit var movieAdapter: MovieAdapter
+
+  override fun onCreateView(
+      inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    binding = MovieFragmentBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initEventBus()
+    loadArgument()
+    initView()
+    initAction()
+    getMovies()
+  }
+
+  private fun initEventBus() {
+    if (!EventBus.getDefault().isRegistered(this))
+      EventBus.getDefault().register(this)
+  }
+
+  private fun loadArgument() {
+    if (arguments == null) return
+
+    movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
+  }
+
+  private fun initView() {
+    movieAdapter = MovieAdapter()
+
+    with(binding.rvMovie) {
+      layoutManager = LinearLayoutManager(context)
+      setHasFixedSize(true)
+      adapter = movieAdapter
+    }
+  }
+
+  private fun initAction() {
+    movieAdapter.itemClickListener = { movie ->
+      startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
     }
 
-    private lateinit var binding: MovieFragmentBinding
+    binding.viewWarning.btnWarning.setOnClickListener {
+      movieViewModel.refresh()
+    }
+  }
 
-    private val movieViewModel by viewModels<MovieViewModel>()
-
-    private lateinit var movieAdapter: MovieAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = MovieFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+  private fun getMovies() {
+    movieViewModel.getMovies().observe(requireActivity()) {
+      movieAdapter.submitList(it)
+      movieAdapter.notifyDataSetChanged()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initEventBus()
-        loadArgument()
-        initView()
-        initAction()
-        getMovies()
+    movieViewModel.movieState.observe(requireActivity()) {
+      when (it.status) {
+        Resource.Status.LOADING -> showLoading()
+        Resource.Status.SUCCESS -> showData()
+        Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
+        Resource.Status.ERROR -> showWarning(it.message.toString())
+      }
     }
+  }
 
-    private fun initEventBus() {
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this)
-    }
+  private fun showLoading() {
+    binding.wrapperContent.gone()
+    binding.wrapperWarning.gone()
+    binding.progressBar.visible()
+  }
 
-    private fun loadArgument() {
-        if (arguments == null) return
+  private fun showData() {
+    binding.wrapperContent.visible()
+    binding.wrapperWarning.gone()
+    binding.progressBar.gone()
+  }
 
-        movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
-    }
+  private fun showEmptyData(message: String) {
+    binding.wrapperContent.gone()
+    binding.viewWarning.btnWarning.gone()
+    binding.wrapperWarning.visible()
+    binding.progressBar.gone()
 
-    private fun initView() {
-        movieAdapter = MovieAdapter()
+    binding.viewWarning.tvWarning.text = message
+  }
 
-        with(binding.rvMovie) {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = movieAdapter
-        }
-    }
+  private fun showWarning(message: String) {
+    binding.wrapperContent.gone()
+    binding.viewWarning.btnWarning.visible()
+    binding.wrapperWarning.visible()
+    binding.progressBar.gone()
 
-    private fun initAction() {
-        movieAdapter.itemClickListener = { movie ->
-            startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
-        }
+    binding.viewWarning.tvWarning.text = message
+  }
 
-        binding.viewWarning.btnWarning.setOnClickListener {
-            movieViewModel.refresh()
-        }
-    }
+  @Subscribe
+  fun onReceiveEventBus(event: FavoriteEvent) {
+    if (event.type != Const.MOVIE_TYPE) return
+    if (!event.changes) return
+    if (!movieViewModel.favoritePage) return
 
-    private fun getMovies() {
-        movieViewModel.getMovies().observe(requireActivity()) {
-            movieAdapter.submitList(it)
-            movieAdapter.notifyDataSetChanged()
-        }
+    movieViewModel.refresh()
+  }
 
-        movieViewModel.movieState.observe(requireActivity()) {
-            when (it.status) {
-                Resource.Status.LOADING -> showLoading()
-                Resource.Status.SUCCESS -> showData()
-                Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
-                Resource.Status.ERROR -> showWarning(it.message.toString())
-            }
-        }
-    }
+  override fun onDestroy() {
+    if (EventBus.getDefault().isRegistered(this))
+      EventBus.getDefault().unregister(this)
+    super.onDestroy()
+  }
 
-    private fun showLoading() {
-        binding.wrapperContent.gone()
-        binding.wrapperWarning.gone()
-        binding.progressBar.visible()
-    }
-
-    private fun showData() {
-        binding.wrapperContent.visible()
-        binding.wrapperWarning.gone()
-        binding.progressBar.gone()
-    }
-
-    private fun showEmptyData(message: String) {
-        binding.wrapperContent.gone()
-        binding.viewWarning.btnWarning.gone()
-        binding.wrapperWarning.visible()
-        binding.progressBar.gone()
-
-        binding.viewWarning.tvWarning.text = message
-    }
-
-    private fun showWarning(message: String) {
-        binding.wrapperContent.gone()
-        binding.viewWarning.btnWarning.visible()
-        binding.wrapperWarning.visible()
-        binding.progressBar.gone()
-
-        binding.viewWarning.tvWarning.text = message
-    }
-
-    @Subscribe
-    fun onReceiveEventBus(event: FavoriteEvent) {
-        if (event.type != Const.MOVIE_TYPE) return
-        if (!event.changes) return
-        if (!movieViewModel.favoritePage) return
-
-        movieViewModel.refresh()
-    }
-
-    override fun onDestroy() {
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this)
-        super.onDestroy()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 }

@@ -16,9 +16,9 @@ class MovieSearchDataSourceFactory @Inject constructor(
     private val useCase: MovieUseCase
 ) : DataSource.Factory<Int, MovieVR>() {
 
-  val liveData = MutableLiveData<MovieSearchKeyedDataSource>()
+  val liveData: MutableLiveData<MovieSearchKeyedDataSource> = MutableLiveData<MovieSearchKeyedDataSource>()
 
-  var query = ""
+  private var query = ""
   var favoritePage: Boolean = false
 
   override fun create(): DataSource<Int, MovieVR> {

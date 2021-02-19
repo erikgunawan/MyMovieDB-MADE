@@ -17,24 +17,24 @@ class MovieViewModel(
     private val dataSourceFactory: MovieDataSourceFactory
 ) : ViewModel() {
 
-    var favorite: MutableLiveData<Boolean> = MutableLiveData()
+  var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
-    var favoritePage: Boolean = false
+  var favoritePage: Boolean = false
 
-    fun setFavorite(favoritePage: Boolean) {
-        this.favoritePage = favoritePage
-        dataSourceFactory.favoritePage = favoritePage
-    }
+  fun setFavorite(favoritePage: Boolean) {
+    this.favoritePage = favoritePage
+    dataSourceFactory.favoritePage = favoritePage
+  }
 
-    fun getMovies(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getMovies()
+  fun getMovies(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getMovies()
 
-    val movieState: LiveData<Resource<*>> =
-        Transformations.switchMap(
-            dataSourceFactory.liveData,
-            MovieKeyedDataSource::state
-        )
+  val movieState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          dataSourceFactory.liveData,
+          MovieKeyedDataSource::state
+      )
 
-    fun refresh() {
-        dataSourceFactory.liveData.value?.invalidate()
-    }
+  fun refresh() {
+    dataSourceFactory.liveData.value?.invalidate()
+  }
 }

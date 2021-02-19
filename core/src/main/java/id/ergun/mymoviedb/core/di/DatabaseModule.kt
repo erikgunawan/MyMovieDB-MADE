@@ -21,25 +21,25 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-    @Provides
-    @Singleton
-    fun getAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        val passphrase: ByteArray = SQLiteDatabase.getBytes("mym0v13db".toCharArray())
-        val factory = SupportFactory(passphrase)
-        return Room.databaseBuilder(
-            context.applicationContext,
-            AppDatabase::class.java,
-            "MyMovieDB.db"
-        ).fallbackToDestructiveMigration()
-            .openHelperFactory(factory)
-            .build()
-    }
+  @Provides
+  @Singleton
+  fun getAppDatabase(@ApplicationContext context: Context): AppDatabase {
+    val passphrase: ByteArray = SQLiteDatabase.getBytes("mym0v13db".toCharArray())
+    val factory = SupportFactory(passphrase)
+    return Room.databaseBuilder(
+        context.applicationContext,
+        AppDatabase::class.java,
+        "MyMovieDB.db"
+    ).fallbackToDestructiveMigration()
+        .openHelperFactory(factory)
+        .build()
+  }
 
-    @Provides
-    @Singleton
-    fun getMovieDao(appDatabase: AppDatabase): MovieDao = appDatabase.movieDao()
+  @Provides
+  @Singleton
+  fun getMovieDao(appDatabase: AppDatabase): MovieDao = appDatabase.movieDao()
 
-    @Provides
-    @Singleton
-    fun getTvShowDao(appDatabase: AppDatabase): TvShowDao = appDatabase.tvShowDao()
+  @Provides
+  @Singleton
+  fun getTvShowDao(appDatabase: AppDatabase): TvShowDao = appDatabase.tvShowDao()
 }

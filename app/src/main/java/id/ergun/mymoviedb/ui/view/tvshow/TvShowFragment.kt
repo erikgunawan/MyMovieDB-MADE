@@ -26,135 +26,132 @@ import org.greenrobot.eventbus.Subscribe
 @AndroidEntryPoint
 class TvShowFragment : Fragment() {
 
-    companion object {
-        private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
-        fun newInstance(
-            favorite: Boolean = false
-        ): TvShowFragment {
-            val fragment = TvShowFragment()
-            val argument = Bundle()
-            argument.putBoolean(ARGUMENT_FAVORITE, favorite)
-            fragment.arguments = argument
-            return fragment
-        }
+  companion object {
+    private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+    fun newInstance(
+        favorite: Boolean = false
+    ): TvShowFragment {
+      val fragment = TvShowFragment()
+      val argument = Bundle()
+      argument.putBoolean(ARGUMENT_FAVORITE, favorite)
+      fragment.arguments = argument
+      return fragment
+    }
+  }
+
+  private lateinit var binding: TvShowFragmentBinding
+
+  private val tvShowViewModel by viewModels<TvShowViewModel>()
+
+  private lateinit var tvShowAdapter: TvShowAdapter
+
+  override fun onCreateView(
+      inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    binding = TvShowFragmentBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initEventBus()
+    loadArgument()
+    initView()
+    initAction()
+    getTvShows()
+  }
+
+  private fun initEventBus() {
+    if (!EventBus.getDefault().isRegistered(this))
+      EventBus.getDefault().register(this)
+  }
+
+  private fun loadArgument() {
+    if (arguments == null) return
+
+    tvShowViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
+  }
+
+  private fun initView() {
+    tvShowAdapter = TvShowAdapter()
+
+    with(binding.rvTvShow) {
+      layoutManager = LinearLayoutManager(context)
+      setHasFixedSize(true)
+      adapter = tvShowAdapter
+    }
+  }
+
+  private fun initAction() {
+    tvShowAdapter.itemClickListener = { tvShow ->
+      startActivity(TvShowDetailActivity.newIntent(requireContext(), tvShow))
     }
 
-    private lateinit var binding: TvShowFragmentBinding
+    binding.viewWarning.btnWarning.setOnClickListener {
+      tvShowViewModel.refresh()
+    }
+  }
 
-    private val tvShowViewModel by viewModels<TvShowViewModel>()
-
-    private lateinit var tvShowAdapter: TvShowAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = TvShowFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+  private fun getTvShows() {
+    tvShowViewModel.getTvShows().observe(requireActivity()) {
+      tvShowAdapter.submitList(it)
+      tvShowAdapter.notifyDataSetChanged()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initEventBus()
-        loadArgument()
-        initView()
-        initAction()
-        getTvShows()
+    tvShowViewModel.tvShowState.observe(requireActivity()) {
+      when (it.status) {
+        Resource.Status.LOADING -> showLoading()
+        Resource.Status.SUCCESS -> showData()
+        Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
+        Resource.Status.ERROR -> showWarning(it.message.toString())
+      }
     }
+  }
 
-    private fun initEventBus() {
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this)
-    }
+  private fun showLoading() {
+    binding.wrapperContent.gone()
+    binding.wrapperWarning.gone()
+    binding.progressBar.visible()
+  }
 
-    private fun loadArgument() {
-        if (arguments == null) return
+  private fun showData() {
+    binding.wrapperContent.visible()
+    binding.wrapperWarning.gone()
+    binding.progressBar.gone()
+  }
 
-        tvShowViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
-    }
+  private fun showEmptyData(message: String) {
+    binding.wrapperContent.gone()
+    binding.viewWarning.btnWarning.gone()
+    binding.wrapperWarning.visible()
+    binding.progressBar.gone()
 
-    private fun initView() {
-        tvShowAdapter = TvShowAdapter()
+    binding.viewWarning.tvWarning.text = message
+  }
 
-        with(binding.rvTvShow) {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = tvShowAdapter
-        }
-    }
+  private fun showWarning(message: String) {
+    binding.wrapperContent.gone()
+    binding.viewWarning.btnWarning.visible()
+    binding.wrapperWarning.visible()
+    binding.progressBar.gone()
 
-    private fun initAction() {
-        tvShowAdapter.itemClickListener = { tvShow ->
-            startActivity(TvShowDetailActivity.newIntent(requireContext(), tvShow))
-        }
+    binding.viewWarning.tvWarning.text = message
+  }
 
-        binding.viewWarning.btnWarning.setOnClickListener {
-            tvShowViewModel.refresh()
-        }
-    }
+  @Subscribe
+  fun onReceiveEventBus(event: FavoriteEvent) {
+    if (event.type != Const.TV_SHOW_TYPE) return
+    if (!event.changes) return
+    if (!tvShowViewModel.favoritePage) return
 
-    private fun getTvShows() {
-        tvShowViewModel.getTvShows().observe(requireActivity()) {
-            tvShowAdapter.submitList(it)
-            tvShowAdapter.notifyDataSetChanged()
-        }
+    tvShowViewModel.refresh()
+  }
 
-        tvShowViewModel.tvShowState.observe(requireActivity()) {
-            when (it.status) {
-                Resource.Status.LOADING -> showLoading()
-                Resource.Status.SUCCESS -> showData()
-                Resource.Status.EMPTY_DATA -> showEmptyData(it.message.toString())
-                Resource.Status.ERROR -> showWarning(it.message.toString())
-            }
-        }
-    }
+  override fun onDestroy() {
+    if (EventBus.getDefault().isRegistered(this))
+      EventBus.getDefault().unregister(this)
+    super.onDestroy()
+  }
 
-    private fun showLoading() {
-        binding.wrapperContent.gone()
-        binding.wrapperWarning.gone()
-        binding.progressBar.visible()
-    }
-
-    private fun showData() {
-        binding.wrapperContent.visible()
-        binding.wrapperWarning.gone()
-        binding.progressBar.gone()
-    }
-
-    private fun showEmptyData(message: String) {
-        binding.wrapperContent.gone()
-        binding.viewWarning.btnWarning.gone()
-        binding.wrapperWarning.visible()
-        binding.progressBar.gone()
-
-        binding.viewWarning.tvWarning.text = message
-    }
-
-    private fun showWarning(message: String) {
-        binding.wrapperContent.gone()
-        binding.viewWarning.btnWarning.visible()
-        binding.wrapperWarning.visible()
-        binding.progressBar.gone()
-
-        binding.viewWarning.tvWarning.text = message
-    }
-
-    @Subscribe
-    fun onReceiveEventBus(event: FavoriteEvent) {
-        if (event.type != Const.TV_SHOW_TYPE) return
-        if (!event.changes) return
-        if (!tvShowViewModel.favoritePage) return
-
-        tvShowViewModel.refresh()
-    }
-
-    override fun onDestroy() {
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this)
-        super.onDestroy()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 }

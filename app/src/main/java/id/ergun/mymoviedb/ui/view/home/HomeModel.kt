@@ -8,5 +8,5 @@ import javax.inject.Inject
  */
 class HomeModel @Inject constructor() {
 
-  var activePage = Const.MOVIE_TYPE
+  var activePage: Int = Const.MOVIE_TYPE
 }

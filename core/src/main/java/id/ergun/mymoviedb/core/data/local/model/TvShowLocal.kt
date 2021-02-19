@@ -17,35 +17,35 @@ data class TvShowLocal(
     val posterPath: String = ""
 ) {
 
-    companion object {
-        fun mapToDomainModelList(items: MutableList<TvShowLocal>): ArrayList<TvShow> {
-            val list = arrayListOf<TvShow>()
-            items.forEach {
-                list.add(mapToDomainModel(it))
-            }
-            return list
-        }
-
-        fun mapToDomainModel(item: TvShowLocal): TvShow {
-            return TvShow(
-                id = item.id,
-                title = item.name,
-                posterPath = item.posterPath,
-                overview = item.overview,
-                voteAverage = item.voteAverage,
-                tagLine = item.tagLine
-            )
-        }
-
-        fun mapFromDomainModel(item: TvShow): TvShowLocal {
-            return TvShowLocal(
-                id = item.id ?: 0,
-                name = item.title,
-                posterPath = item.posterPath,
-                overview = item.overview,
-                voteAverage = item.voteAverage,
-                tagLine = item.tagLine
-            )
-        }
+  companion object {
+    fun mapToDomainModelList(items: MutableList<TvShowLocal>): ArrayList<TvShow> {
+      val list = arrayListOf<TvShow>()
+      items.forEach {
+        list.add(mapToDomainModel(it))
+      }
+      return list
     }
+
+    fun mapToDomainModel(item: TvShowLocal): TvShow {
+      return TvShow(
+          id = item.id,
+          title = item.name,
+          posterPath = item.posterPath,
+          overview = item.overview,
+          voteAverage = item.voteAverage,
+          tagLine = item.tagLine
+      )
+    }
+
+    fun mapFromDomainModel(item: TvShow): TvShowLocal {
+      return TvShowLocal(
+          id = item.id ?: 0,
+          name = item.title,
+          posterPath = item.posterPath,
+          overview = item.overview,
+          voteAverage = item.voteAverage,
+          tagLine = item.tagLine
+      )
+    }
+  }
 }

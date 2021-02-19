@@ -16,27 +16,27 @@ class MovieDataSourceFactory @Inject constructor(
     private val useCase: MovieUseCase
 ) : DataSource.Factory<Int, MovieVR>() {
 
-    val liveData: MutableLiveData<MovieKeyedDataSource> = MutableLiveData<MovieKeyedDataSource>()
+  val liveData: MutableLiveData<MovieKeyedDataSource> = MutableLiveData<MovieKeyedDataSource>()
 
-    var favoritePage: Boolean = false
+  var favoritePage: Boolean = false
 
-    override fun create(): DataSource<Int, MovieVR> {
-        val source = MovieKeyedDataSource(useCase)
-        source.favoritePage = favoritePage
-        liveData.postValue(source)
-        return source
-    }
+  override fun create(): DataSource<Int, MovieVR> {
+    val source = MovieKeyedDataSource(useCase)
+    source.favoritePage = favoritePage
+    liveData.postValue(source)
+    return source
+  }
 
-    fun getMovies(): LiveData<PagedList<MovieVR>> =
-        LivePagedListBuilder(this, pagedListConfig()).build()
+  fun getMovies(): LiveData<PagedList<MovieVR>> =
+      LivePagedListBuilder(this, pagedListConfig()).build()
 
-    companion object {
-        private const val PAGE_SIZE = 10
+  companion object {
+    private const val PAGE_SIZE = 10
 
-        fun pagedListConfig(): PagedList.Config = PagedList.Config.Builder()
-            .setInitialLoadSizeHint(PAGE_SIZE)
-            .setPageSize(PAGE_SIZE)
-            .setEnablePlaceholders(true)
-            .build()
-    }
+    fun pagedListConfig(): PagedList.Config = PagedList.Config.Builder()
+        .setInitialLoadSizeHint(PAGE_SIZE)
+        .setPageSize(PAGE_SIZE)
+        .setEnablePlaceholders(true)
+        .build()
+  }
 }

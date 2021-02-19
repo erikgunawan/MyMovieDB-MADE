@@ -12,14 +12,14 @@ import id.ergun.mymoviedb.favorite.view.FavoriteActivity
 @Component(dependencies = [FavoriteModuleDependencies::class])
 interface FavoriteActivityComponent {
 
-    fun inject(activity: FavoriteActivity)
+  fun inject(activity: FavoriteActivity)
 
 
-    @Component.Builder
-    interface Builder {
-        fun context(@BindsInstance context: Context): Builder
-        fun appDependencies(mapsModuleDependencies: FavoriteModuleDependencies): Builder
-        fun build(): FavoriteActivityComponent
-    }
+  @Component.Builder
+  interface Builder {
+    fun context(@BindsInstance context: Context): Builder
+    fun appDependencies(mapsModuleDependencies: FavoriteModuleDependencies): Builder
+    fun build(): FavoriteActivityComponent
+  }
 
 }

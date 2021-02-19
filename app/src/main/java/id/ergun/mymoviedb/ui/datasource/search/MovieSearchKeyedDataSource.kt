@@ -21,7 +21,7 @@ class MovieSearchKeyedDataSource(
 
   var state: MutableLiveData<Resource<*>> = MutableLiveData()
 
-  var query = ""
+  var query: String = ""
   var favoritePage: Boolean = false
 
   private val job = Job()
