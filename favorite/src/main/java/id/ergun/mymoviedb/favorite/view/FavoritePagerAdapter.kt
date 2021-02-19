@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.ergun.mymoviedb.favorite.view
 
 import android.content.Context

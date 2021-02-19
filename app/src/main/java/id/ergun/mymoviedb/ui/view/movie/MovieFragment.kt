@@ -153,4 +153,8 @@ class MovieFragment : Fragment() {
             EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
 }

@@ -12,8 +12,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import id.ergun.mymoviedb.core.BuildConfig.BASE_URL
 import id.ergun.mymoviedb.core.data.remote.ApiService
-import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -37,17 +37,26 @@ object NetworkModule {
     @Singleton
     fun provideOkHttp(@ApplicationContext context: Context): OkHttpClient {
         val okBuilder = OkHttpClient.Builder()
-        val certificatePinner = CertificatePinner.Builder()
-            .add(BASE_URL, "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
-            .build()
-        okBuilder.addInterceptor(
-            ChuckerInterceptor.Builder(context)
+
+        val httpLogging = HttpLoggingInterceptor()
+        httpLogging.level = HttpLoggingInterceptor.Level.BODY
+
+//        val certificatePinner = CertificatePinner.Builder()
+//            .add(BASE_URL, "sha256/mRjXIIcEJSE3kJl4YNqqfOS+COj4KG3VJPSJo6ymApk=")
+//            .add(BASE_URL, "sha256/FEzVOUp4dF3gI0ZVPRJhFbSJVXR+uQmMH65xhs1glH4=")
+//            .add(BASE_URL, "sha256/Y9mvm0exBk1JoQ57f9Vm28jKo5lFm/woKcVxrYxu80o=")
+//            .build()
+
+        okBuilder
+            .addInterceptor(httpLogging)
+            .addInterceptor(ChuckerInterceptor.Builder(context)
                 .collector(ChuckerCollector(context))
                 .maxContentLength(250000L)
                 .redactHeaders(emptySet())
                 .alwaysReadResponseBody(false)
                 .build()
-        ).certificatePinner(certificatePinner)
+            )
+//            .certificatePinner(certificatePinner)
         return okBuilder.build()
     }
 

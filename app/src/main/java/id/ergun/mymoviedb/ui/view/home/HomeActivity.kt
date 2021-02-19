@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.databinding.HomeActivityBinding
 import id.ergun.mymoviedb.ui.view.movie.MovieFragment
+import id.ergun.mymoviedb.ui.view.movie.search.SearchActivity
 import id.ergun.mymoviedb.ui.view.tvshow.TvShowFragment
 
 /**
@@ -72,5 +74,19 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         }
         return loadFragment(fragment)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_search -> {
+                startActivity(SearchActivity.newIntent(this))
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
