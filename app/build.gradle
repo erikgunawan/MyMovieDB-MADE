@@ -22,10 +22,6 @@ android {
     vectorDrawables.useSupportLibrary = true
 
   }
-  
-  dexOptions {
-    javaMaxHeapSize "4g"
-  }
 
   lintOptions {
     disable "ObsoleteLintCustomCheck"
