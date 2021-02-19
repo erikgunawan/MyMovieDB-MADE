@@ -8,9 +8,7 @@ import id.ergun.mymoviedb.core.data.remote.getResult
 import id.ergun.mymoviedb.core.data.remote.model.MovieResponse
 import id.ergun.mymoviedb.core.domain.model.Movie
 import id.ergun.mymoviedb.core.util.Resource
-import id.ergun.mymoviedb.core.util.testing.EspressoIdlingResource
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -21,7 +19,6 @@ class MovieRepositoryImpl @Inject constructor(
     private val localData: MovieDao
 ) : MovieRepository {
     override suspend fun getMovies(page: Int): Resource<ArrayList<Movie>> {
-        EspressoIdlingResource.increment()
         return try {
             remoteData.getMovies(page = page).getResult {
                 MovieResponse.mapToDomainModelList(it)
@@ -32,9 +29,19 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovieDetail(id: Int): Resource<Movie> {
-        EspressoIdlingResource.increment()
         return remoteData.getMovieDetail(id = id.toString()).getResult {
             MovieResponse.mapToDomainModel(it)
+        }
+    }
+
+    override suspend fun searchMovie(query: String, page: Int): Resource<ArrayList<Movie>> {
+        return try {
+            remoteData.searchMovie(query = query, page = page).getResult {
+                MovieResponse.mapToDomainModelList(it)
+            }
+        } catch (exception: Exception) {
+            Timber.e(exception)
+            Resource.error("Terjadi kesalahan1")
         }
     }
 

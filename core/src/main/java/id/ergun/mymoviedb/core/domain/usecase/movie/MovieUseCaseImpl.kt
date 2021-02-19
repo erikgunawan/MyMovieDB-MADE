@@ -1,8 +1,8 @@
 package id.ergun.mymoviedb.core.domain.usecase.movie
 
 import id.ergun.mymoviedb.core.data.repository.movie.MovieRepository
-import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.domain.model.Movie
+import id.ergun.mymoviedb.core.util.Resource
 import javax.inject.Inject
 
 /**
@@ -15,6 +15,10 @@ class MovieUseCaseImpl @Inject constructor(private val repository: MovieReposito
 
     override suspend fun getMovieDetail(id: Int): Resource<Movie> {
         return repository.getMovieDetail(id)
+    }
+
+    override suspend fun searchMovie(query: String, page: Int): Resource<ArrayList<Movie>> {
+        return repository.searchMovie(query, page)
     }
 
     override suspend fun getFavoriteMovies(): Resource<ArrayList<Movie>> {

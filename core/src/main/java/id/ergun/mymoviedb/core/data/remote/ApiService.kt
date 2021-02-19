@@ -26,6 +26,13 @@ interface ApiService {
         @Query(API_KEY) apiKey: String = TMDB_API_KEY
     ): Response<MovieResponse.Result>
 
+    @GET("3/search/movie")
+    suspend fun searchMovie(
+        @Query(API_KEY) apiKey: String = TMDB_API_KEY,
+        @Query("query") query: String?,
+        @Query("page") page: Int?
+    ): Response<MovieResponse>
+
     @GET("3/discover/tv")
     suspend fun getTvShows(
         @Query(API_KEY) apiKey: String = TMDB_API_KEY,

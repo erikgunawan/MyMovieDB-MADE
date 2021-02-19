@@ -1,7 +1,6 @@
 package id.ergun.mymoviedb.core.data.remote
 
 import id.ergun.mymoviedb.core.util.Resource
-import id.ergun.mymoviedb.core.util.testing.EspressoIdlingResource
 import retrofit2.Response
 import timber.log.Timber
 
@@ -26,12 +25,10 @@ fun <T, R> Response<T>.getResult(transform: (T) -> (R)): Resource<R> {
 }
 
 private fun <T> success(body: T): Resource<T> {
-    EspressoIdlingResource.decrement()
     return Resource.success(body)
 }
 
 private fun <T> error(message: String): Resource<T> {
-    EspressoIdlingResource.decrement()
     Timber.e(message)
     return Resource.error(message)
 }

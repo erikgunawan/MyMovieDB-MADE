@@ -8,7 +8,6 @@ import id.ergun.mymoviedb.core.data.remote.getResult
 import id.ergun.mymoviedb.core.data.remote.model.TvShowResponse
 import id.ergun.mymoviedb.core.domain.model.TvShow
 import id.ergun.mymoviedb.core.util.Resource
-import id.ergun.mymoviedb.core.util.testing.EspressoIdlingResource
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,7 +19,6 @@ class TvShowRepositoryImpl @Inject constructor(
     private val localData: TvShowDao
 ) : TvShowRepository {
     override suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>> {
-        EspressoIdlingResource.increment()
         return try {
             remoteData.getTvShows(page = page).getResult {
                 TvShowResponse.mapToDomainModelList(it)
@@ -31,7 +29,6 @@ class TvShowRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTvShowDetail(id: Int): Resource<TvShow> {
-        EspressoIdlingResource.increment()
         return remoteData.getTvShowDetail(id = id.toString()).getResult {
             TvShowResponse.mapToDomainModel(it)
         }

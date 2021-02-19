@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.databinding.HomeActivityBinding
 import id.ergun.mymoviedb.ui.view.movie.MovieFragment
 import id.ergun.mymoviedb.ui.view.movie.search.SearchActivity
 import id.ergun.mymoviedb.ui.view.tvshow.TvShowFragment
+import javax.inject.Inject
 
 /**
  * Created by alfacart on 21/10/20.
@@ -23,6 +25,9 @@ import id.ergun.mymoviedb.ui.view.tvshow.TvShowFragment
 class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: HomeActivityBinding
+
+    @Inject
+    lateinit var model: HomeModel
 
     companion object {
         fun newIntent(
@@ -65,8 +70,14 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         if (binding.bnvMain.selectedItemId == item.itemId) return false
 
         when (item.itemId) {
-            R.id.action_movies -> fragment = MovieFragment.newInstance()
-            R.id.action_tv_shows -> fragment = TvShowFragment.newInstance()
+            R.id.action_movies -> {
+                model.activePage = Const.MOVIE_TYPE
+                fragment = MovieFragment.newInstance()
+            }
+            R.id.action_tv_shows -> {
+                model.activePage = Const.TV_SHOW_TYPE
+                fragment = TvShowFragment.newInstance()
+            }
             R.id.action_favorites -> {
                 val uri = Uri.parse("mymoviedb://favorites")
                 startActivity(Intent(Intent.ACTION_VIEW, uri))
@@ -79,7 +90,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                startActivity(SearchActivity.newIntent(this))
+                startActivity(SearchActivity.newIntent(this, model.activePage))
             }
         }
         return super.onOptionsItemSelected(item)

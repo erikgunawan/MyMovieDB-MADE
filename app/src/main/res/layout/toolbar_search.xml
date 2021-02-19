@@ -8,13 +8,25 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:elevation="0dp">
 
-        <SearchView
-            android:id="@+id/simpleSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:showAsAction="always"
-            app:iconifiedByDefault="true"
-            android:iconifiedByDefault="false"
-            android:background="@color/colorPrimaryDark"
-            android:queryHint="Search Here" />
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+      app:titleTextColor="#ffffff"
+      android:gravity="center"
+      android:background="@color/colorPrimaryDark">
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/simpleSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_rounded_primary"
+        android:layout_margin="8dp"
+        app:showAsAction="always"
+        app:iconifiedByDefault="false"
+        android:iconifiedByDefault="false"
+        app:searchHintIcon="@null"
+        app:searchIcon="@null"
+        android:queryHint="Search Here" />
+  </androidx.appcompat.widget.Toolbar>
 </com.google.android.material.appbar.AppBarLayout>
