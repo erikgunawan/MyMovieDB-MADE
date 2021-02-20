@@ -11,6 +11,7 @@
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
+#noinspection ShrinkerUnresolvedReference
 -keep class com.google.gson.examples.android.model.** { <fields>; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,

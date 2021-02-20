@@ -2,7 +2,6 @@ package id.ergun.mymoviedb.core.domain.usecase.tvshow
 
 import id.ergun.mymoviedb.core.data.repository.tvshow.TvShowRepository
 import id.ergun.mymoviedb.core.domain.model.Movie
-import id.ergun.mymoviedb.core.domain.model.TvShow
 import id.ergun.mymoviedb.core.util.Resource
 import javax.inject.Inject
 

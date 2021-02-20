@@ -26,7 +26,6 @@
     <activity android:name=".ui.view.movie.search.SearchActivity"/>
 
     <activity android:name=".ui.view.movie.detail.MovieDetailActivity"/>
-    <activity android:name=".ui.view.tvshow.detail.TvShowDetailActivity"/>
 
   </application>
 

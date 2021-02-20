@@ -21,7 +21,7 @@ class MovieViewModel(
     private val tvShowDataSourceFactory: TvShowDataSourceFactory
 ) : ViewModel() {
 
-  var pageType = Const.MOVIE_TYPE
+  var pageType: Int = Const.MOVIE_TYPE
 
   var favorite: MutableLiveData<Boolean> = MutableLiveData()
 

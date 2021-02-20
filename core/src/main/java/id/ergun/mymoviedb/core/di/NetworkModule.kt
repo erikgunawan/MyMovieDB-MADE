@@ -42,11 +42,11 @@ object NetworkModule {
     val httpLogging = HttpLoggingInterceptor()
     httpLogging.level = HttpLoggingInterceptor.Level.BODY
 
-        val certificatePinner = CertificatePinner.Builder()
-            .add("api.themoviedb.org", "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
-            .add("api.themoviedb.org", "sha256/JSMzqOOrtyOT1kmau6zKhgT676hGgczD5VMdRMyJZFA=")
-            .add("api.themoviedb.org", "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
-            .build()
+    val certificatePinner = CertificatePinner.Builder()
+        .add("api.themoviedb.org", "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
+        .add("api.themoviedb.org", "sha256/JSMzqOOrtyOT1kmau6zKhgT676hGgczD5VMdRMyJZFA=")
+        .add("api.themoviedb.org", "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+        .build()
 
     okBuilder
         .addInterceptor(httpLogging)
@@ -57,7 +57,7 @@ object NetworkModule {
             .alwaysReadResponseBody(false)
             .build()
         )
-            .certificatePinner(certificatePinner)
+        .certificatePinner(certificatePinner)
     return okBuilder.build()
   }
 

@@ -21,7 +21,7 @@ class MovieDetailViewModel @ViewModelInject constructor(
     private val tvShowUseCase: TvShowUseCase
 ) : ViewModel() {
 
-  var pageType = Const.MOVIE_TYPE
+  var pageType: Int = Const.MOVIE_TYPE
 
   var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -35,7 +35,7 @@ class MovieDetailViewModel @ViewModelInject constructor(
     this.movie = movie
   }
 
-  fun getMovieDetail(id: Int) =
+  fun getMovieDetail(id: Int): LiveData<Resource<Movie>> =
       if (pageType == Const.MOVIE_TYPE)
         liveData { emit(movieUseCase.getMovieDetail(id)) }
       else

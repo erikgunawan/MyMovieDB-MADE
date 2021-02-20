@@ -3,6 +3,7 @@
 -dontwarn com.squareup.haha.perflib.**
 -dontwarn com.squareup.haha.trove.**
 -dontwarn com.squareup.leakcanary.**
+#noinspection ShrinkerUnresolvedReference
 -keep class com.squareup.haha.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
 -dontwarn android.app.Notification

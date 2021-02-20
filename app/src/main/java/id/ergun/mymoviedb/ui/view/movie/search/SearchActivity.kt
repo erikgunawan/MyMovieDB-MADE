@@ -15,7 +15,6 @@ import id.ergun.mymoviedb.core.util.visible
 import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.databinding.SearchActivityBinding
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
-import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
 import id.ergun.mymoviedb.ui.viewmodel.search.SearchViewModel
 
 /**
@@ -82,10 +81,7 @@ class SearchActivity : AppCompatActivity() {
 
   private fun initAction() {
     movieAdapter.itemClickListener = { movie ->
-      if (movieViewModel.pageType == Const.MOVIE_TYPE)
-        startActivity(MovieDetailActivity.newIntent(this, movieViewModel.pageType, movie))
-      else
-        startActivity(TvShowDetailActivity.newIntent(this, movie))
+      startActivity(MovieDetailActivity.newIntent(this, movieViewModel.pageType, movie))
     }
 
     binding.viewWarning.btnWarning.setOnClickListener {

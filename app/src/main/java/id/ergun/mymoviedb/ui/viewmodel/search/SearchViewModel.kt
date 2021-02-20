@@ -23,29 +23,31 @@ class SearchViewModel @ViewModelInject constructor(
 
   var pageType: Int = Const.MOVIE_TYPE
 
-  fun searchMovie(query: String): LiveData<PagedList<MovieVR>> = movieDataSourceFactory.searchMovie(
+  private fun searchMovie(
+      query: String): LiveData<PagedList<MovieVR>> = movieDataSourceFactory.searchMovie(
       query)
 
-  fun searchTvShow(query: String): LiveData<PagedList<MovieVR>> = tvShowDataSourceFactory.searchTvShow(
+  private fun searchTvShow(
+      query: String): LiveData<PagedList<MovieVR>> = tvShowDataSourceFactory.searchTvShow(
       query)
 
   fun search(query: String): LiveData<PagedList<MovieVR>> =
       if (pageType == Const.MOVIE_TYPE) searchMovie(query)
       else searchTvShow(query)
 
-  val movieState: LiveData<Resource<*>> =
+  private val movieState: LiveData<Resource<*>> =
       Transformations.switchMap(
           movieDataSourceFactory.liveData,
           MovieSearchKeyedDataSource::state
       )
 
-  val tvShowState: LiveData<Resource<*>> =
+  private val tvShowState: LiveData<Resource<*>> =
       Transformations.switchMap(
           tvShowDataSourceFactory.liveData,
           TvShowSearchKeyedDataSource::state
       )
 
-  val state = if (pageType == Const.MOVIE_TYPE) movieState else tvShowState
+  val state: LiveData<Resource<*>> = if (pageType == Const.MOVIE_TYPE) movieState else tvShowState
 
   fun refresh() {
     movieDataSourceFactory.liveData.value?.invalidate()

@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.EntryPointAccessors
+import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
 import id.ergun.mymoviedb.core.util.gone
+import id.ergun.mymoviedb.core.util.loadImage
 import id.ergun.mymoviedb.core.util.visible
 import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.databinding.MovieFragmentBinding
@@ -91,7 +93,8 @@ class MovieFragment : Fragment() {
   private fun loadArgument() {
     if (arguments == null) return
 
-    movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE) ?: Const.MOVIE_TYPE
+    movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE)
+        ?: Const.MOVIE_TYPE
     movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
   }
 
@@ -149,6 +152,7 @@ class MovieFragment : Fragment() {
     binding.wrapperWarning.visible()
     binding.progressBar.gone()
 
+    binding.viewWarning.ivWarning.loadImage(R.drawable.img_empty)
     binding.viewWarning.tvWarning.text = message
   }
 
@@ -158,12 +162,13 @@ class MovieFragment : Fragment() {
     binding.wrapperWarning.visible()
     binding.progressBar.gone()
 
+    binding.viewWarning.ivWarning.loadImage(R.drawable.img_error)
     binding.viewWarning.tvWarning.text = message
   }
 
   @Subscribe
   fun onReceiveEventBus(event: FavoriteEvent) {
-    if (event.type != Const.MOVIE_TYPE || event.type != Const.TV_SHOW_TYPE) return
+//    if (event.type != Const.MOVIE_TYPE || event.type != Const.TV_SHOW_TYPE) return
     if (!event.changes) return
     if (!movieViewModel.favoritePage) return
 

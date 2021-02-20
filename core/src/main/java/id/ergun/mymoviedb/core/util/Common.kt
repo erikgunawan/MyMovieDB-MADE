@@ -3,6 +3,7 @@ package id.ergun.mymoviedb.core.util
 import android.app.Activity
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.core.app.ShareCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -26,6 +27,20 @@ fun ImageView.loadImage(
   builder.into(this)
 }
 
+fun ImageView.loadImage(
+    @DrawableRes url: Int,
+    errorDrawable: Int = R.drawable.ic_image_placeholder_error,
+    progressDrawable: Int? = null
+) {
+  val requestOptions = RequestOptions().build(errorDrawable, progressDrawable)
+
+  val builder = Glide.with(this.context)
+      .load(url)
+      .apply(requestOptions)
+
+  builder.into(this)
+}
+
 fun RequestOptions.build(
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
     progressDrawable: Int? = null
@@ -37,11 +52,11 @@ fun RequestOptions.build(
   return this
 }
 
-fun share(activity: Activity, type: String, id: String) {
+fun share(activity: Activity, type: Int, id: String) {
 
   val title = when (type) {
-    "tv" -> activity.getString(R.string.share_tv_show_title)
-    "movie" -> activity.getString(R.string.share_movie_title)
+    Const.TV_SHOW_TYPE -> activity.getString(R.string.share_tv_show_title)
+    Const.MOVIE_TYPE -> activity.getString(R.string.share_movie_title)
     else -> activity.getString(R.string.share)
   }
 

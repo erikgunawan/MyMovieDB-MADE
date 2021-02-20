@@ -70,7 +70,8 @@ class MovieFragment : Fragment() {
   private fun loadArgument() {
     if (arguments == null) return
 
-    movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE) ?: Const.MOVIE_TYPE
+    movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE)
+        ?: Const.MOVIE_TYPE
   }
 
   private fun initView() {
@@ -141,7 +142,7 @@ class MovieFragment : Fragment() {
 
   @Subscribe
   fun onReceiveEventBus(event: FavoriteEvent) {
-    if (event.type != Const.MOVIE_TYPE) return
+//    if (event.type != Const.MOVIE_TYPE) return
     if (!event.changes) return
     if (!movieViewModel.favoritePage) return
 

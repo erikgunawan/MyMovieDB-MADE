@@ -47,7 +47,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
       title = ""
     }
 
-    loadFragment(MovieFragment())
+    loadFragment(MovieFragment.newInstance(model.activePage))
 
     binding.bnvMain.setOnNavigationItemSelectedListener(this)
   }

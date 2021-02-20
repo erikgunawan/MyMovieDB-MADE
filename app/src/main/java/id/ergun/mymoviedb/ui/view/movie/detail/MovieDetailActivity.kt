@@ -33,8 +33,8 @@ class MovieDetailActivity : AppCompatActivity() {
   private val viewModel by viewModels<MovieDetailViewModel>()
 
   companion object {
-    const val EXTRA_MOVIE = "EXTRA_MOVIE"
-    const val EXTRA_PAGE_TYPE = "EXTRA_PAGE_TYPE"
+    const val EXTRA_MOVIE: String = "EXTRA_MOVIE"
+    const val EXTRA_PAGE_TYPE: String = "EXTRA_PAGE_TYPE"
     fun newIntent(
         context: Context, pageType: Int, movie: Movie
     ): Intent {
@@ -115,7 +115,6 @@ class MovieDetailActivity : AppCompatActivity() {
     viewModel.addToFavorite(viewModel.movie).observe(this) {
       EventBus.getDefault().post(
           FavoriteEvent(
-              viewModel.pageType,
               true
           )
       )
@@ -129,7 +128,6 @@ class MovieDetailActivity : AppCompatActivity() {
     viewModel.removeFromFavorite(viewModel.movie.id ?: 0).observe(this) {
       EventBus.getDefault().post(
           FavoriteEvent(
-              viewModel.pageType,
               true
           )
       )
@@ -156,7 +154,7 @@ class MovieDetailActivity : AppCompatActivity() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       android.R.id.home -> finish()
-      R.id.action_share -> share(this, "movie", viewModel.movie.id.toString())
+      R.id.action_share -> share(this, viewModel.pageType, viewModel.movie.id.toString())
     }
     return super.onOptionsItemSelected(item)
   }

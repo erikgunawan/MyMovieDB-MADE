@@ -52,5 +52,6 @@ class FavoriteFragment : Fragment() {
     val sectionsPagerAdapter = FavoritePagerAdapter(requireContext(), childFragmentManager)
     binding.viewPager.adapter = sectionsPagerAdapter
     binding.tabs.setupWithViewPager(binding.viewPager)
+    binding.viewPager.offscreenPageLimit = 2
   }
 }
