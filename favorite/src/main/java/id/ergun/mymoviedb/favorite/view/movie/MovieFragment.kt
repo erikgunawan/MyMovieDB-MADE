@@ -163,7 +163,7 @@ class MovieFragment : Fragment() {
 
   @Subscribe
   fun onReceiveEventBus(event: FavoriteEvent) {
-    if (event.type != Const.MOVIE_TYPE) return
+    if (event.type != Const.MOVIE_TYPE || event.type != Const.TV_SHOW_TYPE) return
     if (!event.changes) return
     if (!movieViewModel.favoritePage) return
 

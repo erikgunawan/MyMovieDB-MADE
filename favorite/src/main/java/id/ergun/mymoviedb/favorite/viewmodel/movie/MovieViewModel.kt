@@ -10,12 +10,15 @@ import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.view.movie.MovieVR
 import id.ergun.mymoviedb.ui.datasource.movie.MovieDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.movie.MovieKeyedDataSource
+import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
+import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
 
 /**
  * Created by alfacart on 21/10/20.
  */
 class MovieViewModel(
-    private val dataSourceFactory: MovieDataSourceFactory
+    private val movieDataSourceFactory: MovieDataSourceFactory,
+    private val tvShowDataSourceFactory: TvShowDataSourceFactory
 ) : ViewModel() {
 
   var pageType = Const.MOVIE_TYPE
@@ -26,18 +29,34 @@ class MovieViewModel(
 
   fun setFavorite(favoritePage: Boolean) {
     this.favoritePage = favoritePage
-    dataSourceFactory.favoritePage = favoritePage
+    if (pageType == Const.MOVIE_TYPE)
+      movieDataSourceFactory.favoritePage = favoritePage
+    else
+      tvShowDataSourceFactory.favoritePage = favoritePage
   }
 
-  fun getMovies(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getMovies()
+  fun getMovies(): LiveData<PagedList<MovieVR>> =
+      if (pageType == Const.MOVIE_TYPE)
+        movieDataSourceFactory.getMovies()
+      else
+        tvShowDataSourceFactory.getTvShows()
 
   val movieState: LiveData<Resource<*>> =
-      Transformations.switchMap(
-          dataSourceFactory.liveData,
-          MovieKeyedDataSource::state
-      )
+      if (pageType == Const.MOVIE_TYPE)
+        Transformations.switchMap(
+            movieDataSourceFactory.liveData,
+            MovieKeyedDataSource::state
+        )
+      else
+        Transformations.switchMap(
+            tvShowDataSourceFactory.liveData,
+            TvShowKeyedDataSource::state
+        )
 
   fun refresh() {
-    dataSourceFactory.liveData.value?.invalidate()
+    if (pageType == Const.MOVIE_TYPE)
+      movieDataSourceFactory.liveData.value?.invalidate()
+    else
+      tvShowDataSourceFactory.liveData.value?.invalidate()
   }
 }

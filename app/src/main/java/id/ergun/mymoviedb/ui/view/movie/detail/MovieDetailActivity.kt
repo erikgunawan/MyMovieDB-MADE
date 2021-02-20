@@ -115,7 +115,7 @@ class MovieDetailActivity : AppCompatActivity() {
     viewModel.addToFavorite(viewModel.movie).observe(this) {
       EventBus.getDefault().post(
           FavoriteEvent(
-              Const.MOVIE_TYPE,
+              viewModel.pageType,
               true
           )
       )
@@ -129,7 +129,7 @@ class MovieDetailActivity : AppCompatActivity() {
     viewModel.removeFromFavorite(viewModel.movie.id ?: 0).observe(this) {
       EventBus.getDefault().post(
           FavoriteEvent(
-              Const.MOVIE_TYPE,
+              viewModel.pageType,
               true
           )
       )

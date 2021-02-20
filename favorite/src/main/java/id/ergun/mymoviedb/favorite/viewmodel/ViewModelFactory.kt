@@ -8,8 +8,9 @@ import id.ergun.mymoviedb.ui.datasource.movie.MovieDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
 import javax.inject.Inject
 
-class ViewModelFactory<V> @Inject constructor(
-    private val dataSourceFactory: V
+class ViewModelFactory<V, U> @Inject constructor(
+    private val movieDataSourceFactory: V,
+    private val tvShowDataSourceFactory: U
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -17,10 +18,10 @@ class ViewModelFactory<V> @Inject constructor(
   override fun <T : ViewModel> create(modelClass: Class<T>): T =
       when {
         modelClass.isAssignableFrom(MovieViewModel::class.java) -> {
-          MovieViewModel(dataSourceFactory as MovieDataSourceFactory) as T
+          MovieViewModel(movieDataSourceFactory as MovieDataSourceFactory, tvShowDataSourceFactory as TvShowDataSourceFactory) as T
         }
         modelClass.isAssignableFrom(TvShowViewModel::class.java) -> {
-          TvShowViewModel(dataSourceFactory as TvShowDataSourceFactory) as T
+          TvShowViewModel(tvShowDataSourceFactory as TvShowDataSourceFactory) as T
         }
         else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
       }
