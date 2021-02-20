@@ -2,7 +2,7 @@ package id.ergun.mymoviedb.core.data.local.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import id.ergun.mymoviedb.core.domain.model.TvShow
+import id.ergun.mymoviedb.core.domain.model.Movie
 
 /**
  * Created by alfacart on 21/10/20.
@@ -18,16 +18,16 @@ data class TvShowLocal(
 ) {
 
   companion object {
-    fun mapToDomainModelList(items: MutableList<TvShowLocal>): ArrayList<TvShow> {
-      val list = arrayListOf<TvShow>()
+    fun mapToDomainModelList(items: MutableList<TvShowLocal>): ArrayList<Movie> {
+      val list = arrayListOf<Movie>()
       items.forEach {
         list.add(mapToDomainModel(it))
       }
       return list
     }
 
-    fun mapToDomainModel(item: TvShowLocal): TvShow {
-      return TvShow(
+    fun mapToDomainModel(item: TvShowLocal): Movie {
+      return Movie(
           id = item.id,
           title = item.name,
           posterPath = item.posterPath,
@@ -37,7 +37,7 @@ data class TvShowLocal(
       )
     }
 
-    fun mapFromDomainModel(item: TvShow): TvShowLocal {
+    fun mapFromDomainModel(item: Movie): TvShowLocal {
       return TvShowLocal(
           id = item.id ?: 0,
           name = item.title,

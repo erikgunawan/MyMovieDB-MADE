@@ -3,7 +3,6 @@ package id.ergun.mymoviedb.core.data.remote
 import id.ergun.mymoviedb.core.BuildConfig.TMDB_API_KEY
 import id.ergun.mymoviedb.core.data.Const.API_KEY
 import id.ergun.mymoviedb.core.data.remote.model.MovieResponse
-import id.ergun.mymoviedb.core.data.remote.model.TvShowResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -37,18 +36,18 @@ interface ApiService {
   suspend fun getTvShows(
       @Query(API_KEY) apiKey: String = TMDB_API_KEY,
       @Query("page") page: Int = 1
-  ): Response<TvShowResponse>
+  ): Response<MovieResponse>
 
   @GET("3/tv/{id}")
   suspend fun getTvShowDetail(
       @Path("id") id: String,
       @Query(API_KEY) apiKey: String = TMDB_API_KEY
-  ): Response<TvShowResponse.Result>
+  ): Response<MovieResponse.Result>
 
   @GET("3/search/tv")
   suspend fun searchTvShow(
       @Query(API_KEY) apiKey: String = TMDB_API_KEY,
       @Query("query") query: String?,
       @Query("page") page: Int?
-  ): Response<TvShowResponse>
+  ): Response<MovieResponse>
 }

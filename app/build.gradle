@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.squareup.leakcanary.deobfuscation'
+
 apply from: '../shared_dependencies.gradle'
 
 android {
@@ -63,10 +65,17 @@ dependencies {
   implementation project(":core")
   implementation fileTree(dir: "libs", include: ["*.jar"])
 
-  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
+  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
   //ui
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$arch_lifecycle_version"
 
+}
+
+leakCanary {
+  // LeakCanary needs to know which variants have obfuscation turned on
+  filterObfuscatedVariants { variant ->
+    variant.name == "debug"
+  }
 }

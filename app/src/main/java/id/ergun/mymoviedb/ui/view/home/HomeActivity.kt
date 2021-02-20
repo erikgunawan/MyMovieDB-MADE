@@ -15,7 +15,6 @@ import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.databinding.HomeActivityBinding
 import id.ergun.mymoviedb.ui.view.movie.MovieFragment
 import id.ergun.mymoviedb.ui.view.movie.search.SearchActivity
-import id.ergun.mymoviedb.ui.view.tvshow.TvShowFragment
 import javax.inject.Inject
 
 /**
@@ -72,11 +71,11 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     when (item.itemId) {
       R.id.action_movies -> {
         model.activePage = Const.MOVIE_TYPE
-        fragment = MovieFragment.newInstance()
+        fragment = MovieFragment.newInstance(model.activePage)
       }
       R.id.action_tv_shows -> {
         model.activePage = Const.TV_SHOW_TYPE
-        fragment = TvShowFragment.newInstance()
+        fragment = MovieFragment.newInstance(model.activePage)
       }
       R.id.action_favorites -> {
         val uri = Uri.parse("mymoviedb://favorites")

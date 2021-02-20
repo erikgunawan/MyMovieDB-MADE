@@ -6,7 +6,7 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
-import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
+import id.ergun.mymoviedb.core.view.movie.MovieVR
 import javax.inject.Inject
 
 /**
@@ -14,14 +14,14 @@ import javax.inject.Inject
  */
 class TvShowSearchDataSourceFactory @Inject constructor(
     private val useCase: TvShowUseCase
-) : DataSource.Factory<Int, TvShowVR>() {
+) : DataSource.Factory<Int, MovieVR>() {
 
   val liveData: MutableLiveData<TvShowSearchKeyedDataSource> = MutableLiveData<TvShowSearchKeyedDataSource>()
 
   private var query = ""
   var favoritePage: Boolean = false
 
-  override fun create(): DataSource<Int, TvShowVR> {
+  override fun create(): DataSource<Int, MovieVR> {
     val source = TvShowSearchKeyedDataSource(useCase)
     source.favoritePage = favoritePage
     source.query = query
@@ -29,7 +29,7 @@ class TvShowSearchDataSourceFactory @Inject constructor(
     return source
   }
 
-  fun searchTvShow(query: String): LiveData<PagedList<TvShowVR>> {
+  fun searchTvShow(query: String): LiveData<PagedList<MovieVR>> {
     this.query = query
     return LivePagedListBuilder(this, pagedListConfig()).build()
   }

@@ -5,7 +5,7 @@ import androidx.paging.PageKeyedDataSource
 import id.ergun.mymoviedb.core.data.Const
 import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.core.util.Resource
-import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
+import id.ergun.mymoviedb.core.view.movie.MovieVR
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,7 +18,7 @@ import timber.log.Timber
 
 class TvShowKeyedDataSource(
     private val useCase: TvShowUseCase
-) : PageKeyedDataSource<Int, TvShowVR>() {
+) : PageKeyedDataSource<Int, MovieVR>() {
 
   var state: MutableLiveData<Resource<*>> = MutableLiveData()
 
@@ -29,7 +29,7 @@ class TvShowKeyedDataSource(
 
   override fun loadInitial(
       params: LoadInitialParams<Int>,
-      callback: LoadInitialCallback<Int, TvShowVR>
+      callback: LoadInitialCallback<Int, MovieVR>
   ) {
     if (favoritePage) {
       scope.launch {
@@ -38,7 +38,7 @@ class TvShowKeyedDataSource(
           if (response.status == Resource.Status.SUCCESS && !response.data.isNullOrEmpty()) {
             state.postValue(response)
             val items =
-                TvShowVR.transform(response.data ?: arrayListOf()).toMutableList()
+                MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
             callback.onResult(items, null, 2)
             return@launch
           }
@@ -58,7 +58,7 @@ class TvShowKeyedDataSource(
         val response = useCase.getTvShows(page = Const.INITIAL_PAGE)
         state.postValue(response)
         if (response.status == Resource.Status.SUCCESS) {
-          val items = TvShowVR.transform(response.data ?: arrayListOf()).toMutableList()
+          val items = MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
           callback.onResult(items, null, 2)
         }
       } catch (exception: Exception) {
@@ -68,11 +68,11 @@ class TvShowKeyedDataSource(
     }
   }
 
-  override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, TvShowVR>) {
+  override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieVR>) {
     // not implemented
   }
 
-  override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, TvShowVR>) {
+  override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieVR>) {
     if (favoritePage) {
       return
     }
@@ -81,7 +81,7 @@ class TvShowKeyedDataSource(
         val response = useCase.getTvShows(page = params.key)
         if (response.status == Resource.Status.SUCCESS) {
           state.postValue(response)
-          val items = TvShowVR.transform(response.data ?: return@launch).toMutableList()
+          val items = MovieVR.transform(response.data ?: return@launch).toMutableList()
           callback.onResult(items, params.key + 1)
         }
       } catch (exception: Exception) {

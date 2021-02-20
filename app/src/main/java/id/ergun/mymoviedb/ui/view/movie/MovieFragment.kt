@@ -27,13 +27,13 @@ import org.greenrobot.eventbus.Subscribe
 class MovieFragment : Fragment() {
 
   companion object {
-    private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+    private const val ARGUMENT_PAGE_TYPE = "ARGUMENT_PAGE_TYPE"
     fun newInstance(
-        favorite: Boolean = false
+        pageType: Int
     ): MovieFragment {
       val fragment = MovieFragment()
       val argument = Bundle()
-      argument.putBoolean(ARGUMENT_FAVORITE, favorite)
+      argument.putInt(ARGUMENT_PAGE_TYPE, pageType)
       fragment.arguments = argument
       return fragment
     }
@@ -70,7 +70,7 @@ class MovieFragment : Fragment() {
   private fun loadArgument() {
     if (arguments == null) return
 
-    movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
+    movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE) ?: Const.MOVIE_TYPE
   }
 
   private fun initView() {
@@ -85,7 +85,7 @@ class MovieFragment : Fragment() {
 
   private fun initAction() {
     movieAdapter.itemClickListener = { movie ->
-      startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
+      startActivity(MovieDetailActivity.newIntent(requireContext(), movieViewModel.pageType, movie))
     }
 
     binding.viewWarning.btnWarning.setOnClickListener {

@@ -23,7 +23,7 @@ data class MovieResponse(
       val overview: String?,
       @SerializedName("poster_path")
       val posterPath: String?,
-      @SerializedName("title")
+      @SerializedName("title", alternate = ["name"])
       val title: String?,
       @SerializedName("vote_average")
       val voteAverage: Double?,

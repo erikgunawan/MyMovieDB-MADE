@@ -5,8 +5,8 @@ import id.ergun.mymoviedb.core.data.local.model.TvShowLocal
 import id.ergun.mymoviedb.core.data.local.room.dao.TvShowDao
 import id.ergun.mymoviedb.core.data.remote.ApiService
 import id.ergun.mymoviedb.core.data.remote.getResult
-import id.ergun.mymoviedb.core.data.remote.model.TvShowResponse
-import id.ergun.mymoviedb.core.domain.model.TvShow
+import id.ergun.mymoviedb.core.data.remote.model.MovieResponse
+import id.ergun.mymoviedb.core.domain.model.Movie
 import id.ergun.mymoviedb.core.util.Resource
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,20 +18,20 @@ class TvShowRepositoryImpl @Inject constructor(
     private val remoteData: ApiService,
     private val localData: TvShowDao
 ) : TvShowRepository {
-  override suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>> {
+  override suspend fun getTvShows(page: Int): Resource<ArrayList<Movie>> {
     return try {
       remoteData.getTvShows(page = page).getResult {
-        TvShowResponse.mapToDomainModelList(it)
+        MovieResponse.mapToDomainModelList(it)
       }
     } catch (exception: Exception) {
       Resource.error("Terjadi kesalahan")
     }
   }
 
-  override suspend fun getTvShowDetail(id: Int): Resource<TvShow> {
+  override suspend fun getTvShowDetail(id: Int): Resource<Movie> {
     return try {
       remoteData.getTvShowDetail(id = id.toString()).getResult {
-        TvShowResponse.mapToDomainModel(it)
+        MovieResponse.mapToDomainModel(it)
       }
     } catch (exception: Exception) {
       Timber.e(exception)
@@ -39,10 +39,10 @@ class TvShowRepositoryImpl @Inject constructor(
     }
   }
 
-  override suspend fun searchTvShow(query: String, page: Int): Resource<ArrayList<TvShow>> {
+  override suspend fun searchTvShow(query: String, page: Int): Resource<ArrayList<Movie>> {
     return try {
       remoteData.searchTvShow(query = query, page = page).getResult {
-        TvShowResponse.mapToDomainModelList(it)
+        MovieResponse.mapToDomainModelList(it)
       }
     } catch (exception: Exception) {
       Timber.e(exception)
@@ -50,7 +50,7 @@ class TvShowRepositoryImpl @Inject constructor(
     }
   }
 
-  override suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>> {
+  override suspend fun getFavoriteTvShows(): Resource<ArrayList<Movie>> {
     return try {
       return Resource.success(
           TvShowLocal.mapToDomainModelList(localData.getTvShows())
@@ -61,7 +61,7 @@ class TvShowRepositoryImpl @Inject constructor(
     }
   }
 
-  override suspend fun getFavoriteTvShow(id: Int): Resource<TvShow> {
+  override suspend fun getFavoriteTvShow(id: Int): Resource<Movie> {
     val tvShow = localData.getTvShow(id)
     Timber.e(Gson().toJson(tvShow))
     return if (tvShow != null) {
@@ -71,7 +71,7 @@ class TvShowRepositoryImpl @Inject constructor(
     }
   }
 
-  override suspend fun addToFavorite(tvShow: TvShow): Long {
+  override suspend fun addToFavorite(tvShow: Movie): Long {
     return localData.insertTvShow(TvShowLocal.mapFromDomainModel(tvShow))
   }
 

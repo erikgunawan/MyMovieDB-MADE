@@ -19,7 +19,7 @@ import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
 import id.ergun.mymoviedb.core.util.loadImage
 import id.ergun.mymoviedb.core.util.share
 import id.ergun.mymoviedb.databinding.MovieDetailActivityBinding
-import id.ergun.mymoviedb.ui.viewmodel.movie.MovieViewModel
+import id.ergun.mymoviedb.ui.viewmodel.movie.MovieDetailViewModel
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -30,15 +30,17 @@ class MovieDetailActivity : AppCompatActivity() {
 
   private lateinit var binding: MovieDetailActivityBinding
 
-  private val viewModel by viewModels<MovieViewModel>()
+  private val viewModel by viewModels<MovieDetailViewModel>()
 
   companion object {
-    const val EXTRA_MOVIE: String = "EXTRA_MOVIE"
+    const val EXTRA_MOVIE = "EXTRA_MOVIE"
+    const val EXTRA_PAGE_TYPE = "EXTRA_PAGE_TYPE"
     fun newIntent(
-        context: Context, movie: Movie
+        context: Context, pageType: Int, movie: Movie
     ): Intent {
       val intent = Intent(context, MovieDetailActivity::class.java)
       intent.putExtra(EXTRA_MOVIE, movie)
+      intent.putExtra(EXTRA_PAGE_TYPE, pageType)
       return intent
     }
   }
@@ -137,6 +139,8 @@ class MovieDetailActivity : AppCompatActivity() {
   }
 
   private fun loadIntents() {
+    viewModel.pageType = intent?.getIntExtra(EXTRA_PAGE_TYPE, Const.MOVIE_TYPE) ?: Const.MOVIE_TYPE
+
     if (intent.hasExtra(EXTRA_MOVIE)) {
       viewModel.setSelectedMovie(intent.getParcelableExtra(EXTRA_MOVIE) ?: return)
     }

@@ -15,15 +15,14 @@ import id.ergun.mymoviedb.core.util.visible
 import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.databinding.SearchActivityBinding
 import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
+import id.ergun.mymoviedb.ui.view.tvshow.detail.TvShowDetailActivity
 import id.ergun.mymoviedb.ui.viewmodel.search.SearchViewModel
-import javax.inject.Inject
 
 /**
  * Created by root on 19/02/21.
  */
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
-
 
   companion object {
     const val EXTRA_PAGE_TYPE: String = "EXTRA_PAGE_TYPE"
@@ -38,9 +37,6 @@ class SearchActivity : AppCompatActivity() {
   }
 
   private lateinit var binding: SearchActivityBinding
-
-  @Inject
-  lateinit var model: SearchModel
 
   private val movieViewModel by viewModels<SearchViewModel>()
 
@@ -66,12 +62,11 @@ class SearchActivity : AppCompatActivity() {
   }
 
   private fun loadExtras() {
-    model.pageType = intent?.extras?.getInt(EXTRA_PAGE_TYPE) ?: Const.MOVIE_TYPE
     movieViewModel.pageType = intent?.extras?.getInt(EXTRA_PAGE_TYPE) ?: Const.MOVIE_TYPE
   }
 
   private fun adjustView() {
-    binding.toolbarView.simpleSearchView.queryHint = if (model.pageType == Const.MOVIE_TYPE)
+    binding.toolbarView.searchView.queryHint = if (movieViewModel.pageType == Const.MOVIE_TYPE)
       "Cari Movie" else "Cari TV Show"
   }
 
@@ -87,7 +82,10 @@ class SearchActivity : AppCompatActivity() {
 
   private fun initAction() {
     movieAdapter.itemClickListener = { movie ->
-      startActivity(MovieDetailActivity.newIntent(this, movie))
+      if (movieViewModel.pageType == Const.MOVIE_TYPE)
+        startActivity(MovieDetailActivity.newIntent(this, movieViewModel.pageType, movie))
+      else
+        startActivity(TvShowDetailActivity.newIntent(this, movie))
     }
 
     binding.viewWarning.btnWarning.setOnClickListener {
@@ -96,12 +94,12 @@ class SearchActivity : AppCompatActivity() {
   }
 
   private fun getMovies() {
-    movieViewModel.searchMovie("naruto").observe(this) {
+    movieViewModel.search("naruto").observe(this) {
       movieAdapter.submitList(it)
       movieAdapter.notifyDataSetChanged()
     }
 
-    movieViewModel.movieState.observe(this) {
+    movieViewModel.state.observe(this) {
       when (it.status) {
         Resource.Status.LOADING -> showLoading()
         Resource.Status.SUCCESS -> showData()

@@ -13,6 +13,7 @@ import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
 import id.ergun.mymoviedb.core.util.gone
 import id.ergun.mymoviedb.core.util.visible
+import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.core.view.tvshow.TvShowAdapter
 import id.ergun.mymoviedb.databinding.TvShowFragmentBinding
 import id.ergun.mymoviedb.di.FavoriteModuleDependencies
@@ -51,7 +52,7 @@ class TvShowFragment : Fragment() {
     factory
   }
 
-  private lateinit var tvShowAdapter: TvShowAdapter
+  private lateinit var tvShowAdapter: MovieAdapter
 
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
@@ -92,7 +93,7 @@ class TvShowFragment : Fragment() {
   }
 
   private fun initView() {
-    tvShowAdapter = TvShowAdapter()
+    tvShowAdapter = MovieAdapter()
 
     with(binding.rvTvShow) {
       layoutManager = LinearLayoutManager(context)

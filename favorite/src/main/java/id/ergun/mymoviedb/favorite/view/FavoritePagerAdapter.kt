@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.favorite.view.movie.MovieFragment
-import id.ergun.mymoviedb.favorite.view.tvshow.TvShowFragment
 
 /**
  * Created by alfacart on 21/10/20.
@@ -24,8 +24,8 @@ class FavoritePagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
   override fun getItem(position: Int): Fragment =
       when (position) {
-        0 -> MovieFragment.newInstance(true)
-        1 -> TvShowFragment.newInstance(true)
+        0 -> MovieFragment.newInstance(Const.MOVIE_TYPE, true)
+        1 -> MovieFragment.newInstance(Const.TV_SHOW_TYPE, true)
         else -> Fragment()
       }
 

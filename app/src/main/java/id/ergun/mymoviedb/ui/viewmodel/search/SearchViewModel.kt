@@ -8,7 +8,6 @@ import androidx.paging.PagedList
 import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.view.movie.MovieVR
-import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
 import id.ergun.mymoviedb.ui.datasource.search.MovieSearchDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.search.MovieSearchKeyedDataSource
 import id.ergun.mymoviedb.ui.datasource.search.TvShowSearchDataSourceFactory
@@ -27,8 +26,12 @@ class SearchViewModel @ViewModelInject constructor(
   fun searchMovie(query: String): LiveData<PagedList<MovieVR>> = movieDataSourceFactory.searchMovie(
       query)
 
-  fun searchTvShow(query: String): LiveData<PagedList<TvShowVR>> = tvShowDataSourceFactory.searchTvShow(
+  fun searchTvShow(query: String): LiveData<PagedList<MovieVR>> = tvShowDataSourceFactory.searchTvShow(
       query)
+
+  fun search(query: String): LiveData<PagedList<MovieVR>> =
+      if (pageType == Const.MOVIE_TYPE) searchMovie(query)
+      else searchTvShow(query)
 
   val movieState: LiveData<Resource<*>> =
       Transformations.switchMap(

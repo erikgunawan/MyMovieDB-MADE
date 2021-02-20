@@ -1,13 +1,17 @@
 package id.ergun.mymoviedb.ui.viewmodel.tvshow
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.paging.PagedList
-import id.ergun.mymoviedb.core.domain.model.TvShow
+import id.ergun.mymoviedb.core.domain.model.Movie
 import id.ergun.mymoviedb.core.domain.usecase.tvshow.TvShowUseCase
 import id.ergun.mymoviedb.core.util.FavoriteModel
 import id.ergun.mymoviedb.core.util.Resource
-import id.ergun.mymoviedb.core.view.tvshow.TvShowVR
+import id.ergun.mymoviedb.core.view.movie.MovieVR
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowDataSourceFactory
 import id.ergun.mymoviedb.ui.datasource.tvshow.TvShowKeyedDataSource
 
@@ -25,9 +29,9 @@ class TvShowViewModel @ViewModelInject constructor(
 
   var favoriteState: MutableLiveData<FavoriteModel.Type> = MutableLiveData()
 
-  lateinit var tvShow: TvShow
+  lateinit var tvShow: Movie
 
-  fun setSelectedTvShow(tvShow: TvShow) {
+  fun setSelectedTvShow(tvShow: Movie) {
     this.tvShow = tvShow
   }
 
@@ -36,7 +40,7 @@ class TvShowViewModel @ViewModelInject constructor(
     dataSourceFactory.favoritePage = favoritePage
   }
 
-  fun getTvShows(): LiveData<PagedList<TvShowVR>> = dataSourceFactory.getTvShows()
+  fun getTvShows(): LiveData<PagedList<MovieVR>> = dataSourceFactory.getTvShows()
 
   val tvShowState: LiveData<Resource<*>> =
       Transformations.switchMap(
@@ -48,17 +52,17 @@ class TvShowViewModel @ViewModelInject constructor(
     dataSourceFactory.liveData.value?.invalidate()
   }
 
-  fun getTvShowDetail(id: Int): LiveData<Resource<TvShow>> {
+  fun getTvShowDetail(id: Int): LiveData<Resource<Movie>> {
     return liveData { emit(useCase.getTvShowDetail(id)) }
   }
 
   private fun getFavoriteTvShow(id: Int) = liveData { emit(useCase.getFavoriteTvShow(id)) }
 
-  fun getFavoriteTvShowById(): LiveData<Resource<TvShow>> =
+  fun getFavoriteTvShowById(): LiveData<Resource<Movie>> =
       if (tvShow.id != null) getFavoriteTvShow(tvShow.id!!)
       else liveData { }
 
-  fun addToFavorite(tvShow: TvShow): LiveData<Long> =
+  fun addToFavorite(tvShow: Movie): LiveData<Long> =
       liveData { emit(useCase.addToFavorite(tvShow)) }
 
   fun removeFromFavorite(id: Int): LiveData<Int> =

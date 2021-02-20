@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
-import id.ergun.mymoviedb.core.domain.model.TvShow
+import id.ergun.mymoviedb.core.domain.model.Movie
 import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.FavoriteModel
 import id.ergun.mymoviedb.core.util.eventbus.FavoriteEvent
@@ -36,7 +36,7 @@ class TvShowDetailActivity : AppCompatActivity() {
   companion object {
     const val EXTRA_TV_SHOW: String = "EXTRA_TV_SHOW"
     fun newIntent(
-        context: Context, tvShow: TvShow
+        context: Context, tvShow: Movie
     ): Intent {
       val intent = Intent(context, TvShowDetailActivity::class.java)
       intent.putExtra(EXTRA_TV_SHOW, tvShow)
@@ -69,7 +69,7 @@ class TvShowDetailActivity : AppCompatActivity() {
 
   }
 
-  private fun updateData(tvShow: TvShow) {
+  private fun updateData(tvShow: Movie) {
     with(binding) {
       tvTitle.text = tvShow.title
       tvTagLine.text = tvShow.tagLine

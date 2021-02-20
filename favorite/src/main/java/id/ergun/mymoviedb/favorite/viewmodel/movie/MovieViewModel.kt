@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
+import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.view.movie.MovieVR
 import id.ergun.mymoviedb.ui.datasource.movie.MovieDataSourceFactory
@@ -16,6 +17,8 @@ import id.ergun.mymoviedb.ui.datasource.movie.MovieKeyedDataSource
 class MovieViewModel(
     private val dataSourceFactory: MovieDataSourceFactory
 ) : ViewModel() {
+
+  var pageType = Const.MOVIE_TYPE
 
   var favorite: MutableLiveData<Boolean> = MutableLiveData()
 

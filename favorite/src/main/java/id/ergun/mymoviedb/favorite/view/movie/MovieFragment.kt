@@ -31,11 +31,14 @@ class MovieFragment : Fragment() {
 
   companion object {
     private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+    private const val ARGUMENT_PAGE_TYPE = "ARGUMENT_PAGE_TYPE"
     fun newInstance(
+        pageType: Int,
         favorite: Boolean = false
     ): MovieFragment {
       val fragment = MovieFragment()
       val argument = Bundle()
+      argument.putInt(ARGUMENT_PAGE_TYPE, pageType)
       argument.putBoolean(ARGUMENT_FAVORITE, favorite)
       fragment.arguments = argument
       return fragment
@@ -88,6 +91,7 @@ class MovieFragment : Fragment() {
   private fun loadArgument() {
     if (arguments == null) return
 
+    movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE) ?: Const.MOVIE_TYPE
     movieViewModel.setFavorite(arguments?.getBoolean(ARGUMENT_FAVORITE, false) ?: false)
   }
 
@@ -103,7 +107,7 @@ class MovieFragment : Fragment() {
 
   private fun initAction() {
     movieAdapter.itemClickListener = { movie ->
-      startActivity(MovieDetailActivity.newIntent(requireContext(), movie))
+      startActivity(MovieDetailActivity.newIntent(requireContext(), movieViewModel.pageType, movie))
     }
 
     binding.viewWarning.btnWarning.setOnClickListener {
