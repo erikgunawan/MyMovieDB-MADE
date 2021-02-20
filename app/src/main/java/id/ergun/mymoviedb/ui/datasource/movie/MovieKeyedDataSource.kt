@@ -42,7 +42,7 @@ class MovieKeyedDataSource(
             return@launch
           }
 
-          state.postValue(Resource.emptyData("Data tidak ditemukan", null))
+          state.postValue(Resource.emptyData("Belum ada movie favorit", null))
         } catch (exception: Exception) {
           Timber.e(exception)
           state.postValue(Resource.error("Terjadi kesalahan", data = null))

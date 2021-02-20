@@ -43,7 +43,7 @@ class TvShowKeyedDataSource(
             return@launch
           }
 
-          state.postValue(Resource.emptyData("Data tidak ditemukan", null))
+          state.postValue(Resource.emptyData("Belum ada tv show favorit", null))
         } catch (exception: Exception) {
           Timber.e(exception)
           state.postValue(Resource.error("Terjadi kesalahan", data = null))
