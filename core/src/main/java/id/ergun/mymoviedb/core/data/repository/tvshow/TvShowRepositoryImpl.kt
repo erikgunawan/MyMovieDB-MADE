@@ -29,8 +29,24 @@ class TvShowRepositoryImpl @Inject constructor(
   }
 
   override suspend fun getTvShowDetail(id: Int): Resource<TvShow> {
-    return remoteData.getTvShowDetail(id = id.toString()).getResult {
-      TvShowResponse.mapToDomainModel(it)
+    return try {
+      remoteData.getTvShowDetail(id = id.toString()).getResult {
+        TvShowResponse.mapToDomainModel(it)
+      }
+    } catch (exception: Exception) {
+      Timber.e(exception)
+      Resource.error("Terjadi kesalahan1")
+    }
+  }
+
+  override suspend fun searchTvShow(query: String, page: Int): Resource<ArrayList<TvShow>> {
+    return try {
+      remoteData.searchTvShow(query = query, page = page).getResult {
+        TvShowResponse.mapToDomainModelList(it)
+      }
+    } catch (exception: Exception) {
+      Timber.e(exception)
+      Resource.error("Terjadi kesalahan1")
     }
   }
 

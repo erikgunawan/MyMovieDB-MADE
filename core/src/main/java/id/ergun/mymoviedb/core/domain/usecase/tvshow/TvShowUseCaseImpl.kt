@@ -19,6 +19,10 @@ class TvShowUseCaseImpl @Inject constructor(private val repository: TvShowReposi
     return repository.getTvShowDetail(id)
   }
 
+  override suspend fun searchTvShow(query: String, page: Int): Resource<ArrayList<TvShow>> {
+    return repository.searchTvShow(query, page)
+  }
+
   override suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>> {
     return repository.getFavoriteTvShows()
   }

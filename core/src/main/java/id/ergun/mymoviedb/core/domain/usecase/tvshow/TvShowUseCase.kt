@@ -9,6 +9,7 @@ import id.ergun.mymoviedb.core.util.Resource
 interface TvShowUseCase {
   suspend fun getTvShows(page: Int): Resource<ArrayList<TvShow>>
   suspend fun getTvShowDetail(id: Int): Resource<TvShow>
+  suspend fun searchTvShow(query: String, page: Int): Resource<ArrayList<TvShow>>
   suspend fun getFavoriteTvShows(): Resource<ArrayList<TvShow>>
   suspend fun getFavoriteTvShow(id: Int): Resource<TvShow>
   suspend fun addToFavorite(tvShow: TvShow): Long

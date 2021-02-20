@@ -67,6 +67,7 @@ class SearchActivity : AppCompatActivity() {
 
   private fun loadExtras() {
     model.pageType = intent?.extras?.getInt(EXTRA_PAGE_TYPE) ?: Const.MOVIE_TYPE
+    movieViewModel.pageType = intent?.extras?.getInt(EXTRA_PAGE_TYPE) ?: Const.MOVIE_TYPE
   }
 
   private fun adjustView() {

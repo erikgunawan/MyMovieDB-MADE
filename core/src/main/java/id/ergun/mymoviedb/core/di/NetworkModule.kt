@@ -12,6 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import id.ergun.mymoviedb.core.BuildConfig.BASE_URL
 import id.ergun.mymoviedb.core.data.remote.ApiService
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,11 +42,11 @@ object NetworkModule {
     val httpLogging = HttpLoggingInterceptor()
     httpLogging.level = HttpLoggingInterceptor.Level.BODY
 
-//        val certificatePinner = CertificatePinner.Builder()
-//            .add(BASE_URL, "sha256/mRjXIIcEJSE3kJl4YNqqfOS+COj4KG3VJPSJo6ymApk=")
-//            .add(BASE_URL, "sha256/FEzVOUp4dF3gI0ZVPRJhFbSJVXR+uQmMH65xhs1glH4=")
-//            .add(BASE_URL, "sha256/Y9mvm0exBk1JoQ57f9Vm28jKo5lFm/woKcVxrYxu80o=")
-//            .build()
+        val certificatePinner = CertificatePinner.Builder()
+            .add("api.themoviedb.org", "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
+            .add("api.themoviedb.org", "sha256/JSMzqOOrtyOT1kmau6zKhgT676hGgczD5VMdRMyJZFA=")
+            .add("api.themoviedb.org", "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+            .build()
 
     okBuilder
         .addInterceptor(httpLogging)
@@ -56,7 +57,7 @@ object NetworkModule {
             .alwaysReadResponseBody(false)
             .build()
         )
-//            .certificatePinner(certificatePinner)
+            .certificatePinner(certificatePinner)
     return okBuilder.build()
   }
 

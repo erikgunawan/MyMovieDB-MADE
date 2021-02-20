@@ -29,8 +29,12 @@ class MovieRepositoryImpl @Inject constructor(
   }
 
   override suspend fun getMovieDetail(id: Int): Resource<Movie> {
-    return remoteData.getMovieDetail(id = id.toString()).getResult {
-      MovieResponse.mapToDomainModel(it)
+    return try {
+      remoteData.getMovieDetail(id = id.toString()).getResult {
+        MovieResponse.mapToDomainModel(it)
+      }
+    } catch (exception: Exception) {
+      Resource.error("Terjadi kesalahan")
     }
   }
 

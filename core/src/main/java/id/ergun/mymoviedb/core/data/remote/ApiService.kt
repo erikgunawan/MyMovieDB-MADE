@@ -44,4 +44,11 @@ interface ApiService {
       @Path("id") id: String,
       @Query(API_KEY) apiKey: String = TMDB_API_KEY
   ): Response<TvShowResponse.Result>
+
+  @GET("3/search/tv")
+  suspend fun searchTvShow(
+      @Query(API_KEY) apiKey: String = TMDB_API_KEY,
+      @Query("query") query: String?,
+      @Query("page") page: Int?
+  ): Response<TvShowResponse>
 }
