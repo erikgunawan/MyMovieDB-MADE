@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mymoviedb.core.util.Const
@@ -80,8 +81,14 @@ class SearchActivity : AppCompatActivity() {
   }
 
   private fun initAction() {
-    movieAdapter.itemClickListener = { movie ->
-      startActivity(MovieDetailActivity.newIntent(this, movieViewModel.pageType, movie))
+    movieAdapter.itemClickListener = { view, movie ->
+
+      val intent = MovieDetailActivity.newIntent(this, movieViewModel.pageType, movie)
+
+      val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+          view, Const.POSTER_TRANSITION_NAME)
+
+      startActivity(intent, options.toBundle())
     }
 
     binding.viewWarning.btnWarning.setOnClickListener {
@@ -90,12 +97,12 @@ class SearchActivity : AppCompatActivity() {
   }
 
   private fun getMovies() {
-    movieViewModel.search("naruto").observe(this) {
+    movieViewModel.search("one").observe(this) {
       movieAdapter.submitList(it)
       movieAdapter.notifyDataSetChanged()
     }
 
-    movieViewModel.state.observe(this) {
+    movieViewModel.getState().observe(this) {
       when (it.status) {
         Resource.Status.LOADING -> showLoading()
         Resource.Status.SUCCESS -> showData()

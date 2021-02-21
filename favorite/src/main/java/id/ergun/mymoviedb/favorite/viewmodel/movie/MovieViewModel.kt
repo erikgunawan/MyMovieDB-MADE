@@ -41,17 +41,23 @@ class MovieViewModel(
       else
         tvShowDataSourceFactory.getTvShows()
 
-  val movieState: LiveData<Resource<*>> =
+  private val movieState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          movieDataSourceFactory.liveData,
+          MovieKeyedDataSource::state
+      )
+
+  private val tvShowState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          tvShowDataSourceFactory.liveData,
+          TvShowKeyedDataSource::state
+      )
+
+  fun getState(): LiveData<Resource<*>> =
       if (pageType == Const.MOVIE_TYPE)
-        Transformations.switchMap(
-            movieDataSourceFactory.liveData,
-            MovieKeyedDataSource::state
-        )
+        movieState
       else
-        Transformations.switchMap(
-            tvShowDataSourceFactory.liveData,
-            TvShowKeyedDataSource::state
-        )
+        tvShowState
 
   fun refresh() {
     if (pageType == Const.MOVIE_TYPE)

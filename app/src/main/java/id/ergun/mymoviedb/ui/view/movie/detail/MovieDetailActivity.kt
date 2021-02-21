@@ -58,7 +58,7 @@ class MovieDetailActivity : AppCompatActivity() {
       title = ""
     }
 
-    loadIntents()
+    loadExtras()
     initActions()
 
     updateData(viewModel.movie)
@@ -136,7 +136,7 @@ class MovieDetailActivity : AppCompatActivity() {
     }
   }
 
-  private fun loadIntents() {
+  private fun loadExtras() {
     viewModel.pageType = intent?.getIntExtra(EXTRA_PAGE_TYPE, Const.MOVIE_TYPE) ?: Const.MOVIE_TYPE
 
     if (intent.hasExtra(EXTRA_MOVIE)) {
@@ -153,10 +153,15 @@ class MovieDetailActivity : AppCompatActivity() {
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
-      android.R.id.home -> finish()
+      android.R.id.home -> supportFinishAfterTransition()
       R.id.action_share -> share(this, viewModel.pageType, viewModel.movie.id.toString())
     }
     return super.onOptionsItemSelected(item)
+  }
+
+  override fun onBackPressed() {
+    super.onBackPressed()
+    supportFinishAfterTransition()
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

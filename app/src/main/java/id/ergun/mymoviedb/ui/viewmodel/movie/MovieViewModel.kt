@@ -2,11 +2,9 @@ package id.ergun.mymoviedb.ui.viewmodel.movie
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import id.ergun.mymoviedb.core.domain.model.Movie
 import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.view.movie.MovieVR
@@ -25,29 +23,29 @@ class MovieViewModel @ViewModelInject constructor(
 
   var pageType: Int = Const.MOVIE_TYPE
 
-  var favorite: MutableLiveData<Boolean> = MutableLiveData()
-
-  var favoritePage: Boolean = false
-
-  lateinit var movie: Movie
-
   fun getMovies(): LiveData<PagedList<MovieVR>> =
       if (pageType == Const.MOVIE_TYPE)
         movieDataSourceFactory.getMovies()
       else
         tvShowDataSourceFactory.getTvShows()
 
-  val movieState: LiveData<Resource<*>> =
+  private val movieState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          movieDataSourceFactory.liveData,
+          MovieKeyedDataSource::state
+      )
+
+  private val tvShowState: LiveData<Resource<*>> =
+      Transformations.switchMap(
+          tvShowDataSourceFactory.liveData,
+          TvShowKeyedDataSource::state
+      )
+
+  fun getState(): LiveData<Resource<*>> =
       if (pageType == Const.MOVIE_TYPE)
-        Transformations.switchMap(
-            movieDataSourceFactory.liveData,
-            MovieKeyedDataSource::state
-        )
+        movieState
       else
-        Transformations.switchMap(
-            tvShowDataSourceFactory.liveData,
-            TvShowKeyedDataSource::state
-        )
+        tvShowState
 
   fun refresh() {
     if (pageType == Const.MOVIE_TYPE)

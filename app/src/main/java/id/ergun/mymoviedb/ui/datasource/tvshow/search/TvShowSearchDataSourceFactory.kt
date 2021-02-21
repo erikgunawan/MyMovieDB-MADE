@@ -1,4 +1,4 @@
-package id.ergun.mymoviedb.ui.datasource.search
+package id.ergun.mymoviedb.ui.datasource.tvshow.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

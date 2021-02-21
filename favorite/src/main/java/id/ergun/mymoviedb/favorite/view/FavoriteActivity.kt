@@ -33,7 +33,7 @@ class FavoriteActivity : AppCompatActivity() {
     val view = binding.root
     setContentView(view)
 
-    setSupportActionBar(binding.xx.toolbar)
+    setSupportActionBar(binding.toolbarView.toolbar)
     supportActionBar?.run {
       setDisplayShowHomeEnabled(true)
       setDisplayHomeAsUpEnabled(true)

@@ -20,6 +20,7 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     consumerProguardFiles "consumer-rules.pro"
 
+    buildConfigField("String" , "HOST_NAME" , '"api.themoviedb.org"')
     buildConfigField("String" , "BASE_URL" , '"https://api.themoviedb.org"')
     buildConfigField("String" , "IMAGE_URL" , '"https://image.tmdb.org/t/p/w185"')
     buildConfigField("String" , "TMDB_API_KEY" , '"ba278fb52b53db0c5229d58941e31b0a"')

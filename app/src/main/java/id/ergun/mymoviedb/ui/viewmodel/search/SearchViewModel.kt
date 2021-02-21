@@ -8,10 +8,10 @@ import androidx.paging.PagedList
 import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.view.movie.MovieVR
-import id.ergun.mymoviedb.ui.datasource.search.MovieSearchDataSourceFactory
-import id.ergun.mymoviedb.ui.datasource.search.MovieSearchKeyedDataSource
-import id.ergun.mymoviedb.ui.datasource.search.TvShowSearchDataSourceFactory
-import id.ergun.mymoviedb.ui.datasource.search.TvShowSearchKeyedDataSource
+import id.ergun.mymoviedb.ui.datasource.movie.search.MovieSearchDataSourceFactory
+import id.ergun.mymoviedb.ui.datasource.movie.search.MovieSearchKeyedDataSource
+import id.ergun.mymoviedb.ui.datasource.tvshow.search.TvShowSearchDataSourceFactory
+import id.ergun.mymoviedb.ui.datasource.tvshow.search.TvShowSearchKeyedDataSource
 
 /**
  * Created by root on 20/02/21.
@@ -23,17 +23,11 @@ class SearchViewModel @ViewModelInject constructor(
 
   var pageType: Int = Const.MOVIE_TYPE
 
-  private fun searchMovie(
-      query: String): LiveData<PagedList<MovieVR>> = movieDataSourceFactory.searchMovie(
-      query)
-
-  private fun searchTvShow(
-      query: String): LiveData<PagedList<MovieVR>> = tvShowDataSourceFactory.searchTvShow(
-      query)
-
   fun search(query: String): LiveData<PagedList<MovieVR>> =
-      if (pageType == Const.MOVIE_TYPE) searchMovie(query)
-      else searchTvShow(query)
+      if (pageType == Const.MOVIE_TYPE)
+        movieDataSourceFactory.searchMovie(query)
+      else
+        tvShowDataSourceFactory.searchTvShow(query)
 
   private val movieState: LiveData<Resource<*>> =
       Transformations.switchMap(
@@ -47,9 +41,16 @@ class SearchViewModel @ViewModelInject constructor(
           TvShowSearchKeyedDataSource::state
       )
 
-  val state: LiveData<Resource<*>> = if (pageType == Const.MOVIE_TYPE) movieState else tvShowState
+  fun getState(): LiveData<Resource<*>> =
+      if (pageType == Const.MOVIE_TYPE)
+        movieState
+      else
+        tvShowState
 
   fun refresh() {
-    movieDataSourceFactory.liveData.value?.invalidate()
+    if (pageType == Const.MOVIE_TYPE)
+      movieDataSourceFactory.liveData.value?.invalidate()
+    else
+      tvShowDataSourceFactory.liveData.value?.invalidate()
   }
 }

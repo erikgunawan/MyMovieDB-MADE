@@ -1,6 +1,7 @@
 package id.ergun.mymoviedb.core.view.movie
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +16,7 @@ import id.ergun.mymoviedb.core.util.loadImage
  */
 class MovieAdapter : PagedListAdapter<MovieVR, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
-  var itemClickListener: ((movie: Movie) -> Unit)? = null
+  var itemClickListener: ((view: View, movie: Movie) -> Unit)? = null
 
   companion object {
     private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieVR>() {
@@ -51,7 +52,7 @@ class MovieAdapter : PagedListAdapter<MovieVR, MovieAdapter.MovieViewHolder>(DIF
       binding.tvOverview.text = movie.overview
       binding.ivPoster.loadImage(BuildConfig.IMAGE_URL + movie.posterPath)
       itemView.setOnClickListener {
-        itemClickListener?.invoke(MovieVR.toModel(movie))
+        itemClickListener?.invoke(binding.ivPoster, MovieVR.toModel(movie))
       }
     }
   }

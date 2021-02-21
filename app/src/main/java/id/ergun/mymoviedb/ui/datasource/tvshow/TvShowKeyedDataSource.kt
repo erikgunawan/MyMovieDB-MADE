@@ -15,7 +15,6 @@ import timber.log.Timber
 /**
  * Created by alfacart on 01/12/20.
  */
-
 class TvShowKeyedDataSource(
     private val useCase: TvShowUseCase
 ) : PageKeyedDataSource<Int, MovieVR>() {

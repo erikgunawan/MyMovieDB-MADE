@@ -6,4 +6,5 @@ package id.ergun.mymoviedb.core.util
 object Const {
   const val MOVIE_TYPE: Int = 1
   const val TV_SHOW_TYPE: Int = 2
+  const val POSTER_TRANSITION_NAME: String = "poster_image"
 }

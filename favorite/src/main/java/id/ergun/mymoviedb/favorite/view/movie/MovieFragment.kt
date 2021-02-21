@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ import id.ergun.mymoviedb.ui.view.movie.detail.MovieDetailActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
+
 
 /**
  * Created by alfacart on 21/10/20.
@@ -79,7 +81,7 @@ class MovieFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initEventBus()
-    loadArgument()
+    loadArguments()
     initView()
     initAction()
     getMovies()
@@ -90,7 +92,7 @@ class MovieFragment : Fragment() {
       EventBus.getDefault().register(this)
   }
 
-  private fun loadArgument() {
+  private fun loadArguments() {
     if (arguments == null) return
 
     movieViewModel.pageType = arguments?.getInt(ARGUMENT_PAGE_TYPE, Const.MOVIE_TYPE)
@@ -109,8 +111,13 @@ class MovieFragment : Fragment() {
   }
 
   private fun initAction() {
-    movieAdapter.itemClickListener = { movie ->
-      startActivity(MovieDetailActivity.newIntent(requireContext(), movieViewModel.pageType, movie))
+    movieAdapter.itemClickListener = { view, movie ->
+      val intent = MovieDetailActivity.newIntent(requireContext(), movieViewModel.pageType, movie)
+
+      val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(),
+          view, Const.POSTER_TRANSITION_NAME)
+
+      startActivity(intent, options.toBundle())
     }
 
     binding.viewWarning.btnWarning.setOnClickListener {
@@ -124,7 +131,7 @@ class MovieFragment : Fragment() {
       movieAdapter.notifyDataSetChanged()
     }
 
-    movieViewModel.movieState.observe(requireActivity()) {
+    movieViewModel.getState().observe(requireActivity()) {
       when (it.status) {
         Resource.Status.LOADING -> showLoading()
         Resource.Status.SUCCESS -> showData()
@@ -168,7 +175,6 @@ class MovieFragment : Fragment() {
 
   @Subscribe
   fun onReceiveEventBus(event: FavoriteEvent) {
-//    if (event.type != Const.MOVIE_TYPE || event.type != Const.TV_SHOW_TYPE) return
     if (!event.changes) return
     if (!movieViewModel.favoritePage) return
 
@@ -179,5 +185,10 @@ class MovieFragment : Fragment() {
     if (EventBus.getDefault().isRegistered(this))
       EventBus.getDefault().unregister(this)
     super.onDestroy()
+  }
+
+  override fun onDestroyView() {
+    binding.rvMovie.adapter = null
+    super.onDestroyView()
   }
 }

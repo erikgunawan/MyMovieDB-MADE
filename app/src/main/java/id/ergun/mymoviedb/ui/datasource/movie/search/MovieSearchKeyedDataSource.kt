@@ -1,4 +1,4 @@
-package id.ergun.mymoviedb.ui.datasource.search
+package id.ergun.mymoviedb.ui.datasource.movie.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
