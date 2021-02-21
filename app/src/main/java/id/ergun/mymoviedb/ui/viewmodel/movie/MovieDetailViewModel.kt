@@ -25,8 +25,6 @@ class MovieDetailViewModel @ViewModelInject constructor(
 
   var favorite: MutableLiveData<Boolean> = MutableLiveData()
 
-  var favoritePage: Boolean = false
-
   var favoriteState: MutableLiveData<Type> = MutableLiveData()
 
   lateinit var movie: Movie
