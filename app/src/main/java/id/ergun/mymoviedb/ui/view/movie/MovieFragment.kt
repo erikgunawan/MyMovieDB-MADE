@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.core.util.Const
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.util.gone
+import id.ergun.mymoviedb.core.util.loadImage
 import id.ergun.mymoviedb.core.util.visible
 import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.databinding.MovieFragmentBinding
@@ -108,33 +110,43 @@ class MovieFragment : Fragment() {
   }
 
   private fun showLoading() {
-    binding.wrapperContent.gone()
-    binding.wrapperWarning.gone()
-    binding.progressBar.visible()
+    binding.run {
+      wrapperContent.gone()
+      wrapperWarning.gone()
+      progressBar.visible()
+    }
   }
 
   private fun showData() {
-    binding.wrapperContent.visible()
-    binding.wrapperWarning.gone()
-    binding.progressBar.gone()
+    binding.run {
+      wrapperContent.visible()
+      wrapperWarning.gone()
+      progressBar.gone()
+    }
   }
 
   private fun showEmptyData(message: String) {
-    binding.wrapperContent.gone()
-    binding.viewWarning.btnWarning.gone()
-    binding.wrapperWarning.visible()
-    binding.progressBar.gone()
+    binding.run {
+      wrapperContent.gone()
+      viewWarning.btnWarning.gone()
+      wrapperWarning.visible()
+      progressBar.gone()
 
-    binding.viewWarning.tvWarning.text = message
+      viewWarning.ivWarning.loadImage(R.drawable.img_empty)
+      viewWarning.tvWarning.text = message
+    }
   }
 
   private fun showWarning(message: String) {
-    binding.wrapperContent.gone()
-    binding.viewWarning.btnWarning.visible()
-    binding.wrapperWarning.visible()
-    binding.progressBar.gone()
+    binding.run {
+      wrapperContent.gone()
+      viewWarning.btnWarning.visible()
+      wrapperWarning.visible()
+      progressBar.gone()
 
-    binding.viewWarning.tvWarning.text = message
+      viewWarning.ivWarning.loadImage(R.drawable.img_error)
+      viewWarning.tvWarning.text = message
+    }
   }
 
   override fun onDestroyView() {
