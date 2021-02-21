@@ -9,9 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.core.util.Const
+import id.ergun.mymoviedb.core.util.DebouncingQueryTextListener
 import id.ergun.mymoviedb.core.util.Resource
 import id.ergun.mymoviedb.core.util.gone
+import id.ergun.mymoviedb.core.util.loadImage
 import id.ergun.mymoviedb.core.util.visible
 import id.ergun.mymoviedb.core.view.movie.MovieAdapter
 import id.ergun.mymoviedb.databinding.SearchActivityBinding
@@ -58,7 +61,8 @@ class SearchActivity : AppCompatActivity() {
     adjustView()
     initView()
     initAction()
-    getMovies()
+    getSearchState()
+    showInitSearch()
   }
 
   private fun loadExtras() {
@@ -94,14 +98,26 @@ class SearchActivity : AppCompatActivity() {
     binding.viewWarning.btnWarning.setOnClickListener {
       movieViewModel.refresh()
     }
+
+    binding.toolbarView.searchView.setOnQueryTextListener(
+        DebouncingQueryTextListener(
+            this.lifecycle
+        ) { newText ->
+          newText?.let { query ->
+            if (query.isEmpty()) {
+              resetSearch()
+            } else {
+              movieViewModel.search(query).observe(this) {
+                movieAdapter.submitList(it)
+                movieAdapter.notifyDataSetChanged()
+              }
+            }
+          }
+        }
+    )
   }
 
-  private fun getMovies() {
-    movieViewModel.search("one").observe(this) {
-      movieAdapter.submitList(it)
-      movieAdapter.notifyDataSetChanged()
-    }
-
+  private fun getSearchState() {
     movieViewModel.getState().observe(this) {
       when (it.status) {
         Resource.Status.LOADING -> showLoading()
@@ -112,34 +128,65 @@ class SearchActivity : AppCompatActivity() {
     }
   }
 
+  private fun resetSearch() {
+    showInitSearch()
+    movieAdapter.submitList(null)
+    movieAdapter.notifyDataSetChanged()
+  }
+
+  private fun showInitSearch() {
+    val type = if (movieViewModel.pageType == Const.MOVIE_TYPE) "movie" else "tv show"
+    binding.run {
+      tvHintSearch.text = getString(R.string.search_hint_description, type)
+      tvHintSearch.visible()
+      rvMovie.gone()
+      viewWarning.root.gone()
+      progressBar.gone()
+    }
+  }
+
   private fun showLoading() {
-    binding.wrapperContent.gone()
-    binding.wrapperWarning.gone()
-    binding.progressBar.visible()
+    binding.run {
+      tvHintSearch.gone()
+      rvMovie.gone()
+      viewWarning.root.gone()
+      progressBar.visible()
+    }
   }
 
   private fun showData() {
-    binding.wrapperContent.visible()
-    binding.wrapperWarning.gone()
-    binding.progressBar.gone()
+    binding.run {
+      tvHintSearch.gone()
+      rvMovie.visible()
+      viewWarning.root.gone()
+      progressBar.gone()
+    }
   }
 
   private fun showEmptyData(message: String) {
-    binding.wrapperContent.gone()
-    binding.viewWarning.btnWarning.gone()
-    binding.wrapperWarning.visible()
-    binding.progressBar.gone()
+    binding.run {
+      tvHintSearch.gone()
+      rvMovie.gone()
+      viewWarning.btnWarning.gone()
+      viewWarning.root.visible()
+      progressBar.gone()
 
-    binding.viewWarning.tvWarning.text = message
+      viewWarning.ivWarning.loadImage(R.drawable.img_empty)
+      viewWarning.tvWarning.text = message
+    }
   }
 
   private fun showWarning(message: String) {
-    binding.wrapperContent.gone()
-    binding.viewWarning.btnWarning.visible()
-    binding.wrapperWarning.visible()
-    binding.progressBar.gone()
+    binding.run {
+      tvHintSearch.gone()
+      rvMovie.gone()
+      viewWarning.btnWarning.visible()
+      viewWarning.root.visible()
+      progressBar.gone()
 
-    binding.viewWarning.tvWarning.text = message
+      viewWarning.ivWarning.loadImage(R.drawable.img_error)
+      viewWarning.tvWarning.text = message
+    }
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

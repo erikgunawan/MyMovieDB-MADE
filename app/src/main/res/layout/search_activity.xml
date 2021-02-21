@@ -9,49 +9,50 @@
         android:id="@+id/toolbar_view"
         layout="@layout/toolbar_search" />
 
-    <FrameLayout
+    <TextView
+        android:id="@+id/tv_hint_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="20dp"
+        android:textSize="18sp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_movie"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_view"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/movie_items" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/wrapper_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <include
+        android:id="@+id/view_warning"
+        layout="@layout/warning_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_movie"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/movie_items">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <FrameLayout
-            android:id="@+id/wrapper_warning"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <include
-                android:id="@+id/view_warning"
-                layout="@layout/warning_view" />
-
-        </FrameLayout>
-    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

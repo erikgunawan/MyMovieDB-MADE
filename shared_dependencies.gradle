@@ -34,5 +34,5 @@ dependencies {
 
     //testing
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation "junit:junit:$junit_version"
+    androidTestImplementation "junit:junit:4.13.2"
 }

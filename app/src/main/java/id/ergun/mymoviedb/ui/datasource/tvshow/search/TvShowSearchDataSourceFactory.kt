@@ -19,11 +19,9 @@ class TvShowSearchDataSourceFactory @Inject constructor(
   val liveData: MutableLiveData<TvShowSearchKeyedDataSource> = MutableLiveData<TvShowSearchKeyedDataSource>()
 
   private var query = ""
-  var favoritePage: Boolean = false
 
   override fun create(): DataSource<Int, MovieVR> {
     val source = TvShowSearchKeyedDataSource(useCase)
-    source.favoritePage = favoritePage
     source.query = query
     liveData.postValue(source)
     return source

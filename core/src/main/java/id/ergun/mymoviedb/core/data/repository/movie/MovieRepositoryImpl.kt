@@ -45,7 +45,7 @@ class MovieRepositoryImpl @Inject constructor(
       }
     } catch (exception: Exception) {
       Timber.e(exception)
-      Resource.error("Terjadi kesalahan1")
+      Resource.error("Terjadi kesalahan")
     }
   }
 

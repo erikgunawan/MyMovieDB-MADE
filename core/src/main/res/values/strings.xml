@@ -9,6 +9,7 @@
   <string name="favorite">Favorites</string>
 
   <string name="search">Pencarian</string>
+  <string name="search_hint_description" formatted="false">Isi kata kunci untuk menemukan %s yang Anda cari</string>
   <string name="share">Bagikan</string>
   <string name="share_tv_show_title">Bagikan TV Show ini</string>
   <string name="share_movie_title">Bagikan Movie ini</string>
@@ -17,4 +18,5 @@
   <string name="message_add_to_favorite">Added to Favorite</string>
   <string name="message_remove_from_favorite">Removed from Favorite</string>
   <string name="message_data_not_found">Data tidak ditemukan</string>
+
 </resources>

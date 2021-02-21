@@ -16,7 +16,7 @@ import id.ergun.mymoviedb.core.R
 fun ImageView.loadImage(
     url: String?,
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
-    progressDrawable: Int? = null
+    progressDrawable: Int? = R.drawable.ic_image_placeholder_loading
 ) {
   val requestOptions = RequestOptions().build(errorDrawable, progressDrawable)
 
@@ -30,7 +30,7 @@ fun ImageView.loadImage(
 fun ImageView.loadImage(
     @DrawableRes url: Int,
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
-    progressDrawable: Int? = null
+    progressDrawable: Int? = R.drawable.ic_image_placeholder_loading
 ) {
   val requestOptions = RequestOptions().build(errorDrawable, progressDrawable)
 
@@ -43,7 +43,7 @@ fun ImageView.loadImage(
 
 fun RequestOptions.build(
     errorDrawable: Int = R.drawable.ic_image_placeholder_error,
-    progressDrawable: Int? = null
+    progressDrawable: Int? = R.drawable.ic_image_placeholder_loading
 ): RequestOptions {
   with(this) {
     error(errorDrawable)

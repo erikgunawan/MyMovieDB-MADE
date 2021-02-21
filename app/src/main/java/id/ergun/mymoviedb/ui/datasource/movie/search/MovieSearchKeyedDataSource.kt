@@ -22,7 +22,6 @@ class MovieSearchKeyedDataSource(
   var state: MutableLiveData<Resource<*>> = MutableLiveData()
 
   var query: String = ""
-  var favoritePage: Boolean = false
 
   private val job = Job()
   private val scope = CoroutineScope(Dispatchers.IO + job)
@@ -31,36 +30,17 @@ class MovieSearchKeyedDataSource(
       params: LoadInitialParams<Int>,
       callback: LoadInitialCallback<Int, MovieVR>
   ) {
-    if (favoritePage) {
-      scope.launch {
-        try {
-          val response = useCase.getFavoriteMovies()
-          if (response.status == Resource.Status.SUCCESS && !response.data.isNullOrEmpty()) {
-            state.postValue(response)
-            val items =
-                MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
-            callback.onResult(items, null, 2)
-            return@launch
-          }
-
-          state.postValue(Resource.emptyData("Data tidak ditemukan", null))
-        } catch (exception: Exception) {
-          Timber.e(exception)
-          state.postValue(Resource.error("Terjadi kesalahan", data = null))
-        }
-      }
-      return
-    }
-
     state.postValue(Resource.loading(null))
     scope.launch {
       try {
         val response = useCase.searchMovie(query = query, page = Const.INITIAL_PAGE)
-        state.postValue(response)
-        if (response.status == Resource.Status.SUCCESS) {
+        if (response.status == Resource.Status.SUCCESS && !response.data.isNullOrEmpty()) {
+          state.postValue(response)
           val items = MovieVR.transform(response.data ?: arrayListOf()).toMutableList()
           callback.onResult(items, null, 2)
+          return@launch
         }
+        state.postValue(Resource.emptyData("Movie yang Anda cari tidak ditemukan", null))
       } catch (exception: Exception) {
         Timber.e(exception)
         state.postValue(Resource.error("Terjadi kesalahan", data = null))
@@ -73,9 +53,6 @@ class MovieSearchKeyedDataSource(
   }
 
   override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieVR>) {
-    if (favoritePage) {
-      return
-    }
     scope.launch {
       try {
         val response = useCase.searchMovie(query = query, page = params.key)

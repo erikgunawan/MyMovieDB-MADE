@@ -142,35 +142,43 @@ class MovieFragment : Fragment() {
   }
 
   private fun showLoading() {
-    binding.wrapperContent.gone()
-    binding.wrapperWarning.gone()
-    binding.progressBar.visible()
+    binding.run {
+      wrapperContent.gone()
+      wrapperWarning.gone()
+      progressBar.visible()
+    }
   }
 
   private fun showData() {
-    binding.wrapperContent.visible()
-    binding.wrapperWarning.gone()
-    binding.progressBar.gone()
+    binding.run {
+      wrapperContent.visible()
+      wrapperWarning.gone()
+      progressBar.gone()
+    }
   }
 
   private fun showEmptyData(message: String) {
-    binding.wrapperContent.gone()
-    binding.viewWarning.btnWarning.gone()
-    binding.wrapperWarning.visible()
-    binding.progressBar.gone()
+    binding.run {
+      wrapperContent.gone()
+      viewWarning.btnWarning.gone()
+      wrapperWarning.visible()
+      progressBar.gone()
 
-    binding.viewWarning.ivWarning.loadImage(R.drawable.img_empty)
-    binding.viewWarning.tvWarning.text = message
+      viewWarning.ivWarning.loadImage(R.drawable.img_empty)
+      viewWarning.tvWarning.text = message
+    }
   }
 
   private fun showWarning(message: String) {
-    binding.wrapperContent.gone()
-    binding.viewWarning.btnWarning.visible()
-    binding.wrapperWarning.visible()
-    binding.progressBar.gone()
+    binding.run {
+      wrapperContent.gone()
+      viewWarning.btnWarning.visible()
+      wrapperWarning.visible()
+      progressBar.gone()
 
-    binding.viewWarning.ivWarning.loadImage(R.drawable.img_error)
-    binding.viewWarning.tvWarning.text = message
+      viewWarning.ivWarning.loadImage(R.drawable.img_error)
+      viewWarning.tvWarning.text = message
+    }
   }
 
   @Subscribe
