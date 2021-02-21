@@ -57,6 +57,7 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     if (fragment != null) {
       supportFragmentManager.beginTransaction()
           .replace(R.id.container_view, fragment)
+          .addToBackStack(null)
           .commit()
       return true
     }
@@ -98,5 +99,10 @@ class HomeActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_search, menu)
     return super.onCreateOptionsMenu(menu)
+  }
+
+  override fun onBackPressed() {
+    super.onBackPressed()
+    finish()
   }
 }

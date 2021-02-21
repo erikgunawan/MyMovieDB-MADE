@@ -39,7 +39,9 @@ class MovieFragment : Fragment() {
     }
   }
 
-  private lateinit var binding: MovieFragmentBinding
+  private var _binding: MovieFragmentBinding? = null
+
+  private val binding get() = _binding!!
 
   private val movieViewModel by viewModels<MovieViewModel>()
 
@@ -49,7 +51,7 @@ class MovieFragment : Fragment() {
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?
   ): View {
-    binding = MovieFragmentBinding.inflate(inflater, container, false)
+    _binding = MovieFragmentBinding.inflate(inflater, container, false)
     return binding.root
   }
 
@@ -150,7 +152,12 @@ class MovieFragment : Fragment() {
   }
 
   override fun onDestroyView() {
-    binding.rvMovie.adapter = null
     super.onDestroyView()
+    binding.rvMovie.adapter = null
+    movieAdapter = MovieAdapter()
+    movieAdapter.submitList(null)
+    movieAdapter.notifyDataSetChanged()
+    _binding = null
+
   }
 }
