@@ -154,9 +154,6 @@ class MovieFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     binding.rvMovie.adapter = null
-    movieAdapter = MovieAdapter()
-    movieAdapter.submitList(null)
-    movieAdapter.notifyDataSetChanged()
     _binding = null
 
   }
