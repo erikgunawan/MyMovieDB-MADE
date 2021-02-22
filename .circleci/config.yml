@@ -24,12 +24,14 @@
           - run:
               name: Run Build
               command: ./gradlew build
+              no_output_timeout: 30m
           - store_artifacts: 
               path: app/build/reports
               destination: reports
           - run:
               name: Run Tests
               command: ./gradlew lint test
+              no_output_timeout: 30m
           - store_test_results:
               path: app/build/test-results
           - store_artifacts:  
